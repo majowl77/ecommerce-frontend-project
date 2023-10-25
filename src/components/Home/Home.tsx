@@ -1,13 +1,14 @@
-import React from 'react'
-import HeroSection from './Home/HeroSection'
-import PlantsCare from './Home/PlantsCare'
+import BestSellerItems from './BestSellerItems'
+import Categories from './Categories'
+import PlantsCare from './PlantsCare'
 import NavBar from './NavBar'
+import Footer from './Footer'
 
 export default function Home() {
   return (
     <div className="Home">
       <NavBar />
-      <div className="heroSection">
+      <section className="heroSection">
         <div>
           <h1>
             Bring <span>Serenity</span> to Your Place With Interior Plants
@@ -15,8 +16,11 @@ export default function Home() {
           <p>find your dream plant for you home decoration with us, and we will make it happen.</p>
           <button> Shope Now </button>
         </div>
-      </div>
+      </section>
       <PlantsCare />
+      <BestSellerItems />
+      <Categories />
+      <Footer />
     </div>
   )
 }

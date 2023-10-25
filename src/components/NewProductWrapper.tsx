@@ -2,7 +2,7 @@ import { useState, ChangeEvent, FormEvent } from 'react'
 import { useDispatch } from 'react-redux'
 
 import { ProductForm } from './ProductForm'
-import { addProduct, Product } from '../redux/slices/products/productSlice'
+import { addProduct, Product } from '../redux/slices/products/adminSlice'
 import { AppDispatch } from '../redux/store'
 
 const initialProductState: Product = {

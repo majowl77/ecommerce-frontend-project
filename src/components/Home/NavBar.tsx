@@ -3,6 +3,7 @@ import Badge, { BadgeProps } from '@mui/material/Badge'
 import { styled } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
+import { Link } from 'react-router-dom'
 type Theme = {
   theme: number
 }
@@ -16,14 +17,22 @@ const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
 }))
 export default function NavBar() {
   return (
-    <div>
+    <header>
       <nav className="navBarElements">
         <h3> GreenPlant</h3>
         <ul className="listNavBar">
-          <li className="elementNavBar"> Home </li>
-          <li className="elementNavBar"> Products </li>
-          <li className="elementNavBar"> About Us </li>
-          <li className="elementNavBar" id="loginItem"> Login </li>
+          <li className="elementNavBar">
+            <Link to="/"> Home</Link>
+          </li>
+          <li className="elementNavBar">
+            <Link to="/Products"> Products</Link>
+          </li>
+          <li className="elementNavBar">
+            <Link to="/"> About Us</Link>
+          </li>
+          <li className="elementNavBar" id="loginItem">
+            <Link to="/Login"> Login</Link>
+          </li>
           <li className="elementNavBar" id="cartItem">
             <IconButton aria-label="cart" color="inherit">
               <StyledBadge badgeContent={4} color="error">
@@ -33,6 +42,6 @@ export default function NavBar() {
           </li>
         </ul>
       </nav>
-    </div>
+    </header>
   )
 }

@@ -1,20 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-export type Product = {
-  id: number
-  name: string
-  image: string
-  description: string
-  categories: number[]
-  variants: string[]
-  sizes: string[]
-}
-
-export type ProductState = {
-  items: Product[]
-  error: null | string
-  isLoading: boolean
-}
+import { Product, ProductState } from '../../../types/type'
 
 const initialState: ProductState = {
   items: [],
@@ -22,7 +8,7 @@ const initialState: ProductState = {
   isLoading: false
 }
 
-export const userSlice = createSlice({
+export const adminSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
@@ -43,6 +29,6 @@ export const userSlice = createSlice({
     }
   }
 })
-export const { removeProduct, addProduct, productsRequest, productsSuccess } = userSlice.actions
+export const { removeProduct, addProduct, productsRequest, productsSuccess } = adminSlice.actions
 
-export default userSlice.reducer
+export default adminSlice.reducer
