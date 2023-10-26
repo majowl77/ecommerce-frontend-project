@@ -32,6 +32,7 @@ export type Product = {
   variants: string[]
   sizes: string[]
   price: number
+  quantity:number
 }
 
 export type ProductState = {

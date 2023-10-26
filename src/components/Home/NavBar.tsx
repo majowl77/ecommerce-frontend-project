@@ -34,6 +34,9 @@ export default function NavBar() {
           <li className="elementNavBar" id="loginItem">
             <Link to="/Login"> Login</Link>
           </li>
+          <li className="elementNavBar" >
+            <Link to="/Admin"> Admin</Link>
+          </li>
           <li className="elementNavBar" id="cartItem">
             <Link to="/Cart">
               <IconButton aria-label="cart" color="inherit">

@@ -32,7 +32,7 @@ const CartItem: React.FC<CartItemProps> = ({ product, onRemove, onIncrease, onDe
         <IconButton onClick={() => onIncrease(product.id)}>
           <AddIcon /> 
         </IconButton>
-
+        {product.quantity >=0 && product.quantity}
         <IconButton onClick={() => onDecrease(product.id)}>
           <RemoveIcon />
         </IconButton>

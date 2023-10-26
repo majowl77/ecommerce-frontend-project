@@ -13,7 +13,7 @@ import api from '../api'
 export function ProductsManager() {
   const dispatch = useDispatch<AppDispatch>()
   const state = useSelector((state: RootState) => state)
-  const products = state.products
+  const products = state.adminR
 
   useEffect(() => {
     handleGetProducts()

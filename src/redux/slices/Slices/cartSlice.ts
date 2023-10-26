@@ -23,17 +23,30 @@ const cartSlice = createSlice({
             state.cartProducts.push(action.payload)
         },
         addCartCounter: (state)=>{
-            state.cartCounter = state.cartCounter + 1 ;
+                state.cartCounter = state.cartCounter + 1 ; 
           },
         removeProduct : (state, action: PayloadAction<number>)=>{
-            state.cartProducts = state.cartProducts.filter((product) => product.id !== action.payload);
-            state.cartCounter = state.cartCounter - 1 ;
+            // const itemToIncrease = state.cartProducts.find((item) => item.id === action.payload);
+            // if (itemToIncrease) {
+            //   const quantity =  itemToIncrease.quantity ;
+            //    state.cartCounter = state.cartCounter - quantity ;
+            //  }
+             state.cartProducts = state.cartProducts.filter((product) => product.id !== action.payload);
+             state.cartCounter = state.cartCounter - 1 ;
         },
-        increaseQuantity: ()=>{
-            
+        increaseQuantity: (state, action: PayloadAction<number>)=>{
+            const itemToIncrease = state.cartProducts.find((item) => item.id === action.payload);
+            if (itemToIncrease) {
+               itemToIncrease.quantity += 1;
+               state.cartCounter = state.cartCounter + 1 ;
+             }
         },
-        decreaseQuantity: ()=>{
-            
+        decreaseQuantity: (state, action: PayloadAction<number>)=>{
+            const itemToIncrease = state.cartProducts.find((item) => item.id === action.payload);
+            if (itemToIncrease) {
+               itemToIncrease.quantity -= 1;
+               state.cartCounter = state.cartCounter - 1 ;
+             }
         }
     }
 })
