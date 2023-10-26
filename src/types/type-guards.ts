@@ -1,4 +1,4 @@
-import DecodedUser from '../redux/slices/products/adminSlice'
+import DecodedUser from '../redux/slices/Slices/adminSlice'
 
 export function isDecodedUser(obj: unknown): obj is DecodedUser {
   return (

@@ -11,7 +11,7 @@ export default function BestSellerItems() {
           <div className="bsetItemsCard">
             <div className="HandleTextOfItemsCard">
               <div className="cardImage">
-                <img src="public/productImageOne.png" />
+                <img src="public/images/productImageOne.png" />
               </div>
               <div className="cardFrame">
                 <h6> title here</h6>
@@ -27,7 +27,7 @@ export default function BestSellerItems() {
           <div className="bsetItemsCard">
             <div className="HandleTextOfItemsCard">
               <div className="cardImage">
-                <img src="public/productImageFive.png" />
+                <img src="public/images/productImageFive.png" />
               </div>
               <div className="cardFrame">
                 <h6> title here</h6>
@@ -43,7 +43,7 @@ export default function BestSellerItems() {
           <div className="bsetItemsCard">
             <div className="HandleTextOfItemsCard">
               <div className="cardImage">
-                <img src="public/productImageFour.png" />
+                <img src="public/images/productImageFour.png" />
               </div>
               <div className="cardFrame">
                 <h6> title here</h6>
@@ -59,7 +59,7 @@ export default function BestSellerItems() {
           <div className="bsetItemsCard">
             <div className="HandleTextOfItemsCard">
               <div className="cardImage">
-                <img src="public/productImagethree.png" />
+                <img src="public/images/productImagethree.png" />
               </div>
               <div className="cardFrame">
                 <h6> title here</h6>
@@ -75,7 +75,7 @@ export default function BestSellerItems() {
           <div className="bsetItemsCard">
             <div className="HandleTextOfItemsCard">
               <div className="cardImage">
-                <img src="public/productImagethree.png" />
+                <img src="public/images/productImagethree.png" />
               </div>
               <div className="cardFrame">
                 <h6> title here</h6>

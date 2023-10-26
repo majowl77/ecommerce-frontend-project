@@ -4,9 +4,9 @@ import { styled } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import { Link } from 'react-router-dom'
-type Theme = {
-  theme: number
-}
+import { useSelector } from 'react-redux'
+import { RootState } from '../../redux/store'
+
 const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
   '& .MuiBadge-badge': {
     vertical: 'top',
@@ -16,6 +16,7 @@ const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
   }
 }))
 export default function NavBar() {
+  const cartCounter = useSelector((state :RootState )=> state.cartReducer.cartCounter);
   return (
     <header>
       <nav className="navBarElements">
@@ -34,11 +35,13 @@ export default function NavBar() {
             <Link to="/Login"> Login</Link>
           </li>
           <li className="elementNavBar" id="cartItem">
-            <IconButton aria-label="cart" color="inherit">
-              <StyledBadge badgeContent={4} color="error">
-                <ShoppingCartIcon />
-              </StyledBadge>
-            </IconButton>
+            <Link to="/Cart">
+              <IconButton aria-label="cart" color="inherit">
+                <StyledBadge badgeContent={cartCounter} color="error">
+                  <ShoppingCartIcon />
+                </StyledBadge>
+              </IconButton>
+            </Link>
           </li>
         </ul>
       </nav>

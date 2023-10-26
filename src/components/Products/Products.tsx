@@ -10,19 +10,28 @@ import Box from '@mui/material/Box'
 import FormGroup from '@mui/material/FormGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
+import { Link } from 'react-router-dom'
+import InputLabel from '@mui/material/InputLabel'
+import MenuItem from '@mui/material/MenuItem'
+import FormControl from '@mui/material/FormControl'
+import Select, { SelectChangeEvent } from '@mui/material/Select'
 
 import NavBar from '../Home/NavBar'
 import { AppDispatch, RootState } from '../../redux/store'
-import { productsActions } from '../../redux/slices/products/productsSlice'
+import { productsActions } from '../../redux/slices/Slices/productsSlice'
 import { Product } from '../../types/type'
+import { cartSliceAction } from '../../redux/slices/Slices/cartSlice'
 
 export default function Products() {
   const dispatch = useDispatch<AppDispatch>()
   const url = 'public/mock/e-commerce/products.json'
   const prodcutsList = useSelector((state: RootState) => state.productsR.productList)
+  const cartList = useSelector((state: RootState) => state.cartReducer.cartProducts)
   const errorMessage = useSelector((state: RootState) => state.productsR.error)
   const isLoading = useSelector((state: RootState) => state.productsR.isLoading)
   const [searchKeyWord, setSearchKeyWord] = useState('')
+
+  //fetching the data form JSON file
   useEffect(() => {
     function fetchProductsData() {
       axios
@@ -49,7 +58,7 @@ export default function Products() {
     )
   }
 
-  // search letters while user is typing
+  // search with each letters the user is typing
   function getSearchKeyword(event: React.ChangeEvent<HTMLInputElement>) {
     setSearchKeyWord(event.target.value)
     console.log(searchKeyWord)
@@ -65,7 +74,19 @@ export default function Products() {
     }
   }
   const filteredProductsList = filterProducts(searchKeyWord, prodcutsList)
-
+  // sorting a list by the price of the prodcuts
+  const selectChange = (event: SelectChangeEvent) => {
+    dispatch(productsActions.getSelectedSort(event.target.value))
+  }
+  // 
+  function addProductToCart(id:number){
+    dispatch(cartSliceAction.addCartCounter())
+    const productToAdd = prodcutsList.find((product) => product.id === id)
+    if(productToAdd != null){
+      dispatch(cartSliceAction.addCartProduct(productToAdd));
+      console.log(cartList)
+    }
+  }
   return (
     <div className="products">
       <NavBar />
@@ -86,17 +107,41 @@ export default function Products() {
             <FormControlLabel control={<Checkbox />} label="Plant Accessories" />
             <FormControlLabel control={<Checkbox />} label="Artificial Plants" />
           </FormGroup>
+          <FormControl sx={{ m: 1, minWidth: 150 }} size="medium" color="secondary">
+            <InputLabel id="demo-simple-select-helper-label" color="secondary">
+              Sort:
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-helper-label"
+              id="demo-simple-select-helper"
+              label="Sort"
+              onChange={selectChange}
+              color="secondary">
+              <MenuItem value="highttolow" color="secondary">
+                Price: Hight to Low
+              </MenuItem>
+              <MenuItem value="lowtohigh" color="secondary">
+              Price: Low to Hight 
+              </MenuItem>
+            </Select>
+          </FormControl>
         </div>
         <div className="productsListContainer">
           <ul className="productsList">
             {filteredProductsList &&
               filteredProductsList.length > 0 &&
               filteredProductsList.map((product) => (
-                <li key={product.id} className="productCard">
-                  <img src={product.image} />
-                  <h1> {product.name}</h1>
-                  <p> {product.price}</p>
-                </li>
+               
+                  <li key={product.id} className="productCard">
+                    <img src={product.image} />
+                    <h1> {product.name}</h1>
+                    <p> {product.price}</p>
+                    <p>
+                      <button onClick={()=> addProductToCart(product.id)}> Buy</button>
+                      <Link to={`/ProductDetails/${product.id}`}> <button id="linkToProductDetails"> More Details </button> </Link>
+                     </p>
+                  </li>
+
               ))}
           </ul>
         </div>

@@ -2,7 +2,7 @@
   {
     "id": 1,
     "name": "Laptop",
-    "image": "public/productImageOne.png",
+    "image": "public/images/productImageOne.png",
     "description": "High-performance laptop for all your needs.",
     "categories": [1],
     "variants": ["8GB RAM", "16GB RAM"],
@@ -12,7 +12,7 @@
   {
     "id": 2,
     "name": "Smartphone",
-    "image": "public/productImageFour.png",
+    "image": "public/images/productImageFour.png",
     "description": "Latest smartphone with advanced features.",
     "categories": [1],
     "variants": ["64GB", "128GB"],
@@ -22,7 +22,7 @@
   {
     "id": 3,
     "name": "Tablet",
-    "image": "public/productImagethree.png",
+    "image": "public/images/productImagethree.png",
     "description": "Compact and powerful tablet for work and entertainment.",
     "categories": [3],
     "variants": ["32GB", "64GB"],
@@ -32,7 +32,7 @@
   {
     "id": 4,
     "name": "Gaming Console",
-    "image": "public/productImageFive.png",
+    "image": "public/images/productImageFive.png",
     "description": "Next-gen gaming console for immersive gameplay.",
     "categories": [3],
     "variants": ["500GB", "1TB"],
@@ -48,5 +48,25 @@
     "variants": ["24MP", "36MP"],
     "sizes": [],
     "price":" 43$"
+  },
+  {
+    "id": 6,
+    "name": "Gaming Console",
+    "image": "public/images/productImageFive.png",
+    "description": "Next-gen gaming console for immersive gameplay.",
+    "categories": [3],
+    "variants": ["500GB", "1TB"],
+    "sizes": [],
+    "price":" 13$"
+  },
+  {
+    "id": 7,
+    "name": "Gaming Console",
+    "image": "public/images/productImageFive.png",
+    "description": "Next-gen gaming console for immersive gameplay.",
+    "categories": [3],
+    "variants": ["500GB", "1TB"],
+    "sizes": [],
+    "price":" 13$"
   }
 ]

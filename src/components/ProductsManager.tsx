@@ -5,7 +5,7 @@ import {
   productsRequest,
   productsSuccess,
   removeProduct
-} from '../redux/slices/products/adminSlice'
+} from '../redux/slices/Slices/adminSlice'
 import { AppDispatch, RootState } from '../redux/store'
 import { NewProductWrapper } from './NewProductWrapper'
 import api from '../api'
