@@ -563,3 +563,37 @@ font-size: 20px;
 .cartButtons .MuiSvgIcon-root{
   color: #506d3b;
 }
+/* .MuiToggleButtonGroup-root{
+  width: 300;
+} */
+
+
+
+
+.adminPage{
+  display: flex;
+  justify-content: space-between;
+  align-items:start;
+  margin: 0;
+}
+.adminLeftDashborad{
+  margin: 0 10px;
+  padding-top: 50px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-self: self-start;
+  /* background-color: #a4b6a6; */
+}
+.adminRightDashborad{
+  margin: 0 10px;
+  border-radius: 6px;
+
+}
+#adminProductImage{
+  width: 40px; /* Set your desired width */
+  height: 45px; 
+}
+.adminButton .MuiSvgIcon-root{
+  color: #a4b6a6;
+}

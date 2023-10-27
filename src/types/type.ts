@@ -1,7 +1,7 @@
 export type ProductsInitialState = {
   productList: Product[]
   error: null | string
-  isLoading: boolean,
+  isLoading: boolean
 }
 export type ProductInitialState = {
   error: null | string
@@ -17,8 +17,8 @@ export type UsersinitialState = {
 export type Users = {
   id: number
   firstName: string
-  lastName:string
-  email:string
+  lastName: string
+  email: string
   password: string
   role: string
 }
@@ -32,11 +32,18 @@ export type Product = {
   variants: string[]
   sizes: string[]
   price: number
-  quantity:number
+  quantity: number
 }
 
 export type ProductState = {
   items: Product[]
   error: null | string
   isLoading: boolean
+}
+
+export type Order = {
+  id: number
+  productId: number
+  userId: number
+  purchasedAt: string
 }

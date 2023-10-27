@@ -1,8 +1,8 @@
 import { useState, ChangeEvent, FormEvent } from 'react'
 import { useDispatch } from 'react-redux'
-
+import adminR from '../redux/slices/adminSlice'
 import { ProductForm } from './ProductForm'
-import { addProduct, Product } from '../redux/slices/Slices/adminSlice'
+import {  Product } from '../types/type'
 import { AppDispatch } from '../redux/store'
 
 const initialProductState: Product = {
@@ -12,7 +12,9 @@ const initialProductState: Product = {
   description: '',
   categories: [],
   variants: [],
-  sizes: []
+  sizes: [],
+  price:0,
+  quantity:0
 }
 
 export function NewProductWrapper() {
@@ -45,7 +47,7 @@ export function NewProductWrapper() {
     product.id = + new Date()
     console.log('product:', product)
 
-    dispatch(addProduct({ product }))
+    dispatch(adminR.addProduct({ product }))
     // Reset the form
     setProduct(initialProductState)
   }

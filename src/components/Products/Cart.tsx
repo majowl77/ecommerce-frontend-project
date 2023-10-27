@@ -4,7 +4,7 @@ import NavBar from '../Home/NavBar'
 import { useSelector, useDispatch } from 'react-redux';
 import CartItem from './CartItem';
 import { RootState } from '../../redux/store';
-import { cartSliceAction } from '../../redux/slices/Slices/cartSlice';
+import { cartSliceAction } from '../../redux/slices/cartSlice';
 import { Paper } from '@mui/material';
 
 const Cart = () => {

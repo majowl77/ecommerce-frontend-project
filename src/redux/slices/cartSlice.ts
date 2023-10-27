@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { Product } from "../../../types/type"
+import { Product } from "../../types/type"
 
 type InitialState ={
     cartCounter: number ,

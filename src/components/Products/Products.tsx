@@ -18,9 +18,9 @@ import Select, { SelectChangeEvent } from '@mui/material/Select'
 
 import NavBar from '../Home/NavBar'
 import { AppDispatch, RootState } from '../../redux/store'
-import { productsActions } from '../../redux/slices/Slices/productsSlice'
+import { productsActions } from '../../redux/slices/productsSlice'
 import { Product } from '../../types/type'
-import { cartSliceAction } from '../../redux/slices/Slices/cartSlice'
+import { cartSliceAction } from '../../redux/slices/cartSlice'
 
 export default function Products() {
   const dispatch = useDispatch<AppDispatch>()

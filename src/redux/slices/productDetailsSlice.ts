@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Product, ProductInitialState } from '../../../types/type'
+import { Product, ProductInitialState } from '../../types/type'
 
 const initialState: ProductInitialState = {
   isLoading: true,
@@ -18,7 +18,7 @@ const productDetailsSlice = createSlice({
       state.error = action.payload
       state.isLoading = false
     },
-    resetCompanyInfo: (state) => {
+    resetProductInfo: (state) => {
       state.isLoading = true
       state.product = initialState.product
     }

@@ -6,7 +6,7 @@ import axios from 'axios'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router'
-import { productDetailsAtions } from '../../redux/slices/Slices/productDetailsSlice'
+import { productDetailsAtions } from '../../redux/slices/productDetailsSlice'
 import { AppDispatch, RootState } from '../../redux/store'
 import { Product } from '../../types/type'
 
