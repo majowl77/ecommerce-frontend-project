@@ -1,12 +1,11 @@
-import { ProductsManager } from './components/ProductsManager'
 import './App.css'
-import Home from './components/Home/Home'
+import Home from './Pages/Home'
 import { Route, Routes } from 'react-router-dom'
-import Products from './components/Products/Products'
-import Login from './components/Admin/Login'
+import Products from './Pages/Products'
+import Login from './Pages/Login'
 import Cart from './components/Products/Cart'
 import ProductDetails from './components/Products/ProductDetails'
-import Admin from './components/Admin/Admin'
+import Admin from './Pages/Admin'
 
 function App() {
   return (

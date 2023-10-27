@@ -1,8 +1,9 @@
-import BestSellerItems from './BestSellerItems'
-import Categories from './Categories'
-import PlantsCare from './PlantsCare'
-import NavBar from './NavBar'
-import Footer from './Footer'
+import BestSellerItems from '../components/Home/BestSellerItems'
+import Categories from '../components/Home/Categories'
+import PlantsCare from '../components/Home/PlantsCare'
+import NavBar from '../components/Home/NavBar'
+import Footer from '../components/Home/Footer'
+import { Link } from 'react-router-dom'
 
 export default function Home() {
   return (
@@ -14,7 +15,9 @@ export default function Home() {
             Bring <span>Serenity</span> to Your Place With Interior Plants
           </h1>
           <p>find your dream plant for you home decoration with us, and we will make it happen.</p>
-          <button> Shope Now </button>
+          <Link to="/Products">
+            <button> Shope Now </button>
+          </Link>
         </div>
       </section>
       <PlantsCare />

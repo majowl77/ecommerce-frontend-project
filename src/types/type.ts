@@ -2,6 +2,8 @@ export type ProductsInitialState = {
   productList: Product[]
   error: null | string
   isLoading: boolean
+  oldProductList: Product[]
+
 }
 export type ProductInitialState = {
   error: null | string

@@ -6,6 +6,7 @@ const initialState: ProductsInitialState = {
   productList: [],
   error: null,
   isLoading: true,
+  oldProductList: []
 }
 const productSlice = createSlice({
   name: 'productsList',
@@ -13,6 +14,8 @@ const productSlice = createSlice({
   reducers: {
     getProductsData: (state, action: PayloadAction<Product[]>) => {
       state.productList = action.payload
+      state.oldProductList = action.payload
+      console.log("the original Product", state.oldProductList )
       state.isLoading = false
     },
     getError: (state, action: PayloadAction<string>) => {
@@ -44,6 +47,10 @@ const productSlice = createSlice({
                   }
                     return 0;
                   });
+            }else if (action.payload === "All"){
+              state.productList = state.oldProductList
+              console.log("oldProduct", state.oldProductList )
+              
             }
   }
 }

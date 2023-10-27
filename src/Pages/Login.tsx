@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import NavBar from '../Home/NavBar'
+import NavBar from '../components/Home/NavBar'
 import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
 import TextField from '@mui/material/TextField'

@@ -47,7 +47,7 @@ export default function AdminLeftDashborad() {
     };
   
   return (
-    <div className="adminLeftDashborad">
+    <div className="adminLeftPage">
             <Drawer variant="permanent" open={open}>
           <Toolbar
             sx={{

@@ -7,8 +7,10 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PeopleIcon from '@mui/icons-material/People';
 import BarChartIcon from '@mui/icons-material/BarChart';
-import LayersIcon from '@mui/icons-material/Layers';
+import HomeIcon from '@mui/icons-material/Home';
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
+import { Link } from 'react-router-dom';
 
 export const mainListItems = (
   <React.Fragment>
@@ -36,37 +38,39 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Categories" />
     </ListItemButton>
-    {/* <ListItemButton>
-      <ListItemIcon>
-        <LayersIcon />
-      </ListItemIcon>
-      <ListItemText primary="Integrations" />
-    </ListItemButton> */}
   </React.Fragment>
 );
 
 export const secondaryListItems = (
   <React.Fragment>
-    <ListSubheader component="div" inset>
-      Saved reports
+    <ListSubheader component="div" inset sx={{
+              bgcolor : "#a4b6a6"
+            }}>
+      Website Pages
     </ListSubheader>
+    <Link to="/">
+    <ListItemButton>
+      <ListItemIcon>
+        <HomeIcon />
+      </ListItemIcon>
+      <ListItemText primary="Home Page" />
+    </ListItemButton>
+    </Link>
+    <Link to="/Products">
+    <ListItemButton>
+      <ListItemIcon>
+        <ProductionQuantityLimitsIcon />
+      </ListItemIcon>
+      <ListItemText primary="Products Page" />
+    </ListItemButton>
+    </Link>
+    <Link to="/Login">
     <ListItemButton>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText primary="Current month" />
+      <ListItemText primary="Login Page" />
     </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Last quarter" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Year-end sale" />
-    </ListItemButton>
+    </Link>
   </React.Fragment>
 );

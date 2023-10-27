@@ -403,19 +403,19 @@ svg path {
 }
 .footerNameNInfo {
   align-self: self-start;
-  margin-left:200px;
-   display: flex; 
+  margin-left: 200px;
+  display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-direction: row; 
+  flex-direction: row;
   width: 500px;
-  gap :20px
+  gap: 20px;
 }
 .footerName {
   align-self: start;
   display: inline-flex;
   flex-direction: column;
-  align-items: center; 
+  align-items: center;
   gap: 7px;
   width: 231px;
 }
@@ -434,13 +434,13 @@ svg path {
 .footerName svg {
   width: 20px;
 }
-.socailMediaContanier{
+.socailMediaContanier {
   align-content: start;
   width: 229px;
   height: 55px;
   padding-right: 110px;
 }
-.socailMedia{
+.socailMedia {
   display: flex;
   justify-content: center;
   align-items: start;
@@ -449,65 +449,69 @@ svg path {
   text-decoration: none;
   font-size: 30px;
 }
-.socailMedia li{
-padding: 0 10px;
+.socailMedia li {
+  padding: 0 10px;
 }
-.footerInfo{
+.footerInfo {
   padding-left: 520px;
 }
-.footerList{
+.footerList {
   font-family: 'Raleway', sans-serif;
   text-decoration: none;
   text-align: start;
   padding-top: 11px;
 }
 
-.rightReserved{
+.rightReserved {
   font-family: 'Raleway', sans-serif;
   align-self: self-start;
   padding-top: 20px;
   padding-left: 200px;
 }
 
-
 /* Products styling */
-.products{
+.products {
   background-color: #b9c7b7;
+  height: 100vh;
 }
 .products h2 {
-padding-top: 30px;
-padding-left: 310px;
-padding-bottom: 10px;
-font-size: 20px;
-
+  padding-top: 30px;
+  padding-left: 310px;
+  padding-bottom: 10px;
+  font-size: 20px;
 }
 .productsSection {
   display: flex;
   justify-content: center;
-  align-items:start;
+  align-items: start;
 }
-.productsfilteringSection{
+.productsfilteringSection {
   padding-top: 50px;
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-self: self-start;
 }
-.productsListContainer{
+.productsListContainer {
   padding-top: 40px;
-  border-radius: 6px;
+  border-radius: 16px;
 
+  display: flex;
+  align-items: center;
+  direction: ltr;
+  overflow-x: auto;
+  white-space: nowrap;
 }
 
-.productsList{
+.productsList {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr ;
-
+  grid-template-columns: 1fr 1fr 1fr;
+  height: 700px;
 }
 .productsList img {
   width: 200px;
 }
-.productCard{
+.productCard {
   display: inline-block;
   width: 277px;
   height: 408px;
@@ -522,7 +526,7 @@ font-size: 20px;
   font-size: 13px;
   font-family: 'Raleway', sans-serif;
   border-radius: 19px;
-  border: 1.619px solid  #8a9b6e;
+  border: 1.619px solid #8a9b6e;
   background: var(--wisper, #f0f1ee);
   height: 32px;
   width: 96px;
@@ -530,14 +534,14 @@ font-size: 20px;
   justify-content: center;
   align-items: center;
 }
-.oneProduct{
+.oneProduct {
   background-color: #8a9b6e;
 }
-#linkToProductDetails{
+#linkToProductDetails {
   font-size: 10px;
   border-radius: 10px;
   border: 1px solid #8a9b6e;
-  background-color: #fff ;
+  background-color: #fff;
 }
 
 /* Login styling */
@@ -545,55 +549,85 @@ font-size: 20px;
   background-color: #b9c7b7;
   height: 100vh;
 }
-.loginPage h1{
+.loginPage h1 {
   padding-top: 30px;
   font-size: 30px;
 }
-.formContainer{
+.formContainer {
   margin-top: 50px;
 }
 
-
-
-
 /* Cart styling */
-.cartItem{
+.cartItem {
   background-color: #e4e8e2;
 }
-.cartButtons .MuiSvgIcon-root{
+.cartButtons .MuiSvgIcon-root {
   color: #506d3b;
 }
-/* .MuiToggleButtonGroup-root{
-  width: 300;
-} */
 
+/*Admin Page styling*/
 
-
-
-.adminPage{
+#adminPageTitle {
+  font-size: 25px;
+  padding: 20px 0;
+}
+.adminPage {
   display: flex;
   justify-content: space-between;
-  align-items:start;
+  align-items: start;
   margin: 0;
+  margin-top: 54px;
 }
-.adminLeftDashborad{
-  margin: 0 10px;
-  padding-top: 50px;
+.adminLeftDashborad {
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-self: self-start;
   /* background-color: #a4b6a6; */
 }
-.adminRightDashborad{
-  margin: 0 10px;
+.adminRightDashborad {
+  padding-top: 0px;
   border-radius: 6px;
-
 }
-#adminProductImage{
-  width: 40px; /* Set your desired width */
-  height: 45px; 
+.adminLeftPage .MuiList-root {
+  height: 84.7vh;
 }
-.adminButton .MuiSvgIcon-root{
+#adminProductImage {
+  width: 40px;
+  height: 45px;
+}
+.adminButton .MuiSvgIcon-root {
+  color: #a4b6a6;
+}
+.adminProductPage .MuiSvgIcon-root {
+  color: #a4b6a6;
+}
+#addNewProduct {
+  margin-top: 20px;
+}
+.during-popup {
+  background: linear-gradient(rgba(172, 166, 166, 0.7), rgba(157, 152, 152, 0.7));
+}
+.popUp {
+  position: fixed;
+  left: 30%;
+  top: 10%;
+  width: 50%;
+  padding-bottom: 15px;
+  border: 1px solid #011627;
+  border-radius: 1em;
+  box-shadow: -2px 5px 5px #395635;
+  background-color: #fdfffc;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  color: #011627;
+}
+.popUpCloseButton {
+  margin-left: 530px;
+  padding-top: 10px;
+}
+.popUpCloseButton .MuiSvgIcon-root {
   color: #a4b6a6;
 }

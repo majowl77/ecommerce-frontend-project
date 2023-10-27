@@ -5,13 +5,17 @@ type AdminState ={
   productItems: Product[],
   error: null | string,
   isLoading: boolean,
-  orderList: Order[]
+  orderList: Order[],
+  productID: number | null 
+  isEditForm:boolean
 }
 const initialState: AdminState = {
   productItems: [],
   error: null,
   isLoading: true,
-  orderList: []
+  orderList: [],
+  productID:null,
+  isEditForm: false
 
 }
 
@@ -23,14 +27,31 @@ export const adminSlice = createSlice({
       state.productItems = action.payload
       state.isLoading = false
     },
-    addProduct: (state, action: PayloadAction<Product[]>) => {
-      // let's append the new product to the beginning of the array
-      state.productItems =action.payload
+    addProduct: (state, action: { payload: { product: Product }}) => {
+      state.productItems = [action.payload.product, ...state.productItems]
       state.isLoading = false
     },
     removeProduct: (state, action: { payload: { productId: number } }) => {
       const filteredItems = state.productItems.filter((product) => product.id !== action.payload.productId)
       state.productItems = filteredItems
+    },
+    openEditProductForm: (state, action:PayloadAction<number> )=>{
+      state.productID = action.payload
+      state.isEditForm = true 
+    },
+    closeEditForm: (state)=>{
+      state.isEditForm = false 
+    },
+    editProduct: (state, action: PayloadAction<{ editedProductId: number | null, product: Product }>)=> {
+      const { editedProductId, product } = action.payload;
+      const productIndex = state.productItems.findIndex((p) => p.id === editedProductId);
+      if (productIndex !== -1) {
+        state.productItems[productIndex] = {
+          ...state.productItems[productIndex],
+          ...product,
+        };
+      }
+
     },
     getOrderData: (state, action: PayloadAction<Order[]>)=>{
       state.orderList = action.payload

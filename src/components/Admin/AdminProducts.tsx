@@ -10,28 +10,37 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Typography from '@mui/material/Typography'
 import { useDispatch, useSelector } from 'react-redux'
-import DeleteIcon from '@mui/icons-material/Delete'
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import EditIcon from '@mui/icons-material/Edit'
+import AddBoxIcon from '@mui/icons-material/AddBox'
+
 import { AppDispatch, RootState } from '../../redux/store'
 import axios from 'axios'
 import { adminSliceAction } from '../../redux/slices/adminSlice'
 import { IconButton } from '@mui/material'
 import { Product } from '../../types/type'
 import Button from '@mui/material/Button'
+import ProductForm from './ProductForm'
 
-export default function AdminProducts() {
+type Props = {
+  setPopUp: React.Dispatch<React.SetStateAction<boolean>>
+  popUp: boolean
+}
+
+export default function AdminProducts(props: Props) {
   const dispatch = useDispatch<AppDispatch>()
   const url = 'public/mock/e-commerce/products.json'
   const prodcutsList = useSelector((state: RootState) => state.adminR.productItems)
   const errorMessage = useSelector((state: RootState) => state.adminR.error)
   const isLoading = useSelector((state: RootState) => state.adminR.isLoading)
+  const isEditForm = useSelector((state: RootState) => state.adminR.isEditForm)
 
   //fetching the data form JSON file
   useEffect(() => {
     function fetchProducts() {
       axios
         .get(url)
-        .then((response) => dispatch(adminSliceAction.addProduct(response.data)))
+        .then((response) => dispatch(adminSliceAction.getProductsData(response.data)))
         .catch((error) => dispatch(adminSliceAction.getError(error.message)))
     }
     fetchProducts()
@@ -60,15 +69,20 @@ export default function AdminProducts() {
     }
   }
   //removing a product
-  function onEdit(product: Product) {}
+  function onEdit(productId: number) {
+    dispatch(adminSliceAction.openEditProductForm(productId))
+    props.setPopUp(true)
+    console.log(productId)
+  }
+
   return (
-    <div>
+    <div className="adminProductPage">
       <React.Fragment>
         <Typography
           component="h2"
           variant="h6"
           color="primary"
-          style={{ paddingTop: '40px',paddingBottom:"10px" }}
+          style={{ paddingTop: '40px', paddingBottom: '10px' }}
           gutterBottom>
           Products Information
         </Typography>
@@ -82,7 +96,6 @@ export default function AdminProducts() {
               <TableCell> Price</TableCell>
               <TableCell> Delete</TableCell>
               <TableCell> Edit</TableCell>
-              <TableCell> Add New Product</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -97,22 +110,28 @@ export default function AdminProducts() {
                 <TableCell>{product.price}</TableCell>
                 <TableCell>
                   <IconButton className="adminButton" onClick={() => onRemove(product)}>
-                    <DeleteIcon />
+                    <DeleteForeverIcon />
                   </IconButton>
                 </TableCell>
                 <TableCell>
-                  <IconButton className="adminButton" onClick={() => onEdit(product)}>
+                  <IconButton className="adminButton" onClick={() => onEdit(product.id)}>
                     <EditIcon />
                   </IconButton>
-                </TableCell>
-                <TableCell>
-                  <Button variant="text">Add</Button>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </React.Fragment>
+      <div id="addNewProduct">
+        <Button
+          variant="text"
+          onClick={() => props.setPopUp(true)}
+          style={{ color: '#a4b6a6', fontSize: '18px', borderBlockColor: '#889889' }}>
+          Add New Product <AddBoxIcon />
+        </Button>
+      </div>
+      <div>{props.popUp && <ProductForm setPopUp={props.setPopUp} />}</div>
     </div>
   )
 }
