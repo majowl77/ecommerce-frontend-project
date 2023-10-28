@@ -13,7 +13,9 @@ export type ProductInitialState = {
 export type UsersinitialState = {
   users: Users[]
   isLogedin: boolean
-  error: null
+  error: null | string
+  isLoading: boolean
+
 }
 
 export type Users = {
@@ -48,4 +50,26 @@ export type Order = {
   productId: number
   userId: number
   purchasedAt: string
+}
+export type AdminState ={
+  productItems: Product[],
+  error: null | string,
+  isLoading: boolean,
+  orderList: Order[],
+  productID: number | null 
+  isEditForm:boolean
+  popUp: boolean 
+}
+ export type Category = {
+  id: number
+  name: string
+}
+
+export type CategoriesState = {
+  categoryList: Category[]
+  error: null | string 
+  isLoading: boolean
+  categoryID: null | number
+  isEditForm: boolean
+  popUp: boolean 
 }

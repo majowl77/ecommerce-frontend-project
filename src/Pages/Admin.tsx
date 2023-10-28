@@ -1,16 +1,21 @@
 import React, { useState } from 'react'
-import NavBar from '../components/Home/NavBar'
+import NavBar from '../components/home/NavBar'
 import ToggleButton from '@mui/material/ToggleButton'
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
-import AdminLeftDashborad from '../components/Admin/AdminLeftDashborad'
-import Orders from '../components/Admin/Orders'
-import AdminProducts from '../components/Admin/AdminProducts'
+import AdminLeftDashborad from '../components/admin/AdminLeftDashborad'
+import Orders from '../components/admin/adminOrders/Orders'
+import AdminProducts from '../components/admin/adminProducts/AdminProducts'
 import { AppBar, Toolbar } from '@material-ui/core'
+import AdminCategories from '../components/admin/adminCategories/AdminCategories'
+import { useSelector } from 'react-redux'
+import { RootState } from '../redux/store'
+import AdminUsers from '../components/admin/users/AdminUsers'
 
 export default function Admin() {
-  // add product PopUP :
-  const [popUp, setPopUp] = useState(false)
-  const duringPopUp = popUp ? ' during-popup' : ''
+  // for product PopUP :
+  const productPopUp = useSelector((state: RootState) => state.adminR.popUp)
+  const categoryPopUp = useSelector((state: RootState) => state.categoriesR.popUp)
+  const duringPopUp = productPopUp || categoryPopUp ? ' during-popup' : ''
 
   // for the toggle buton
   const [alignment, setAlignment] = React.useState('web')
@@ -23,6 +28,8 @@ export default function Admin() {
   function HandleOrderDashborad() {
     setIsOrders(true)
     setIsProduct(false)
+    setIsCategory(false)
+    setIsUsers(false)
     console.log(isOrders)
   }
 
@@ -31,11 +38,30 @@ export default function Admin() {
   function HandleProductDashborad() {
     setIsProduct(true)
     setIsOrders(false)
+    setIsCategory(false)
+    setIsUsers(false)
+    console.log(isProduct)
+  }
+  // for Category Managing :
+  const [isCategory, setIsCategory] = useState(false)
+  function HandleCategoryDashborad() {
+    setIsCategory(true)
+    setIsProduct(false)
+    setIsOrders(false)
+    setIsUsers(false)
+    console.log(isProduct)
+  }
+  // for Category Managing :
+  const [isUsers, setIsUsers] = useState(false)
+  function HandleUsersDashborad() {
+    setIsUsers(true)
+    setIsCategory(false)
+    setIsProduct(false)
+    setIsOrders(false)
     console.log(isProduct)
   }
   return (
     <div className={'adminMainPage' + duringPopUp}>
-      Admins room
       <AppBar elevation={0} style={{ backgroundColor: '#a4b6a6' }}>
         <Toolbar>
           <h1 id="adminPageTitle">Admin Dashborad </h1>
@@ -60,7 +86,10 @@ export default function Admin() {
                 style={{ padding: '20px 104px' }}>
                 Products
               </ToggleButton>
-              <ToggleButton value="users" style={{ padding: '20px 104px' }}>
+              <ToggleButton
+                onClick={HandleUsersDashborad}
+                value="users"
+                style={{ padding: '20px 104px' }}>
                 Users
               </ToggleButton>
               <ToggleButton
@@ -69,14 +98,19 @@ export default function Admin() {
                 style={{ padding: '20px 104px' }}>
                 Orders
               </ToggleButton>
-              <ToggleButton value="categories" style={{ padding: '20px 104px' }}>
+              <ToggleButton
+                onClick={HandleCategoryDashborad}
+                value="categories"
+                style={{ padding: '20px 104px' }}>
                 Categories
               </ToggleButton>
             </ToggleButtonGroup>
           </div>
           <div className="component Container">
             {isOrders && <Orders />}
-            {isProduct && <AdminProducts setPopUp={setPopUp} popUp={popUp} />}
+            {isProduct && <AdminProducts />}
+            {isCategory && <AdminCategories />}
+            {isUsers && <AdminUsers />}
           </div>
         </div>
       </div>

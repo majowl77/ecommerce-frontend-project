@@ -1,21 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { Order, Product, ProductState } from '../../types/type'
-type AdminState ={
-  productItems: Product[],
-  error: null | string,
-  isLoading: boolean,
-  orderList: Order[],
-  productID: number | null 
-  isEditForm:boolean
-}
+import { AdminState, Order, Product } from '../../../types/type'
+
+
+
 const initialState: AdminState = {
   productItems: [],
   error: null,
   isLoading: true,
   orderList: [],
   productID:null,
-  isEditForm: false
+  isEditForm: false,
+  popUp: false 
 
 }
 
@@ -34,6 +30,13 @@ export const adminSlice = createSlice({
     removeProduct: (state, action: { payload: { productId: number } }) => {
       const filteredItems = state.productItems.filter((product) => product.id !== action.payload.productId)
       state.productItems = filteredItems
+    },
+    setPopUp: (state, action: PayloadAction<Boolean>)=>{
+      if (action.payload === true){
+        state.popUp = true 
+      }else if (action.payload === false){
+        state.popUp = false 
+      }
     },
     openEditProductForm: (state, action:PayloadAction<number> )=>{
       state.productID = action.payload

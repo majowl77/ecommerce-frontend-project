@@ -1,11 +1,11 @@
 import './App.css'
-import Home from './Pages/Home'
+import Home from './pages/Home'
 import { Route, Routes } from 'react-router-dom'
-import Products from './Pages/Products'
-import Login from './Pages/Login'
-import Cart from './components/Products/Cart'
-import ProductDetails from './components/Products/ProductDetails'
-import Admin from './Pages/Admin'
+import Products from './pages/Products'
+import Login from './pages/Login'
+import Cart from './components/products/Cart'
+import ProductDetails from './components/products/ProductDetails'
+import Admin from './pages/Admin'
 
 function App() {
   return (

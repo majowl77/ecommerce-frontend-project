@@ -1,12 +1,13 @@
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import TextField from '@mui/material/TextField'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import CloseIcon from '@mui/icons-material/Close'
+
 import { useDispatch, useSelector } from 'react-redux'
-import { adminSliceAction } from '../../redux/slices/adminSlice'
-import { AppDispatch, RootState } from '../../redux/store'
-import { Product } from '../../types/type'
+import { adminSliceAction } from '../../../redux/slices/admin/adminSlice'
+import { AppDispatch, RootState } from '../../../redux/store'
+import { Product } from '../../../types/type'
 
 const initialProductState: Product = {
   id: 0,
@@ -19,16 +20,14 @@ const initialProductState: Product = {
   price: 0,
   quantity: 0
 }
-type Props = {
-  setPopUp: React.Dispatch<React.SetStateAction<boolean>>
-}
 
-export default function ProductForm(props: Props) {
+export default function ProductForm() {
   const dispatch = useDispatch<AppDispatch>()
   const [product, setProduct] = useState<Product>(initialProductState)
   const productItems = useSelector((state: RootState) => state.adminR.productItems)
   const isEditForm = useSelector((state: RootState) => state.adminR.isEditForm)
   const editedProductId = useSelector((state: RootState) => state.adminR.productID)
+  const popup = useSelector((state: RootState) => state.adminR.popUp)
 
   useEffect(() => {
     if (isEditForm && editedProductId) {
@@ -70,12 +69,15 @@ export default function ProductForm(props: Props) {
 
     setProduct(initialProductState)
     dispatch(adminSliceAction.closeEditForm())
-    props.setPopUp(false)
+    dispatch(adminSliceAction.setPopUp(false))
   }
   return (
     <div className="popUp">
       <div className="popUpCloseButton">
-        <Button type="submit" variant="text" onClick={() => props.setPopUp(false)}>
+        <Button
+          type="submit"
+          variant="text"
+          onClick={() => dispatch(adminSliceAction.setPopUp(false))}>
           <CloseIcon />
         </Button>
       </div>

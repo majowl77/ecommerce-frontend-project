@@ -1,8 +1,8 @@
-import BestSellerItems from '../components/Home/BestSellerItems'
-import Categories from '../components/Home/Categories'
-import PlantsCare from '../components/Home/PlantsCare'
-import NavBar from '../components/Home/NavBar'
-import Footer from '../components/Home/Footer'
+import BestSellerItems from '../components/home/BestSellerItems'
+import Categories from '../components/home/Categories'
+import PlantsCare from '../components/home/PlantsCare'
+import NavBar from '../components/home/NavBar'
+import Footer from '../components/home/Footer'
 import { Link } from 'react-router-dom'
 
 export default function Home() {

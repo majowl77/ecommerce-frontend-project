@@ -14,25 +14,21 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import EditIcon from '@mui/icons-material/Edit'
 import AddBoxIcon from '@mui/icons-material/AddBox'
 
-import { AppDispatch, RootState } from '../../redux/store'
+import { AppDispatch, RootState } from '../../../redux/store'
 import axios from 'axios'
-import { adminSliceAction } from '../../redux/slices/adminSlice'
+import { adminSliceAction } from '../../../redux/slices/admin/adminSlice'
 import { IconButton } from '@mui/material'
-import { Product } from '../../types/type'
+import { Product } from '../../../types/type'
 import Button from '@mui/material/Button'
 import ProductForm from './ProductForm'
 
-type Props = {
-  setPopUp: React.Dispatch<React.SetStateAction<boolean>>
-  popUp: boolean
-}
-
-export default function AdminProducts(props: Props) {
+export default function AdminProducts() {
   const dispatch = useDispatch<AppDispatch>()
   const url = 'public/mock/e-commerce/products.json'
   const prodcutsList = useSelector((state: RootState) => state.adminR.productItems)
   const errorMessage = useSelector((state: RootState) => state.adminR.error)
   const isLoading = useSelector((state: RootState) => state.adminR.isLoading)
+  const popup = useSelector((state: RootState) => state.adminR.popUp)
   const isEditForm = useSelector((state: RootState) => state.adminR.isEditForm)
 
   //fetching the data form JSON file
@@ -45,6 +41,7 @@ export default function AdminProducts(props: Props) {
     }
     fetchProducts()
   }, [])
+
   // handling the request
   if (isLoading === true) {
     return (
@@ -65,26 +62,27 @@ export default function AdminProducts(props: Props) {
   function onRemove(product: Product) {
     if (product != null) {
       dispatch(adminSliceAction.removeProduct({ productId: product.id }))
-      console.log(product)
     }
   }
-  //removing a product
+  //open Edit product form
   function onEdit(productId: number) {
     dispatch(adminSliceAction.openEditProductForm(productId))
-    props.setPopUp(true)
-    console.log(productId)
+    dispatch(adminSliceAction.setPopUp(true))
   }
 
   return (
     <div className="adminProductPage">
       <React.Fragment>
         <Typography
-          component="h2"
-          variant="h6"
-          color="primary"
-          style={{ paddingTop: '40px', paddingBottom: '10px' }}
-          gutterBottom>
-          Products Information
+          component="div"
+          style={{
+            display: 'flex',
+            alignItems: 'center', // Vertical alignment
+            paddingTop: '40px',
+            paddingBottom: '10px'
+          }}>
+          <h1 className="titleAdminProducts">Products Mangement</h1>
+          <h2 className="subTitleAdmin">Total Products: {prodcutsList.length}</h2>
         </Typography>
         <Table size="small">
           <TableHead>
@@ -126,12 +124,12 @@ export default function AdminProducts(props: Props) {
       <div id="addNewProduct">
         <Button
           variant="text"
-          onClick={() => props.setPopUp(true)}
+          onClick={() => dispatch(adminSliceAction.setPopUp(true))}
           style={{ color: '#a4b6a6', fontSize: '18px', borderBlockColor: '#889889' }}>
           Add New Product <AddBoxIcon />
         </Button>
       </div>
-      <div>{props.popUp && <ProductForm setPopUp={props.setPopUp} />}</div>
+      <div>{popup && <ProductForm />}</div>
     </div>
   )
 }

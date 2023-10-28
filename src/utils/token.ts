@@ -1,7 +1,7 @@
 import jwt_decode from 'jwt-decode'
 
 import { isDecodedUser } from '../types/type-guards'
-import { User } from '../redux/slices/adminSlice'
+import { User } from '../redux/slices/admin/adminSlice'
 
 export function getDecodedTokenFromStorage() {
   const token = localStorage.getItem('token')

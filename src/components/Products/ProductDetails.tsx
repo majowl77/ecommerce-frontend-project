@@ -6,7 +6,7 @@ import axios from 'axios'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router'
-import { productDetailsAtions } from '../../redux/slices/productDetailsSlice'
+import { productDetailsAtions } from '../../redux/slices/products/productDetailsSlice'
 import { AppDispatch, RootState } from '../../redux/store'
 import { Product } from '../../types/type'
 
@@ -27,13 +27,13 @@ export default function ProductDetails() {
     )
   }
   return (
-       <div className="oneProduct"> 
-     products Details
-     <div>  
-       <h1> {currentProduct?.id}</h1>
-       <p> {currentProduct?.image}</p> 
-       <p> {currentProduct?.description}</p>
-       </div>
+    <div className="oneProduct">
+      products Details
+      <div>
+        <h1> {currentProduct?.id}</h1>
+        <p> {currentProduct?.image}</p>
+        <p> {currentProduct?.description}</p>
       </div>
-
-  )}
+    </div>
+  )
+}

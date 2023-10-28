@@ -576,7 +576,7 @@ svg path {
   justify-content: space-between;
   align-items: start;
   margin: 0;
-  margin-top: 54px;
+  margin-top: 78px;
 }
 .adminLeftDashborad {
   display: flex;
@@ -602,7 +602,8 @@ svg path {
 .adminProductPage .MuiSvgIcon-root {
   color: #a4b6a6;
 }
-#addNewProduct {
+#addNewProduct,
+#addNewCategory {
   margin-top: 20px;
 }
 .during-popup {
@@ -630,4 +631,24 @@ svg path {
 }
 .popUpCloseButton .MuiSvgIcon-root {
   color: #a4b6a6;
+}
+.titleAdminProducts {
+  color: #506d3b;
+  margin: 0 250px;
+  padding-left: 190px;
+  margin-bottom: 20px;
+  font-size: 25px;
+}
+.subTitleAdmin {
+  color: #506d3b;
+  padding-right: 40px;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+.titleAdminCategory {
+  color: #506d3b;
+  margin: 0 250px;
+  padding-left: 146px;
+  margin-bottom: 20px;
+  font-size: 25px;
 }
