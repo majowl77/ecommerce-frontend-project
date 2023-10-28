@@ -24,6 +24,7 @@ const productSlice = createSlice({
     },
     getSelectedSort: (state , action:PayloadAction<string>)=>{
             if (action.payload === "highttolow"){
+              state.productList = [...state.productList]; // 
                 state.productList.sort((product1, product2) => {
                     const productOne = product1.price;
                     const productTwo = product2.price;
@@ -36,6 +37,7 @@ const productSlice = createSlice({
                     return 0;
                   });
             }else if (action.payload === "lowtohigh"){
+              state.productList = [...state.productList]; // Create a new array to update
                 state.productList.sort((Company1, Company2) => {
                   const productOne = Company1.price;
                   const productTwo = Company2.price;
@@ -48,7 +50,7 @@ const productSlice = createSlice({
                     return 0;
                   });
             }else if (action.payload === "All"){
-              state.productList = state.oldProductList
+              state.productList = [...state.oldProductList]; // Restore the old list
               console.log("oldProduct", state.oldProductList )
               
             }
