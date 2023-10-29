@@ -9,6 +9,8 @@ import TableRow from '@mui/material/TableRow'
 import Typography from '@mui/material/Typography'
 import { IconButton } from '@mui/material'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
+import Alert from '@mui/material/Alert'
+import Stack from '@mui/material/Stack'
 
 import { usersSliceActions } from '../../../redux/slices/user/userSlice'
 import { AppDispatch, RootState } from '../../../redux/store'
@@ -53,30 +55,40 @@ export default function AdminUsers() {
         </Typography>
         <Table size="small">
           <TableHead>
-            <TableRow>
-              <TableCell>User ID </TableCell>
-              <TableCell> First Name</TableCell>
-              <TableCell> Last Name</TableCell>
-              <TableCell> Email</TableCell>
-              <TableCell> Role</TableCell>
-              <TableCell> Role</TableCell>
-            </TableRow>
+            {usersList.length > 0 && (
+              <TableRow>
+                <TableCell>User ID </TableCell>
+                <TableCell> First Name</TableCell>
+                <TableCell> Last Name</TableCell>
+                <TableCell> Email</TableCell>
+                <TableCell> Role</TableCell>
+                <TableCell> Delete User </TableCell>
+              </TableRow>
+            )}
           </TableHead>
           <TableBody>
-            {usersList.map((user) => (
-              <TableRow key={user.id}>
-                <TableCell>{user.id}</TableCell>
-                <TableCell>{user.firstName}</TableCell>
-                <TableCell>{user.lastName}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell>{user.role}</TableCell>
-                <TableCell>
-                  <IconButton className="adminButton" onClick={() => onRemove(user)}>
-                    <DeleteForeverIcon />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
+            {usersList.length > 0 &&
+              usersList.map((user) => (
+                <TableRow key={user.id}>
+                  <TableCell>{user.id}</TableCell>
+                  <TableCell>{user.firstName}</TableCell>
+                  <TableCell>{user.lastName}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>{user.role}</TableCell>
+                  <TableCell>
+                    <IconButton className="adminButton" onClick={() => onRemove(user)}>
+                      <DeleteForeverIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            {usersList.length == 0 && (
+              <div>
+                <Stack sx={{ width: '100%' }} spacing={2}>
+                  <Alert severity="warning">No users have signed in yet!</Alert>
+                </Stack>
+              </div>
+            )}
           </TableBody>
         </Table>
       </React.Fragment>

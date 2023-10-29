@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { adminSliceAction } from '../../../redux/slices/admin/adminSlice'
 import { AppDispatch, RootState } from '../../../redux/store'
 import { Product } from '../../../types/type'
+import { productsActions } from '../../../redux/slices/products/productsSlice'
 
 const initialProductState: Product = {
   id: 0,
@@ -28,6 +29,7 @@ export default function ProductForm() {
   const isEditForm = useSelector((state: RootState) => state.adminR.isEditForm)
   const editedProductId = useSelector((state: RootState) => state.adminR.productID)
   const popup = useSelector((state: RootState) => state.adminR.popUp)
+  const newProduct = useSelector((state: RootState) => state.adminR.newProduct)
 
   useEffect(() => {
     if (isEditForm && editedProductId) {

@@ -21,6 +21,7 @@ import { AppDispatch, RootState } from '../redux/store'
 import { productsActions } from '../redux/slices/products/productsSlice'
 import { Product } from '../types/type'
 import { cartSliceAction } from '../redux/slices/cart/cartSlice'
+import { adminSliceAction } from '../redux/slices/admin/adminSlice'
 
 export default function Products() {
   const dispatch = useDispatch<AppDispatch>()
@@ -31,6 +32,8 @@ export default function Products() {
   const isLoading = useSelector((state: RootState) => state.productsR.isLoading)
   const [searchKeyWord, setSearchKeyWord] = useState<null | string>(null)
   const [categorieValue, setCategorieValue] = useState<null | string>('All')
+  const isProductAdded = useSelector((state: RootState) => state.adminR.isProductAdded)
+  const newProduct = useSelector((state: RootState) => state.adminR.newProduct)
 
   //fetching the data form JSON file
   useEffect(() => {
@@ -60,7 +63,12 @@ export default function Products() {
       </Stack>
     )
   }
-
+  // handel new product by the admin
+  const addnewProduct = () => {
+    if (newProduct != null) {
+      dispatch(productsActions.addProduct({ newProduct }))
+    }
+  }
   // search with each letters the user is typing
   function getSearchKeyword(event: React.ChangeEvent<HTMLInputElement>) {
     setSearchKeyWord(event.target.value)

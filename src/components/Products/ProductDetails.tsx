@@ -18,6 +18,7 @@ export default function ProductDetails() {
   const errorMessage = useSelector((state: RootState) => state.productsR.error)
   const currentProduct = productDetails.find((product) => product.id === Number(id))
 
+  console.log(currentProduct?.image)
   // handling the failure
   if (errorMessage && !productDetails) {
     return (
@@ -30,9 +31,15 @@ export default function ProductDetails() {
     <div className="oneProduct">
       products Details
       <div>
-        <h1> {currentProduct?.id}</h1>
-        <p> {currentProduct?.image}</p>
-        <p> {currentProduct?.description}</p>
+        {currentProduct && (
+          <div>
+            <h1> {currentProduct.id}</h1>
+            <p>
+              <img src={process.env.PUBLIC_URL + '/' + currentProduct.image} />
+            </p>
+            <p> {currentProduct.description}</p>
+          </div>
+        )}
       </div>
     </div>
   )

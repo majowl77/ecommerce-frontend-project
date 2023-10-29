@@ -2,7 +2,7 @@ export type ProductsInitialState = {
   productList: Product[]
   error: null | string
   isLoading: boolean
-  oldProductList: Product[]
+  oldProductList: Product[],
 
 }
 export type ProductInitialState = {
@@ -58,7 +58,9 @@ export type AdminState ={
   orderList: Order[],
   productID: number | null 
   isEditForm:boolean
-  popUp: boolean 
+  popUp: boolean ,
+  isProductAdded : boolean,
+  newProduct: Product | null
 }
  export type Category = {
   id: number

@@ -11,8 +11,9 @@ const initialState: AdminState = {
   orderList: [],
   productID:null,
   isEditForm: false,
-  popUp: false 
-
+  popUp: false ,
+  isProductAdded: false,
+  newProduct: null
 }
 
 export const adminSlice = createSlice({
@@ -25,7 +26,10 @@ export const adminSlice = createSlice({
     },
     addProduct: (state, action: { payload: { product: Product }}) => {
       state.productItems = [action.payload.product, ...state.productItems]
-      state.isLoading = false
+      state.newProduct = action.payload.product
+      state.isLoading = false 
+      state.isProductAdded= true
+
     },
     removeProduct: (state, action: { payload: { productId: number } }) => {
       const filteredItems = state.productItems.filter((product) => product.id !== action.payload.productId)

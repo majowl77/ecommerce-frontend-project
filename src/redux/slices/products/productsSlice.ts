@@ -6,7 +6,7 @@ const initialState: ProductsInitialState = {
   productList: [],
   error: null,
   isLoading: true,
-  oldProductList: []
+  oldProductList: [],
 }
 const productSlice = createSlice({
   name: 'productsList',
@@ -21,6 +21,9 @@ const productSlice = createSlice({
     getError: (state, action: PayloadAction<string>) => {
       state.error = action.payload
       state.isLoading = false
+    },
+    addProduct: (state, action: { payload: { newProduct: Product }}) => {
+      state.productList = [action.payload.newProduct, ...state.productList]
     },
     getSelectedSort: (state , action:PayloadAction<string>)=>{
             if (action.payload === "highttolow"){
