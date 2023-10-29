@@ -6,8 +6,26 @@ import Button from '@mui/material/Button'
 import ButtonGroup from '@mui/material/ButtonGroup'
 import Login from '../components/Login/Login'
 import Register from '../components/register/Register'
+import { useDispatch } from 'react-redux'
+import { AppDispatch } from '../redux/store'
+import axios from 'axios'
+import { usersSliceActions } from '../redux/slices/user/userSlice'
 
 export default function LoginRegister() {
+  const dispatch = useDispatch<AppDispatch>()
+  const url = 'public/mock/e-commerce/users.json'
+
+  //fetching the data form JSON file
+  useEffect(() => {
+    function fetchProductsData() {
+      axios
+        .get(url)
+        .then((response) => dispatch(usersSliceActions.getAllUsers(response.data)))
+        .catch((error) => dispatch(usersSliceActions.getError(error.message)))
+    }
+    fetchProductsData()
+  }, [])
+
   // for login Managing :
   const [isLogin, setIsLogin] = useState(true)
   function HandleLoginDisplay() {
@@ -67,7 +85,7 @@ export default function LoginRegister() {
               </ButtonGroup>
             </div>
             {isLogin && <Login />}
-            {isSignUp && <Register />}
+            {isSignUp &&  <Register />}
           </Paper>
         </Box>
       </div>

@@ -9,34 +9,20 @@ import axios from 'axios'
 import { usersSliceActions } from '../../redux/slices/user/userSlice'
 import { toast } from 'react-toastify'
 import { DevTool } from '@hookform/devtools'
+import { LogInFormValues } from '../../types/type'
 
-type FormValues = {
-  email: string
-  password: string
-}
 export default function Login() {
   const dispatch = useDispatch<AppDispatch>()
-  const url = 'public/mock/e-commerce/users.json'
   const usersList = useSelector((state: RootState) => state.usersR.users)
-  const form = useForm<FormValues>()
+  const form = useForm<LogInFormValues>()
   const {
     register,
     control,
     handleSubmit,
     formState: { errors }
   } = form
-  //fetching the data form JSON file
-  useEffect(() => {
-    function fetchProductsData() {
-      axios
-        .get(url)
-        .then((response) => dispatch(usersSliceActions.getAllUsers(response.data)))
-        .catch((error) => dispatch(usersSliceActions.getError(error.message)))
-    }
-    fetchProductsData()
-  }, [])
 
-  function onSubmitHandler(data: FormValues) {
+  function onSubmitHandler(data: LogInFormValues) {
     console.log(data)
     try {
       const foundUser = usersList.find((userData) => userData.email === data.email)

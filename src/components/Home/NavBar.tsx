@@ -4,8 +4,9 @@ import { styled } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../redux/store'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootState } from '../../redux/store'
+import { usersSliceActions } from '../../redux/slices/user/userSlice'
 
 const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
   '& .MuiBadge-badge': {
@@ -17,7 +18,10 @@ const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
 }))
 export default function NavBar() {
   const isLogedIn = useSelector((state: RootState) => state.usersR.isLogedIn)
+  const userRole = useSelector((state: RootState) => state.usersR.userRole)
   const cartCounter = useSelector((state: RootState) => state.cartReducer.cartCounter)
+  const dispatch = useDispatch<AppDispatch>()
+
   return (
     <header>
       <nav className="navBarElements">
@@ -29,15 +33,17 @@ export default function NavBar() {
           <li className="elementNavBar">
             <Link to="/Products"> Products</Link>
           </li>
-          <li className="elementNavBar">
-            <Link to="/Admin"> Admin</Link>
-          </li>
+          {userRole === 'admin' && (
+            <li className="elementNavBar">
+              <Link to="/Admin"> Admin</Link>
+            </li>
+          )}
           <li className="elementNavBar" id={isLogedIn ? '' : 'loginItem'}>
             <Link to="/Login"> Login</Link>
           </li>
           {isLogedIn && (
             <li className="elementNavBar" id="logoutItem">
-              <button>Logout</button>
+              <button onClick={() => dispatch(usersSliceActions.isLogedOut())}>Logout</button>
             </li>
           )}
           <li className="elementNavBar" id="cartItem">

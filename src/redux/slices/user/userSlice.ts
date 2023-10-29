@@ -18,8 +18,9 @@ const usersSlice = createSlice({
         getAllUsers: (state, action: PayloadAction<Users[]>)=> {
             state.users = action.payload
         },
-        addOneUser : (state, action: PayloadAction<Users>)=>{
-            state.users.push(action.payload) 
+        addOneUser : (state, action: {payload:{data : Users }})=>{
+            state.users = [action.payload.data, ...state.users]
+            console.log("new user added ", state.users)
         },
         getError: (state, action: PayloadAction<string>) => {
             state.error = action.payload
@@ -31,10 +32,13 @@ const usersSlice = createSlice({
         }, 
         isLogedIn : (state, action: {payload:{foundUser : Users }})=> {
             state.isLogedIn = true 
-            state.loggedUser = action.payload.foundUser
+            state.isLogedOut = false
+            state.loggedUser = action.payload.foundUser 
+            state.userRole = action.payload.foundUser.role
         },
-        isLogedOut: (state, action: {payload:{foundUser : Users }} )=>{
-
+        isLogedOut: (state )=>{
+            state.isLogedOut = true
+            state.isLogedIn = false 
         }
     }
 })

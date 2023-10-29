@@ -17,7 +17,7 @@ export type UsersinitialState = {
   error: null | string
   isLoading: boolean,
   loggedUser: null | Users,
-  userRole: null | string
+  userRole: null | 'visitor' | 'admin'
 
 }
 
@@ -27,7 +27,7 @@ export type Users = {
   lastName: string
   email: string
   password: string
-  role: string
+  role: 'visitor' | 'admin'
 }
 
 export type Product = {
@@ -84,4 +84,18 @@ export type CartInitialState ={
   cartProducts: Product[],
   isEmpty: boolean ,
   itemAtCartCounter: number,
+}
+
+export type SignUpFormValues = {
+  id: number
+  firstName: string
+  lastName: string
+  email: string
+  password: string
+  role: 'visitor' | 'admin'
+}
+
+export type LogInFormValues = {
+  email: string
+  password: string
 }

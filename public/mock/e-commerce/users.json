@@ -30,5 +30,13 @@
     "email": "majedah@gmail.com",
     "password": "majedah77",
     "role": "visitor"
+  },
+  {
+    "id": 5,
+    "firstName": "Harry",
+    "lastName": "potter",
+    "email": "harry@gmail.com",
+    "password": "harrypotter",
+    "role": "admin"
   }
 ]
