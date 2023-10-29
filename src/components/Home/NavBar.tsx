@@ -16,6 +16,7 @@ const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
   }
 }))
 export default function NavBar() {
+  const isLogedIn = useSelector((state: RootState) => state.usersR.isLogedIn)
   const cartCounter = useSelector((state: RootState) => state.cartReducer.cartCounter)
   return (
     <header>
@@ -29,14 +30,16 @@ export default function NavBar() {
             <Link to="/Products"> Products</Link>
           </li>
           <li className="elementNavBar">
-            <Link to="/"> About Us</Link>
-          </li>
-          <li className="elementNavBar">
             <Link to="/Admin"> Admin</Link>
           </li>
-          <li className="elementNavBar" id="loginItem">
+          <li className="elementNavBar" id={isLogedIn ? '' : 'loginItem'}>
             <Link to="/Login"> Login</Link>
           </li>
+          {isLogedIn && (
+            <li className="elementNavBar" id="logoutItem">
+              <button>Logout</button>
+            </li>
+          )}
           <li className="elementNavBar" id="cartItem">
             <Link to="/Cart">
               <IconButton aria-label="cart" color="inherit">

@@ -12,9 +12,12 @@ export type ProductInitialState = {
 }
 export type UsersinitialState = {
   users: Users[]
-  isLogedin: boolean
+  isLogedIn: boolean
+  isLogedOut: boolean
   error: null | string
-  isLoading: boolean
+  isLoading: boolean,
+  loggedUser: null | Users,
+  userRole: null | string
 
 }
 
@@ -74,4 +77,11 @@ export type CategoriesState = {
   categoryID: null | number
   isEditForm: boolean
   popUp: boolean 
+}
+
+export type CartInitialState ={
+  cartCounter: number ,
+  cartProducts: Product[],
+  isEmpty: boolean ,
+  itemAtCartCounter: number,
 }

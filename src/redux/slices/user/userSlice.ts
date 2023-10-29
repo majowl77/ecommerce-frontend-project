@@ -4,9 +4,12 @@ import { Users, UsersinitialState } from "../../../types/type";
 
 const initialState :UsersinitialState ={
     users : [],
-    isLogedin: false ,
+    isLogedIn: false ,
+    isLogedOut: false,
     error: null,
-    isLoading: true
+    isLoading: true,
+    loggedUser : null,
+    userRole: null 
 }
 const usersSlice = createSlice({
     name: 'users',
@@ -17,15 +20,21 @@ const usersSlice = createSlice({
         },
         addOneUser : (state, action: PayloadAction<Users>)=>{
             state.users.push(action.payload) 
-            state.isLogedin = true ;
         },
         getError: (state, action: PayloadAction<string>) => {
             state.error = action.payload
             state.isLoading = false
          },
-         removeUser: (state, action: { payload: { userID: number } }) => {
+        removeUser: (state, action: { payload: { userID: number } }) => {
             const filteredItems = state.users.filter((user) => user.id !== action.payload.userID)
             state.users = filteredItems
+        }, 
+        isLogedIn : (state, action: {payload:{foundUser : Users }})=> {
+            state.isLogedIn = true 
+            state.loggedUser = action.payload.foundUser
+        },
+        isLogedOut: (state, action: {payload:{foundUser : Users }} )=>{
+
         }
     }
 })

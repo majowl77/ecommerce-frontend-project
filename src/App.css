@@ -27,7 +27,7 @@
   justify-content: center;
   align-items: center;
   flex-direction: row;
-  padding-right: 216px;
+  padding-right: 240px;
 }
 .elementNavBar {
   padding: 0 30px;
@@ -40,7 +40,10 @@
   margin-right: -88px;
 }
 #loginItem {
-  margin-right: 106px;
+  margin-right: 100px;
+}
+#logoutItem {
+  margin-right: 50px;
 }
 .navBarElements h3 {
   padding-right: 20px;
