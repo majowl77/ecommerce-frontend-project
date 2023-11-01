@@ -4,22 +4,17 @@ import PlantsCare from '../components/home/PlantsCare'
 import NavBar from '../components/home/NavBar'
 import Footer from '../components/home/Footer'
 import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootState } from '../redux/store'
+import { navBarActions } from '../redux/slices/navbar/navbarSlice'
+import HeroSection from '../components/home/HeroSection'
 
 export default function Home() {
+  const dispatch = useDispatch<AppDispatch>()
+  dispatch(navBarActions.navBarInHomePage())
   return (
     <div className="Home">
-      <NavBar />
-      <section className="heroSection">
-        <div>
-          <h1>
-            Bring <span>Serenity</span> to Your Place With Interior Plants
-          </h1>
-          <p>find your dream plant for you home decoration with us, and we will make it happen.</p>
-          <Link to="/Products">
-            <button> Shope Now </button>
-          </Link>
-        </div>
-      </section>
+      <HeroSection />
       <PlantsCare />
       <BestSellerItems />
       <Categories />

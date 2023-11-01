@@ -1,69 +1,75 @@
 [
   {
     "id": 1,
-    "name": "Laptop",
+    "name": "Zenith Zebra Bloom",
+    "subName" : "green Plants",
     "image": "public/images/productImageOne.png",
-    "description": "High-performance laptop for all your needs.",
+    "description": "The Zenith Zebra Bloom is a symbol of elegance and exotic charm. Its zebra-striped leaves make a bold statement.",
     "categories": [1],
-    "variants": ["8GB RAM", "16GB RAM"],
-    "sizes": ["13-inch", "15-inch"],
-    "price":" 23$",
-    "quantity":0
+    "variants": ["Zebra Stripes", "Golden Edge"],
+    "sizes": ["Mini", "Medium", "Grand"],
+    "price":23,
+    "quantity":1
   },
   {
     "id": 2,
-    "name": "Smartphone",
+    "name": "Celestial Monstera",
+    "subName" : "green Plants",
     "image": "public/images/productImageFour.png",
-    "description": "Latest smartphone with advanced features.",
+    "description": "The Celestial Monstera, with its celestial-like splits, is a cosmic addition to your decor. It's a touch of the cosmos at home.",
     "categories": [1],
-    "variants": ["64GB", "128GB"],
-    "sizes": [],
-    "price":" 33$",
-    "quantity":0
+    "variants": ["Cosmic Veil", "Astral Elegance"],
+    "sizes": ["Mini", "Medium", "Grand"],
+    "price":33,
+    "quantity":1
   },
   {
     "id": 3,
-    "name": "Tablet",
+    "name": "Succulent Symphony",
+    "subName" : "green Plants",
     "image": "public/images/productImagethree.png",
-    "description": "Compact and powerful tablet for work and entertainment.",
+    "description": "The Succulent Symphony is a harmonious ensemble of vibrant succulents. These little wonders will serenade your space.",
     "categories": [3],
-    "variants": ["32GB", "64GB"],
-    "sizes": ["10-inch", "12-inch"],
-    "price":" 53$",
-    "quantity":0
+    "variants": ["Crimson Crescendo", "Verde Virtuoso", "Azure Aria"],
+    "sizes": ["Mini", "Medium", "Grand"],
+    "price":33,
+    "quantity":1
   },
   {
     "id": 4,
-    "name": "Gaming Console",
+    "name": "Emerald Serenade", 
+    "subName" : "green Plants",
     "image": "public/images/productImageFive.png",
-    "description": "Next-gen gaming console for immersive gameplay.",
+    "description": "The Emerald Serenade plant boasts lush, emerald-green leaves that dance in the breeze. This plant is a serene melody of nature.",
     "categories": [3],
-    "variants": ["500GB", "1TB"],
+    "variants": ["Classic Green", "Sapphire Surprise"],
     "sizes": [],
-    "price":" 13$",
-    "quantity":0
+    "price":13,
+    "quantity":1
   },
   {
     "id": 5,
     "name": "Camera",
-    "image": "https://m.media-amazon.com/images/I/41zG3lqcEvL._SL1000_.jpg",
+    "subName" : "green Plants",
+    "image": "public/images/productImagethree.png",
     "description": "High-resolution camera for capturing memories.",
     "categories": [2],
     "variants": ["24MP", "36MP"],
-    "sizes": [],
-    "price":" 43$",
-    "quantity":0
+    "sizes": ["Mini", "Medium", "Grand"],
+    "price":43,
+    "quantity":1
   },
   {
     "id": 6,
-    "name": "Gaming Console",
+    "name": "Mystic Moonflower",
+    "subName" : "green Plants",
     "image": "public/images/productImageFive.png",
     "description": "Next-gen gaming console for immersive gameplay.",
     "categories": [3],
     "variants": ["500GB", "1TB"],
     "sizes": [],
-    "price":" 13$",
-    "quantity":0
+    "price":13,
+    "quantity":1
   },
   {
     "id": 7,
@@ -72,8 +78,8 @@
     "description": "Next-gen gaming console for immersive gameplay.",
     "categories": [3],
     "variants": ["500GB", "1TB"],
-    "sizes": [],
-    "price":" 13$",
-    "quantity":0
+    "sizes": ["Mini", "Medium", "Grand"],
+    "price":23,
+    "quantity":1
   }
 ]

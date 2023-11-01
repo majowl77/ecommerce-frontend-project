@@ -41,7 +41,6 @@ export default function LoginRegister() {
 
   return (
     <div className="loginPage">
-      <NavBar />
       <h1> Login</h1>
       <div className="formContainer">
         <Box
@@ -85,7 +84,7 @@ export default function LoginRegister() {
               </ButtonGroup>
             </div>
             {isLogin && <Login />}
-            {isSignUp &&  <Register />}
+            {isSignUp && <Register />}
           </Paper>
         </Box>
       </div>

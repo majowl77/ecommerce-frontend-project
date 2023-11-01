@@ -8,6 +8,7 @@ import { InputAdornment } from '@mui/material'
 import CircularProgress from '@mui/material/CircularProgress'
 import Box from '@mui/material/Box'
 import FormControlLabel from '@mui/material/FormControlLabel'
+import Pagination from '@mui/material/Pagination'
 import { Link } from 'react-router-dom'
 import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
@@ -16,12 +17,11 @@ import Select, { SelectChangeEvent } from '@mui/material/Select'
 import RadioGroup from '@mui/material/RadioGroup'
 import Radio from '@mui/material/Radio'
 import FormLabel from '@mui/material/FormLabel'
-import NavBar from '../components/home/NavBar'
 import { AppDispatch, RootState } from '../redux/store'
 import { productsActions } from '../redux/slices/products/productsSlice'
 import { Product } from '../types/type'
 import { cartSliceAction } from '../redux/slices/cart/cartSlice'
-import { adminSliceAction } from '../redux/slices/admin/adminSlice'
+import { navBarActions } from '../redux/slices/navbar/navbarSlice'
 
 export default function Products() {
   const dispatch = useDispatch<AppDispatch>()
@@ -34,6 +34,7 @@ export default function Products() {
   const [categorieValue, setCategorieValue] = useState<null | string>('All')
   const isProductAdded = useSelector((state: RootState) => state.adminR.isProductAdded)
   const newProduct = useSelector((state: RootState) => state.adminR.newProduct)
+  dispatch(navBarActions.navBarNotInHomePage())
 
   //fetching the data form JSON file
   useEffect(() => {
@@ -106,7 +107,6 @@ export default function Products() {
   }
   //adding a product to a cart
   function addProductToCart(id: number) {
-    dispatch(cartSliceAction.addCartCounter())
     const productToAdd = prodcutsList.find((product) => product.id === id)
     if (productToAdd != null) {
       dispatch(cartSliceAction.addCartProduct(productToAdd))
@@ -115,7 +115,6 @@ export default function Products() {
   }
   return (
     <div className="products">
-      <NavBar />
       <h2>products</h2>
       <div className="productsSection">
         <div className="productsfilteringSection">
@@ -168,19 +167,26 @@ export default function Products() {
               filteredProductsList.length > 0 &&
               filteredProductsList.map((product) => (
                 <li key={product.id} className="productCard">
-                  <img src={product.image} />
-                  <h1> {product.name}</h1>
-                  <p> {product.price}</p>
-                  <p>
-                    <button onClick={() => addProductToCart(product.id)}> Buy</button>
-                    <Link to={`/ProductDetails/${product.id}`}>
-                      <button id="linkToProductDetails"> More Details </button>
-                    </Link>
-                  </p>
+                  <div className="productsImageContainer">
+                    <img src={product.image} className="productImage" />
+                  </div>
+                  <div className="productNamePrice">
+                    <h1> {product.name}</h1>
+                    <p> {product.price}$</p>
+                    <div className="productsButton">
+                      <button onClick={() => addProductToCart(product.id)}> Buy</button>
+                      <Link to={`/products/product-detail/${product.id}`}>
+                        <button id="linkToProductDetails"> More Details... </button>
+                      </Link>
+                    </div>
+                  </div>
                 </li>
               ))}
           </ul>
         </div>
+      </div>
+      <div className="pagination">
+        <Pagination count={10} variant="outlined" className="customPagination" />
       </div>
     </div>
   )

@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Product, ProductInitialState } from '../../../types/type'
 
 const initialState: ProductInitialState = {
+  productList: [],
   isLoading: true,
   error: null,
   product: null
@@ -10,6 +11,10 @@ const productDetailsSlice = createSlice({
   name: 'product',
   initialState: initialState,
   reducers: {
+    getProductsData: (state, action: PayloadAction<Product[]>) => {
+      state.productList = action.payload
+      state.isLoading = false
+    },
     getOneProduct: (state, action: PayloadAction<Product>) => {
       state.product = action.payload
       state.isLoading = false

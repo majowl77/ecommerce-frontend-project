@@ -39,6 +39,8 @@ const usersSlice = createSlice({
         isLogedOut: (state )=>{
             state.isLogedOut = true
             state.isLogedIn = false 
+            state.userRole = null 
+
         }
     }
 })

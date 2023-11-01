@@ -10,8 +10,10 @@ import { usersSliceActions } from '../../redux/slices/user/userSlice'
 import { toast } from 'react-toastify'
 import { DevTool } from '@hookform/devtools'
 import { LogInFormValues } from '../../types/type'
+import { Navigate, useNavigate } from 'react-router'
 
 export default function Login() {
+  const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>()
   const usersList = useSelector((state: RootState) => state.usersR.users)
   const form = useForm<LogInFormValues>()
@@ -29,6 +31,11 @@ export default function Login() {
       if (foundUser && foundUser.password === data.password) {
         dispatch(usersSliceActions.isLogedIn({ foundUser }))
         toast.success('Login success ')
+        if (foundUser.role === 'admin') {
+          navigate('/admin')
+        } else {
+          navigate('/')
+        }
       } else {
         toast.error('Login failed ')
       }

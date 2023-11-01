@@ -6,6 +6,7 @@ export type ProductsInitialState = {
 
 }
 export type ProductInitialState = {
+  productList: Product[]
   error: null | string
   isLoading: boolean
   product: Product | null
@@ -33,6 +34,7 @@ export type Users = {
 export type Product = {
   id: number
   name: string
+  subName: string
   image: string
   description: string
   categories: number[]
@@ -80,10 +82,10 @@ export type CategoriesState = {
 }
 
 export type CartInitialState ={
-  cartCounter: number ,
   cartProducts: Product[],
   isEmpty: boolean ,
   itemAtCartCounter: number,
+  quantity: 0
 }
 
 export type SignUpFormValues = {

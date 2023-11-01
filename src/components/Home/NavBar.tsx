@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Badge, { BadgeProps } from '@mui/material/Badge'
 import { styled } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
@@ -19,35 +19,52 @@ const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
 export default function NavBar() {
   const isLogedIn = useSelector((state: RootState) => state.usersR.isLogedIn)
   const userRole = useSelector((state: RootState) => state.usersR.userRole)
-  const cartCounter = useSelector((state: RootState) => state.cartReducer.cartCounter)
+  const isLogedOut = useSelector((state: RootState) => state.usersR.isLogedOut)
+  const cartItems = useSelector((state: RootState) => state.cartReducer.cartProducts)
   const dispatch = useDispatch<AppDispatch>()
+  const isNavBarInHomePage = useSelector((state: RootState) => state.navBarR.isNavBarInHome)
+  const [scrollBackground, setScrollBackground] = useState(false)
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollBackground(window.scrollY > 700)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  })
+  const cartCounter = cartItems.reduce((totalItems, oneItem) => {
+    return (totalItems += oneItem.quantity)
+  }, 0)
 
   return (
     <header>
-      <nav className="navBarElements">
-        <h3> GreenPlant</h3>
+      <nav
+        className={isNavBarInHomePage ? 'navBarElements' : 'navBarNewBackground'}
+        id={scrollBackground ? 'scrollBackground' : ' '}>
+        <h3 id="navbarLogo"> GreenPlant</h3>
         <ul className="listNavBar">
           <li className="elementNavBar">
             <Link to="/"> Home</Link>
           </li>
           <li className="elementNavBar">
-            <Link to="/Products"> Products</Link>
+            <Link to="/products"> Products</Link>
           </li>
           {userRole === 'admin' && (
             <li className="elementNavBar">
-              <Link to="/Admin"> Admin</Link>
+              <Link to="/admin"> Admin</Link>
             </li>
           )}
-          <li className="elementNavBar" id={isLogedIn ? '' : 'loginItem'}>
-            <Link to="/Login"> Login</Link>
-          </li>
+          {!isLogedIn && (
+            <li className="elementNavBar" id={isLogedIn ? '' : 'loginItem'}>
+              <Link to="/login"> Login</Link>
+            </li>
+          )}
           {isLogedIn && (
             <li className="elementNavBar" id="logoutItem">
               <button onClick={() => dispatch(usersSliceActions.isLogedOut())}>Logout</button>
             </li>
           )}
           <li className="elementNavBar" id="cartItem">
-            <Link to="/Cart">
+            <Link to="/cart">
               <IconButton aria-label="cart" color="inherit">
                 <StyledBadge badgeContent={cartCounter} color="error">
                   <ShoppingCartIcon />
