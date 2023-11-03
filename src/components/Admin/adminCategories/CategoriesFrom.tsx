@@ -38,7 +38,10 @@ export default function CategoriesForm() {
       [name]: value
     })
   }
-
+  function handleClosePopUp() {
+    dispatch(adminCategoriesActions.setPopUp(false))
+    dispatch(adminCategoriesActions.closeEditForm())
+  }
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     if (isEditForm) {
@@ -55,10 +58,7 @@ export default function CategoriesForm() {
   return (
     <div className="popUp">
       <div className="popUpCloseButton">
-        <Button
-          type="submit"
-          variant="text"
-          onClick={() => dispatch(adminCategoriesActions.setPopUp(false))}>
+        <Button type="submit" variant="text" onClick={handleClosePopUp}>
           <CloseIcon />
         </Button>
       </div>

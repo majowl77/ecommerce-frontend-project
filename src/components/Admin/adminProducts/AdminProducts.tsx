@@ -72,55 +72,58 @@ export default function AdminProducts() {
 
   return (
     <div className="adminProductPage">
-      <React.Fragment>
-        <Typography
-          component="div"
-          style={{
-            display: 'flex',
-            alignItems: 'center', // Vertical alignment
-            paddingTop: '40px',
-            paddingBottom: '10px'
-          }}>
-          <h1 className="titleAdminProducts">Products Mangement</h1>
-          <h2 className="subTitleAdmin">Total Products: {prodcutsList.length}</h2>
-        </Typography>
-        <Table size="small">
-          <TableHead>
-            <TableRow>
-              <TableCell>Product ID </TableCell>
-              <TableCell> Image</TableCell>
-              <TableCell> Name</TableCell>
-              <TableCell> Variants</TableCell>
-              <TableCell> Price</TableCell>
-              <TableCell> Delete</TableCell>
-              <TableCell> Edit</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {prodcutsList.map((product) => (
-              <TableRow key={product.id}>
-                <TableCell>{product.id}</TableCell>
-                <TableCell>
-                  <img src={product.image} alt="Product Image" id="adminProductImage" />{' '}
-                </TableCell>
-                <TableCell>{product.name}</TableCell>
-                <TableCell>{product.variants}</TableCell>
-                <TableCell>{product.price}</TableCell>
-                <TableCell>
-                  <IconButton className="adminButton" onClick={() => onRemove(product)}>
-                    <DeleteForeverIcon />
-                  </IconButton>
-                </TableCell>
-                <TableCell>
-                  <IconButton className="adminButton" onClick={() => onEdit(product.id)}>
-                    <EditIcon />
-                  </IconButton>
-                </TableCell>
+      <div className="productTable">
+        <React.Fragment>
+          <Typography
+            component="div"
+            style={{
+              display: 'flex',
+              alignItems: 'center', // Vertical alignment
+              paddingTop: '40px',
+              paddingBottom: '10px'
+            }}>
+            <h1 className="titleAdminProducts">Products Mangement</h1>
+            <h2 className="subTitleAdmin">Total Products: {prodcutsList.length}</h2>
+          </Typography>
+
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell>Product ID </TableCell>
+                <TableCell> Image</TableCell>
+                <TableCell> Name</TableCell>
+                <TableCell> Variants</TableCell>
+                <TableCell> Price</TableCell>
+                <TableCell> Delete</TableCell>
+                <TableCell> Edit</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </React.Fragment>
+            </TableHead>
+            <TableBody>
+              {prodcutsList.map((product) => (
+                <TableRow key={product.id}>
+                  <TableCell>{product.id}</TableCell>
+                  <TableCell>
+                    <img src={product.image} alt="Product Image" id="adminProductImage" />{' '}
+                  </TableCell>
+                  <TableCell>{product.name}</TableCell>
+                  <TableCell>{product.variants}</TableCell>
+                  <TableCell>{product.price}$</TableCell>
+                  <TableCell>
+                    <IconButton className="adminButton" onClick={() => onRemove(product)}>
+                      <DeleteForeverIcon />
+                    </IconButton>
+                  </TableCell>
+                  <TableCell>
+                    <IconButton className="adminButton" onClick={() => onEdit(product.id)}>
+                      <EditIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </React.Fragment>
+      </div>
       <div id="addNewProduct">
         <Button
           variant="text"

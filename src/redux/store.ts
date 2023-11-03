@@ -6,6 +6,7 @@ import cartReducer from './slices/cart/cartSlice'
 import categoriesReducer from './slices/admin/adminCategorySlice'
 import usersReducer from './slices/user/userSlice'
 import navbarReducer from './slices/navbar/navbarSlice'
+import logInRegisterReducer from './slices/loginRegister/loginRegisterSlice'
 export const store = configureStore({
   reducer: {
     adminR: adminReducer,
@@ -14,7 +15,8 @@ export const store = configureStore({
     cartReducer: cartReducer,
     categoriesR : categoriesReducer,
     usersR : usersReducer,
-    navBarR : navbarReducer
+    navBarR : navbarReducer,
+    loginRegisterR : logInRegisterReducer
   }
 })
 

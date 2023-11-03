@@ -9,6 +9,19 @@ import MuiDrawer from '@mui/material/Drawer'
 import { styled } from '@mui/material/styles'
 import { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar'
 
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import CssBaseline from '@mui/material/CssBaseline'
+import Box from '@mui/material/Box'
+import MuiAppBar from '@mui/material/AppBar'
+import Typography from '@mui/material/Typography'
+import Badge from '@mui/material/Badge'
+import Container from '@mui/material/Container'
+import Grid from '@mui/material/Grid'
+import Paper from '@mui/material/Paper'
+import Link from '@mui/material/Link'
+import MenuIcon from '@mui/icons-material/Menu'
+import NotificationsIcon from '@mui/icons-material/Notifications'
+
 const drawerWidth: number = 240
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean

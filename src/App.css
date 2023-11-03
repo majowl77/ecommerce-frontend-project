@@ -436,6 +436,7 @@ svg path {
   align-items: center;
   flex-direction: row;
   width: 500px;
+  padding-top: 30px;
   gap: 20px;
 }
 .footerName {
@@ -748,14 +749,23 @@ svg path {
 .takeCareContainer .MuiSvgIcon-root {
   color: #506d3b;
 }
-.customPagination .MuiButtonBase-root {
+/* .customPagination .MuiButtonBase-root {
   /* background-color: rgb(119 168 130 / 59%); */
-}
+
 /* Login styling */
 .loginPage {
-  padding-top: 90px;
+  padding-top: 30px;
   background-color: #f2f7f2;
   height: 100vh;
+}
+.login .MuiAvatar-root,
+.register .MuiAvatar-root {
+  background-color: #506d3b;
+}
+.tabsLoginSignup {
+  display: flex;
+  justify-content: center;
+  align-items: start;
 }
 .loginPage h1 {
   padding-top: 30px;
@@ -895,24 +905,53 @@ svg path {
 }
 .adminPage {
   display: flex;
-  justify-content: space-between;
+  justify-content: start;
   align-items: start;
   margin: 0;
   margin-top: 78px;
+}
+.adminAppBar .MuiToolbar-root,
+.leftDrawer .MuiPaper-root {
+  background-color: #a4b6a6;
 }
 .adminLeftDashborad {
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-self: self-start;
-  /* background-color: #a4b6a6; */
 }
+
+.tableProduct {
+  padding-top: 40px;
+  margin-bottom: 20px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  /* direction: ltr;
+  overflow-x: auto;
+  white-space: nowrap; */
+}
+.productTable {
+}
+.formProduct {
+  height: 600px;
+}
+
 .adminRightDashborad {
-  padding-top: 0px;
+  width: 100%;
+  padding-bottom: 60px;
   border-radius: 6px;
 }
+.adminRightDashborad .MuiToggleButtonGroup-root {
+  margin-right: 0;
+  width: 100%;
+}
+.adminRightDashborad .MuiButtonBase-root {
+  width: 100%;
+}
 .adminLeftPage .MuiList-root {
-  height: 84.7vh;
+  height: 119.69999999999999vh;
+  z-index: -300;
 }
 #adminProductImage {
   width: 40px;
@@ -935,7 +974,6 @@ svg path {
   position: fixed;
   left: 30%;
   top: 10%;
-  width: 50%;
   padding-bottom: 15px;
   border: 1px solid #011627;
   border-radius: 1em;

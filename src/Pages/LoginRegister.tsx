@@ -2,18 +2,24 @@ import React, { useEffect, useState } from 'react'
 import NavBar from '../components/home/NavBar'
 import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
+import Tabs from '@mui/material/Tabs'
+import Tab from '@mui/material/Tab'
 import Button from '@mui/material/Button'
 import ButtonGroup from '@mui/material/ButtonGroup'
 import Login from '../components/Login/Login'
 import Register from '../components/register/Register'
-import { useDispatch } from 'react-redux'
-import { AppDispatch } from '../redux/store'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootState } from '../redux/store'
 import axios from 'axios'
 import { usersSliceActions } from '../redux/slices/user/userSlice'
+import { navBarActions } from '../redux/slices/navbar/navbarSlice'
 
 export default function LoginRegister() {
   const dispatch = useDispatch<AppDispatch>()
   const url = 'public/mock/e-commerce/users.json'
+  const isSignUp = useSelector((state: RootState) => state.loginRegisterR.signUpPage)
+  const isLogin = useSelector((state: RootState) => state.loginRegisterR.loginPage)
+  dispatch(navBarActions.navBarNotInHomePage())
 
   //fetching the data form JSON file
   useEffect(() => {
@@ -26,67 +32,12 @@ export default function LoginRegister() {
     fetchProductsData()
   }, [])
 
-  // for login Managing :
-  const [isLogin, setIsLogin] = useState(true)
-  function HandleLoginDisplay() {
-    setIsLogin(true)
-    setIsSignUp(false)
-  }
-  // for signup Managing :
-  const [isSignUp, setIsSignUp] = useState(false)
-  function HandleSigninDisplay() {
-    setIsSignUp(true)
-    setIsLogin(false)
-  }
-
   return (
     <div className="loginPage">
-      <h1> Login</h1>
       <div className="formContainer">
-        <Box
-          sx={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-            alignItems: 'center',
-            '& > :not(style)': {
-              m: 1,
-              width: 560,
-              height: 423,
-              color: '#f4f4f4'
-            }
-          }}>
-          <Paper
-            sx={{
-              width: 600,
-              height: 300,
-              bgcolor: '#fff',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: 4
-            }}>
-            <div>
-              <ButtonGroup variant="text" aria-label="text button group">
-                <Button
-                  onClick={HandleLoginDisplay}
-                  value="login"
-                  style={{ padding: '10px 104px' }}>
-                  LogIn
-                </Button>
-                <Button
-                  onClick={HandleSigninDisplay}
-                  value="signup"
-                  style={{ padding: '10px 104px' }}>
-                  SignUP
-                </Button>
-              </ButtonGroup>
-            </div>
-            {isLogin && <Login />}
-            {isSignUp && <Register />}
-          </Paper>
-        </Box>
+        <div className="tabsLoginSignup"></div>
+        {isLogin && <Login />}
+        {isSignUp && <Register />}
       </div>
     </div>
   )

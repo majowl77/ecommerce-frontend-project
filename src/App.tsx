@@ -12,6 +12,7 @@ import { RootState } from './redux/store'
 import LoginRegister from './pages/LoginRegister'
 import Footer from './components/home/Footer'
 import NavBar from './components/home/NavBar'
+import AdminDashboard from './pages/Admin'
 
 function App() {
   const { isLogedIn, userRole } = useSelector((state: RootState) => state.usersR)

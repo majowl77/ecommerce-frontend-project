@@ -13,6 +13,7 @@ import { productsActions } from '../../../redux/slices/products/productsSlice'
 const initialProductState: Product = {
   id: 0,
   name: '',
+  subName: '',
   image: '',
   description: '',
   categories: [],
@@ -57,7 +58,10 @@ export default function ProductForm() {
       [name]: value
     })
   }
-
+  function handleClosePopUp() {
+    dispatch(adminSliceAction.setPopUp(false))
+    dispatch(adminSliceAction.closeEditForm())
+  }
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     if (isEditForm) {
@@ -76,117 +80,113 @@ export default function ProductForm() {
   return (
     <div className="popUp">
       <div className="popUpCloseButton">
-        <Button
-          type="submit"
-          variant="text"
-          onClick={() => dispatch(adminSliceAction.setPopUp(false))}>
+        <Button type="submit" variant="text" onClick={handleClosePopUp}>
           <CloseIcon />
         </Button>
       </div>
-      <Box width="50%">
-        <form onSubmit={handleSubmit}>
-          <div>
-            <TextField
-              id="name"
-              label="Name"
+      <Box width="60%">
+        <div className="tableProduct">
+          <form onSubmit={handleSubmit} className="formProduct">
+            <div>
+              <TextField
+                id="name"
+                label="Name"
+                variant="outlined"
+                name="name"
+                value={product.name}
+                onChange={handleChange}
+                fullWidth
+                sx={{ padding: '8px', marginTop: '8px' }}
+                required
+              />
+            </div>
+            <div>
+              <TextField
+                id="image"
+                label="Image URL"
+                variant="outlined"
+                name="image"
+                value={product.image}
+                onChange={handleChange}
+                fullWidth
+                sx={{ padding: '8px', marginTop: '8px' }}
+                required
+              />
+            </div>
+            <div>
+              <TextField
+                id="description"
+                label="Description"
+                multiline
+                rows={4} // Adjust the number of rows as needed
+                variant="outlined"
+                name="description"
+                value={product.description}
+                onChange={handleChange}
+                fullWidth
+                sx={{ padding: '8px', marginTop: '8px' }}
+                required
+              />
+            </div>
+            <div>
+              <TextField
+                id="categories"
+                label="Categories"
+                variant="outlined"
+                name="categories"
+                value={product.categories.join(',')}
+                onChange={handleChange}
+                fullWidth
+                helperText="(Use a comma to separate multiple categories)"
+                sx={{ padding: '8px', marginTop: '8px' }}
+                required
+              />
+            </div>
+            <div>
+              <TextField
+                id="variants"
+                name="variants"
+                label="Variants"
+                helperText="(use comma , to create multiple)"
+                value={product.variants.join(',')}
+                onChange={handleChange}
+                fullWidth
+                sx={{ padding: '8px', marginTop: '8px' }}
+              />
+            </div>
+            <div>
+              <TextField
+                id="sizes"
+                label="Sizes"
+                variant="outlined"
+                name="sizes"
+                value={product.sizes.join(',')}
+                onChange={handleChange}
+                fullWidth
+                helperText="(use comma , to create multiple)"
+                sx={{ padding: '8px', marginTop: '8px' }}
+              />
+            </div>
+            <div>
+              <TextField
+                id="price"
+                label="Price"
+                variant="outlined"
+                name="price"
+                value={product.price}
+                onChange={handleChange}
+                fullWidth
+                sx={{ padding: '8px', marginTop: '8px' }}
+              />
+            </div>
+            <Button
+              type="submit"
               variant="outlined"
-              name="name"
-              value={product.name}
-              onChange={handleChange}
-              fullWidth
-              sx={{ padding: '8px', marginTop: '10px' }}
-              required
-            />
-          </div>
-          <div>
-            <TextField
-              id="image"
-              label="Image URL"
-              variant="outlined"
-              name="image"
-              value={product.image}
-              onChange={handleChange}
-              fullWidth
-              sx={{ padding: '8px', marginTop: '10px' }}
-              required
-            />
-          </div>
-          <div>
-            <TextField
-              id="description"
-              label="Description"
-              multiline
-              rows={4} // Adjust the number of rows as needed
-              variant="outlined"
-              name="description"
-              value={product.description}
-              onChange={handleChange}
-              fullWidth
-              sx={{ padding: '8px', marginTop: '10px' }}
-              required
-            />
-          </div>
-          <div>
-            <TextField
-              id="categories"
-              label="Categories"
-              variant="outlined"
-              name="categories"
-              value={product.categories.join(',')}
-              onChange={handleChange}
-              fullWidth
-              helperText="(Use a comma to separate multiple categories)"
-              sx={{ padding: '8px', marginTop: '10px' }}
-              required
-            />
-          </div>
-          <div>
-            <TextField
-              id="variants"
-              name="variants"
-              label="Variants"
-              helperText="(use comma , to create multiple)"
-              value={product.variants.join(',')}
-              onChange={handleChange}
-              fullWidth
-              sx={{ padding: '8px', marginTop: '10px' }}
-              required
-            />
-          </div>
-          <div>
-            <TextField
-              id="sizes"
-              label="Sizes"
-              variant="outlined"
-              name="sizes"
-              value={product.sizes.join(',')}
-              onChange={handleChange}
-              fullWidth
-              helperText="(use comma , to create multiple)"
-              sx={{ padding: '8px', marginTop: '10px' }}
-              required
-            />
-          </div>
-          <div>
-            <TextField
-              id="price"
-              label="Price"
-              variant="outlined"
-              name="price"
-              value={product.price}
-              onChange={handleChange}
-              fullWidth
-              sx={{ padding: '8px', marginTop: '10px' }}
-              required
-            />
-          </div>
-          <Button
-            type="submit"
-            variant="outlined"
-            sx={{ padding: '8px', marginTop: '10px', color: '#889889' }}>
-            {isEditForm ? 'Save Changes' : 'Add Product'}
-          </Button>
-        </form>
+              sx={{ padding: '8px', marginTop: '10px', color: '#889889' }}>
+              {isEditForm ? 'Save Changes' : 'Add Product'}
+            </Button>
+          </form>
+        </div>
       </Box>
     </div>
   )

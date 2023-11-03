@@ -22,6 +22,7 @@ import { productsActions } from '../redux/slices/products/productsSlice'
 import { Product } from '../types/type'
 import { cartSliceAction } from '../redux/slices/cart/cartSlice'
 import { navBarActions } from '../redux/slices/navbar/navbarSlice'
+import { toast } from 'react-toastify'
 
 export default function Products() {
   const dispatch = useDispatch<AppDispatch>()
@@ -110,6 +111,8 @@ export default function Products() {
     const productToAdd = prodcutsList.find((product) => product.id === id)
     if (productToAdd != null) {
       dispatch(cartSliceAction.addCartProduct(productToAdd))
+      toast.success('Product Added successfully ')
+
       console.log(cartList)
     }
   }

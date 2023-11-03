@@ -41,6 +41,7 @@ export const adminSlice = createSlice({
       }else if (action.payload === false){
         state.popUp = false 
       }
+      
     },
     openEditProductForm: (state, action:PayloadAction<number> )=>{
       state.productID = action.payload
