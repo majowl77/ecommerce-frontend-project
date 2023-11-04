@@ -15,7 +15,7 @@ import { useParams } from 'react-router'
 import { productDetailsAtions } from '../../redux/slices/products/productDetailsSlice'
 import { productsActions } from '../../redux/slices/products/productsSlice'
 import { AppDispatch, RootState } from '../../redux/store'
-import { Product } from '../../types/type'
+import { Product } from '../../types/navBar/navBar'
 import { Link } from 'react-router-dom'
 import { cartSliceAction } from '../../redux/slices/cart/cartSlice'
 

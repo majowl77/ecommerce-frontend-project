@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { CartInitialState, Product } from "../../../types/type"
+import { CartInitialState, Product } from "../../../types/navBar/navBar"
 
 
 const initialState:CartInitialState ={

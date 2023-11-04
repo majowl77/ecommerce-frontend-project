@@ -19,7 +19,7 @@ import CircularProgress from '@mui/material/CircularProgress'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../../redux/store'
 import { adminCategoriesActions } from '../../../redux/slices/admin/adminCategorySlice'
-import { Category } from '../../../types/type'
+import { Category } from '../../../types/navBar/navBar'
 import CategoriesForm from './CategoriesFrom'
 
 export default function AdminCategories() {

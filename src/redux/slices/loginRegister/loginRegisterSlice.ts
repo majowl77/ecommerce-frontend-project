@@ -1,8 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-export type LoginRegisterInitialState = {
-    loginPage: boolean,
-    signUpPage: boolean,
-}
+import { LoginRegisterInitialState } from "../../../types/loginRegister/loginRegister";
+
 const initialState:LoginRegisterInitialState = {
     loginPage: true,
     signUpPage: false,

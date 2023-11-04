@@ -1,9 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { NavBarInitialState } from "../../../types/navBar/navBar";
 
 
-type NavBarInitialState ={
-    isNavBarInHome : boolean
-}
+
 const initialState:NavBarInitialState ={
     isNavBarInHome : true
 }

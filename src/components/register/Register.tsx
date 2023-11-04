@@ -18,7 +18,7 @@ import Container from '@mui/material/Container'
 import { usersSliceActions } from '../../redux/slices/user/userSlice'
 import { toast } from 'react-toastify'
 import { DevTool } from '@hookform/devtools'
-import { SignUpFormValues } from '../../types/type'
+import { SignUpFormValues } from '../../types/navBar/navBar'
 import { logInRegisterActions } from '../../redux/slices/loginRegister/loginRegisterSlice'
 function Copyright(props: any) {
   return (
@@ -170,7 +170,6 @@ export default function Register() {
         </Box>
         <Copyright sx={{ mt: 5 }} />
       </Container>
-
     </div>
   )
 }

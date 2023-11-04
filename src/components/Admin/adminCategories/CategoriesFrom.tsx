@@ -6,7 +6,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import { useDispatch, useSelector } from 'react-redux'
 import { adminSliceAction } from '../../../redux/slices/admin/adminSlice'
 import { AppDispatch, RootState } from '../../../redux/store'
-import { Category, Product } from '../../../types/type'
+import { Category, Product } from '../../../types/navBar/navBar'
 import { adminCategoriesActions } from '../../../redux/slices/admin/adminCategorySlice'
 
 const initialCategoryState: Category = {
