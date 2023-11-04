@@ -80,8 +80,10 @@ export default function NavBar() {
               </IconButton>
             </Link>
           </li>
+        </ul>
+        <div>
           {isLogedIn && (
-            <li className="elementNavBar" id="profileItem">
+            <div className="elementNavBar" id="profileItem">
               <Button
                 id="basic-button"
                 aria-controls={open ? 'basic-menu' : undefined}
@@ -115,9 +117,9 @@ export default function NavBar() {
                   <button onClick={() => dispatch(usersSliceActions.isLogedOut())}>Logout</button>
                 </MenuItem>
               </Menu>
-            </li>
+            </div>
           )}
-        </ul>
+        </div>
       </nav>
     </header>
   )

@@ -121,7 +121,7 @@ export default function Products() {
   const [page, setPage] = useState(1)
   const [rowsPerPage] = useState(5) // Number of items per page
 
-  // Modify filteredProductsList to return only the products for the current page
+  // Modify your filteredProductsList to return only the products for the current page
   const startIndex = (page - 1) * rowsPerPage
   const endIndex = startIndex + rowsPerPage
   const productsToDisplay = filteredProductsList.slice(startIndex, endIndex)

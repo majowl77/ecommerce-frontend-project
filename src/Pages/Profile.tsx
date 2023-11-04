@@ -35,6 +35,7 @@ export default function Profile() {
             </div>
           </div>
           {currentUser && (
+            // fixed pictuer for now :)
             <div className="insideProductDetails">
               <div className="profileImage">
                 <img
