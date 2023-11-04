@@ -26,7 +26,7 @@ export default function ProfileForm() {
     if (isEditForm && LoggedInUser?.id) {
       const userData = usersList.find((user) => user.id === LoggedInUser.id)
       if (userData) {
-        setUserInfo(userData)
+        setUserInfo(LoggedInUser)
       }
     }
   }, [isEditForm, LoggedInUser])
@@ -39,8 +39,8 @@ export default function ProfileForm() {
     })
   }
   function handleClosePopUp() {
-    dispatch(usersSliceActions.setPopUp(false))
     dispatch(usersSliceActions.closeEditForm())
+    dispatch(usersSliceActions.setPopUp(false))
   }
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()

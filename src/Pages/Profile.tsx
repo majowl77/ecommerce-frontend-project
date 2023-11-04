@@ -27,7 +27,7 @@ export default function Profile() {
         <div className="displayProductsDetails">
           <div className="bottomBorder">
             <div className="backButton">
-              <Link to="/products">
+              <Link to="/">
                 <Button variant="text" color="inherit" startIcon={<WestIcon />}>
                   Back To Home Page
                 </Button>

@@ -70,11 +70,7 @@ export default function NavBar() {
               <Link to="/login"> Login</Link>
             </li>
           )}
-          {isLogedIn && (
-            <li className="elementNavBar" id="logoutItem">
-              <button onClick={() => dispatch(usersSliceActions.isLogedOut())}>Logout</button>
-            </li>
-          )}
+
           <li className="elementNavBar" id="cartItem">
             <Link to="/cart">
               <IconButton aria-label="cart" color="inherit">

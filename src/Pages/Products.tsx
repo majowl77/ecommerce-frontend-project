@@ -116,6 +116,23 @@ export default function Products() {
       console.log(cartList)
     }
   }
+
+  // pagination feature
+  const [page, setPage] = useState(1)
+  const [rowsPerPage] = useState(5) // Number of items per page
+
+  // Modify filteredProductsList to return only the products for the current page
+  const startIndex = (page - 1) * rowsPerPage
+  const endIndex = startIndex + rowsPerPage
+  const productsToDisplay = filteredProductsList.slice(startIndex, endIndex)
+
+  // Apply search and category filtering only to the products to display
+  const filteredProductsToShow = productsToDisplay.filter((product) => {
+    const matchesSearch = product.name.toLowerCase().includes(searchKeyWord?.toLowerCase() || '')
+    const matchesCategory =
+      categorieValue === 'All' || product.categories.includes(Number(categorieValue))
+    return matchesSearch && matchesCategory
+  })
   return (
     <div className="products">
       <h2>products</h2>
@@ -166,9 +183,9 @@ export default function Products() {
         </div>
         <div className="productsListContainer">
           <ul className="productsList">
-            {filteredProductsList &&
-              filteredProductsList.length > 0 &&
-              filteredProductsList.map((product) => (
+            {filteredProductsToShow &&
+              filteredProductsToShow.length > 0 &&
+              filteredProductsToShow.map((product) => (
                 <li key={product.id} className="productCard">
                   <div className="productsImageContainer">
                     <img src={product.image} className="productImage" />
@@ -189,7 +206,12 @@ export default function Products() {
         </div>
       </div>
       <div className="pagination">
-        <Pagination count={10} variant="outlined" className="customPagination" />
+        <Pagination
+          count={Math.ceil(filteredProductsList.length / rowsPerPage)}
+          variant="outlined"
+          page={page}
+          onChange={(event, value) => setPage(value)}
+        />
       </div>
     </div>
   )
