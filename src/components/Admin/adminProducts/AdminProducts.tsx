@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import EditIcon from '@mui/icons-material/Edit'
 import AddBoxIcon from '@mui/icons-material/AddBox'
+import TableContainer from '@mui/material/TableContainer'
 
 import { AppDispatch, RootState } from '../../../redux/store'
 import axios from 'axios'
@@ -31,6 +32,9 @@ export default function AdminProducts() {
   const popup = useSelector((state: RootState) => state.adminR.popUp)
   const isEditForm = useSelector((state: RootState) => state.adminR.isEditForm)
 
+  const productPopUp = useSelector((state: RootState) => state.adminR.popUp)
+  const categoryPopUp = useSelector((state: RootState) => state.categoriesR.popUp)
+  const duringPopUp = productPopUp || categoryPopUp ? ' during-popup' : ''
   //fetching the data form JSON file
   useEffect(() => {
     function fetchProducts() {
@@ -68,7 +72,9 @@ export default function AdminProducts() {
   function onEdit(productId: number) {
     dispatch(adminSliceAction.openEditProductForm(productId))
     dispatch(adminSliceAction.setPopUp(true))
+    console.log('popUps state ', duringPopUp)
   }
+  console.log('during popup  ', duringPopUp)
 
   return (
     <div className="adminProductPage">
@@ -85,43 +91,44 @@ export default function AdminProducts() {
             <h1 className="titleAdminProducts">Products Mangement</h1>
             <h2 className="subTitleAdmin">Total Products: {prodcutsList.length}</h2>
           </Typography>
-
-          <Table size="small">
-            <TableHead>
-              <TableRow>
-                <TableCell>Product ID </TableCell>
-                <TableCell> Image</TableCell>
-                <TableCell> Name</TableCell>
-                <TableCell> Variants</TableCell>
-                <TableCell> Price</TableCell>
-                <TableCell> Delete</TableCell>
-                <TableCell> Edit</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {prodcutsList.map((product) => (
-                <TableRow key={product.id}>
-                  <TableCell>{product.id}</TableCell>
-                  <TableCell>
-                    <img src={product.image} alt="Product Image" id="adminProductImage" />{' '}
-                  </TableCell>
-                  <TableCell>{product.name}</TableCell>
-                  <TableCell>{product.variants}</TableCell>
-                  <TableCell>{product.price}$</TableCell>
-                  <TableCell>
-                    <IconButton className="adminButton" onClick={() => onRemove(product)}>
-                      <DeleteForeverIcon />
-                    </IconButton>
-                  </TableCell>
-                  <TableCell>
-                    <IconButton className="adminButton" onClick={() => onEdit(product.id)}>
-                      <EditIcon />
-                    </IconButton>
-                  </TableCell>
+          <TableContainer sx={{ maxHeight: '400px' }}>
+            <Table size="small">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Product ID </TableCell>
+                  <TableCell> Image</TableCell>
+                  <TableCell> Name</TableCell>
+                  <TableCell> Variants</TableCell>
+                  <TableCell> Price</TableCell>
+                  <TableCell> Delete</TableCell>
+                  <TableCell> Edit</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHead>
+              <TableBody>
+                {prodcutsList.map((product) => (
+                  <TableRow key={product.id}>
+                    <TableCell>{product.id}</TableCell>
+                    <TableCell>
+                      <img src={product.image} alt="Product Image" id="adminProductImage" />{' '}
+                    </TableCell>
+                    <TableCell>{product.name}</TableCell>
+                    <TableCell>{product.variants}</TableCell>
+                    <TableCell>{product.price}$</TableCell>
+                    <TableCell>
+                      <IconButton className="adminButton" onClick={() => onRemove(product)}>
+                        <DeleteForeverIcon />
+                      </IconButton>
+                    </TableCell>
+                    <TableCell>
+                      <IconButton className="adminButton" onClick={() => onEdit(product.id)}>
+                        <EditIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </React.Fragment>
       </div>
       <div id="addNewProduct">

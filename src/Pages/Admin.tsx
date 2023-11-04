@@ -1,6 +1,5 @@
 import * as React from 'react'
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles'
-import CssBaseline from '@mui/material/CssBaseline'
+import { styled } from '@mui/material/styles'
 import MuiDrawer from '@mui/material/Drawer'
 import Box from '@mui/material/Box'
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar'
@@ -9,14 +8,8 @@ import List from '@mui/material/List'
 import Typography from '@mui/material/Typography'
 import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
-import Badge from '@mui/material/Badge'
-import Container from '@mui/material/Container'
-import Grid from '@mui/material/Grid'
-import Paper from '@mui/material/Paper'
-import Link from '@mui/material/Link'
 import MenuIcon from '@mui/icons-material/Menu'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
-import NotificationsIcon from '@mui/icons-material/Notifications'
 import { mainListItems, secondaryListItems } from '../components/admin/adminDrawer/ListItems'
 import { useState } from 'react'
 import ToggleButton from '@mui/material/ToggleButton'
@@ -27,7 +20,6 @@ import AdminCategories from '../components/admin/adminCategories/AdminCategories
 import { useSelector } from 'react-redux'
 import { RootState } from '../redux/store'
 import AdminUsers from '../components/admin/users/AdminUsers'
-import AdminLeftDashborad from '../components/admin/AdminLeftDashborad'
 
 const drawerWidth: number = 240
 
@@ -178,11 +170,7 @@ export default function Admin() {
         <Box
           component="main"
           sx={{
-            backgroundColor: (theme) =>
-              theme.palette.mode === 'light' ? theme.palette.grey[100] : theme.palette.grey[900],
-            flexGrow: 1,
-            height: '100vh',
-            overflow: 'auto'
+            flexGrow: 1
           }}>
           <div className="adminPage">
             <div className="adminRightDashborad">
@@ -221,7 +209,7 @@ export default function Admin() {
                   </ToggleButton>
                 </ToggleButtonGroup>
               </div>
-              <div className="component Container">
+              <div className="componentContainer">
                 {isOrders && <Orders />}
                 {isProduct && <AdminProducts />}
                 {isCategory && <AdminCategories />}

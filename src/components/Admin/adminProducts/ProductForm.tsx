@@ -9,6 +9,7 @@ import { adminSliceAction } from '../../../redux/slices/admin/adminSlice'
 import { AppDispatch, RootState } from '../../../redux/store'
 import { Product } from '../../../types/type'
 import { productsActions } from '../../../redux/slices/products/productsSlice'
+import { Paper } from '@mui/material'
 
 const initialProductState: Product = {
   id: 0,
@@ -84,7 +85,7 @@ export default function ProductForm() {
           <CloseIcon />
         </Button>
       </div>
-      <Box width="60%">
+      <Paper elevation={0} sx={{ height: '600px', overflow: 'auto', padding: '16px' }}>
         <div className="tableProduct">
           <form onSubmit={handleSubmit} className="formProduct">
             <div>
@@ -187,7 +188,7 @@ export default function ProductForm() {
             </Button>
           </form>
         </div>
-      </Box>
+      </Paper>
     </div>
   )
 }

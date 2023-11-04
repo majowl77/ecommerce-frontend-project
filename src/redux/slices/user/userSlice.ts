@@ -9,7 +9,9 @@ const initialState :UsersinitialState ={
     error: null,
     isLoading: true,
     loggedUser : null,
-    userRole: null 
+    userRole: null ,
+    isEditForm: false,
+    popUp: false 
 }
 const usersSlice = createSlice({
     name: 'users',
@@ -41,7 +43,26 @@ const usersSlice = createSlice({
             state.isLogedIn = false 
             state.userRole = null 
 
+        }, 
+        openEditProfileForm: (state, action: PayloadAction<number>)=>{
+            state.isEditForm = true
+        },
+         setPopUp: (state, action: PayloadAction<Boolean>)=>{
+        if (action.payload === true){
+          state.popUp = true 
+        }else if (action.payload === false){
+          state.popUp = false 
         }
+      },closeEditForm: (state) => {
+        state.isEditForm = false
+      },
+      editUserInfo: (state, action: { payload: { userInfo: Users } })=> {
+        const { userInfo } = action.payload;
+        state.loggedUser = {
+          ...state.loggedUser, // Keep the old user data
+          ...userInfo, // Update with the new user data
+        };
+      },
     }
 })
 

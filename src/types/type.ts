@@ -16,9 +16,11 @@ export type UsersinitialState = {
   isLogedIn: boolean
   isLogedOut: boolean
   error: null | string
-  isLoading: boolean,
-  loggedUser: null | Users,
+  isLoading: boolean
+  loggedUser: null | Users
   userRole: null | 'visitor' | 'admin'
+  isEditForm: boolean,
+  popUp: boolean 
 
 }
 

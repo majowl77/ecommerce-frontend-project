@@ -13,6 +13,7 @@ import LoginRegister from './pages/LoginRegister'
 import Footer from './components/home/Footer'
 import NavBar from './components/home/NavBar'
 import AdminDashboard from './pages/Admin'
+import Profile from './pages/Profile'
 
 function App() {
   const { isLogedIn, userRole } = useSelector((state: RootState) => state.usersR)
@@ -26,6 +27,7 @@ function App() {
         <Route path="/products" element={<Products />} />
         <Route path="/login" element={<LoginRegister />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/profile" element={<Profile />} />
         {userRole === 'admin' && <Route path="/admin" element={<Admin />} />}
         <Route path="/products/product-detail/:productId" element={<ProductDetails />} />
       </Routes>

@@ -1,0 +1,100 @@
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import TextField from '@mui/material/TextField'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import CloseIcon from '@mui/icons-material/Close'
+import { Users } from '../../types/type'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootState } from '../../redux/store'
+import { usersSliceActions } from '../../redux/slices/user/userSlice'
+const initialUSerState: Users = {
+  id: 0,
+  firstName: '',
+  lastName: '',
+  email: '',
+  password: '',
+  role: 'visitor'
+}
+export default function ProfileForm() {
+  const dispatch = useDispatch<AppDispatch>()
+  const [userInfo, setUserInfo] = useState<Users>(initialUSerState)
+  const usersList = useSelector((state: RootState) => state.usersR.users)
+  const isEditForm = useSelector((state: RootState) => state.usersR.isEditForm)
+  const LoggedInUser = useSelector((state: RootState) => state.usersR.loggedUser)
+
+  useEffect(() => {
+    if (isEditForm && LoggedInUser?.id) {
+      const userData = usersList.find((user) => user.id === LoggedInUser.id)
+      if (userData) {
+        setUserInfo(userData)
+      }
+    }
+  }, [isEditForm, LoggedInUser])
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target
+    setUserInfo({
+      ...userInfo,
+      [name]: value
+    })
+  }
+  function handleClosePopUp() {
+    dispatch(usersSliceActions.setPopUp(false))
+    dispatch(usersSliceActions.closeEditForm())
+  }
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault()
+    if (isEditForm) {
+      dispatch(usersSliceActions.editUserInfo({ userInfo }))
+    }
+    setUserInfo(initialUSerState)
+    dispatch(usersSliceActions.closeEditForm())
+    dispatch(usersSliceActions.setPopUp(false))
+  }
+  return (
+    <div id="popUp">
+      <h1>Edit Your Profile</h1>
+      <div className="popUpCloseButton">
+        <Button type="submit" variant="text" onClick={handleClosePopUp}>
+          <CloseIcon />
+        </Button>
+      </div>
+      <Box width="50%">
+        <form onSubmit={handleSubmit}>
+          <div>
+            <TextField
+              id="firstName"
+              label="first Name"
+              variant="outlined"
+              name="firstName"
+              value={userInfo.firstName}
+              onChange={handleChange}
+              fullWidth
+              sx={{ padding: '8px', marginTop: '10px' }}
+              required
+            />
+          </div>
+          <div>
+            <TextField
+              id="lastName"
+              label="last Name"
+              variant="outlined"
+              name="lastName"
+              value={userInfo.lastName}
+              onChange={handleChange}
+              fullWidth
+              sx={{ padding: '8px', marginTop: '10px' }}
+              required
+            />
+          </div>
+          <Button
+            type="submit"
+            variant="outlined"
+            sx={{ padding: '8px', marginTop: '10px', color: '#889889' }}>
+            Save Changes
+          </Button>
+        </form>
+      </Box>
+    </div>
+  )
+}

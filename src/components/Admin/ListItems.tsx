@@ -59,7 +59,7 @@ export const secondaryListItems = (
         <ListItemText primary="Home Page" />
       </ListItemButton>
     </Link>
-    <Link to="/Products">
+    <Link to="/products">
       <ListItemButton>
         <ListItemIcon>
           <ProductionQuantityLimitsIcon />
@@ -67,12 +67,20 @@ export const secondaryListItems = (
         <ListItemText primary="Products Page" />
       </ListItemButton>
     </Link>
-    <Link to="/Login">
+    <Link to="/login">
       <ListItemButton>
         <ListItemIcon>
           <AssignmentIcon />
         </ListItemIcon>
         <ListItemText primary="Login Page" />
+      </ListItemButton>
+    </Link>
+    <Link to="/profile">
+      <ListItemButton>
+        <ListItemIcon>
+          <AssignmentIcon />
+        </ListItemIcon>
+        <ListItemText primary="profile Page" />
       </ListItemButton>
     </Link>
   </React.Fragment>
