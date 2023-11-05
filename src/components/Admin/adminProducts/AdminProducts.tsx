@@ -19,7 +19,7 @@ import { AppDispatch, RootState } from '../../../redux/store'
 import axios from 'axios'
 import { adminSliceAction } from '../../../redux/slices/admin/adminSlice'
 import { IconButton } from '@mui/material'
-import { Product } from '../../../types/navBar/navBar'
+import { Product } from '../../../types/products/productsTypes'
 import Button from '@mui/material/Button'
 import ProductForm from './ProductForm'
 

@@ -1,7 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { AdminState, Order, Product } from '../../../types/navBar/navBar'
+import { AdminState} from '../../../types/admin/adminType'
 
+import {  Order } from '../../../types/orders/orderType'
+import {  Product } from '../../../types/products/productsTypes'
 
 
 const initialState: AdminState = {

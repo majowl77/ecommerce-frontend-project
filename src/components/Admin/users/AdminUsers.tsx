@@ -14,7 +14,7 @@ import Stack from '@mui/material/Stack'
 
 import { usersSliceActions } from '../../../redux/slices/user/userSlice'
 import { AppDispatch, RootState } from '../../../redux/store'
-import { Users } from '../../../types/navBar/navBar'
+import { Users } from '../../../types/users/usersType'
 
 export default function AdminUsers() {
   const dispatch = useDispatch<AppDispatch>()

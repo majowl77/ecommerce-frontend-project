@@ -1,4 +1,3 @@
-import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import WestIcon from '@mui/icons-material/West'
 

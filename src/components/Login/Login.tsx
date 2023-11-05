@@ -9,7 +9,7 @@ import axios from 'axios'
 import { usersSliceActions } from '../../redux/slices/user/userSlice'
 import { toast } from 'react-toastify'
 import { DevTool } from '@hookform/devtools'
-import { LogInFormValues } from '../../types/navBar/navBar'
+import { LogInFormValues } from '../../types/loginRegister/loginRegister'
 import { useNavigate } from 'react-router'
 
 import Avatar from '@mui/material/Avatar'

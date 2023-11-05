@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { CategoriesState, Category } from '../../../types/navBar/navBar'
+import { CategoriesState, Category } from '../../../types/categories/categoriesType'
 
 const initialState: CategoriesState = {
   categoryList: [],

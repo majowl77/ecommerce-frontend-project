@@ -18,7 +18,7 @@ import Container from '@mui/material/Container'
 import { usersSliceActions } from '../../redux/slices/user/userSlice'
 import { toast } from 'react-toastify'
 import { DevTool } from '@hookform/devtools'
-import { SignUpFormValues } from '../../types/navBar/navBar'
+import { SignUpFormValues } from '../../types/loginRegister/loginRegister'
 import { logInRegisterActions } from '../../redux/slices/loginRegister/loginRegisterSlice'
 function Copyright(props: any) {
   return (

@@ -7,7 +7,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import { useDispatch, useSelector } from 'react-redux'
 import { adminSliceAction } from '../../../redux/slices/admin/adminSlice'
 import { AppDispatch, RootState } from '../../../redux/store'
-import { Product } from '../../../types/navBar/navBar'
+import { Product } from '../../../types/products/productsTypes'
 import { productsActions } from '../../../redux/slices/products/productsSlice'
 import { Paper } from '@mui/material'
 
