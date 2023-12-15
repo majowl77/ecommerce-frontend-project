@@ -17,6 +17,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select'
 import RadioGroup from '@mui/material/RadioGroup'
 import Radio from '@mui/material/Radio'
 import FormLabel from '@mui/material/FormLabel'
+
 import { AppDispatch, RootState } from '../redux/store'
 import { productsActions } from '../redux/slices/products/productsSlice'
 import { Product } from '../types/products/productsTypes'
@@ -169,10 +170,10 @@ export default function Products() {
               label="Sort"
               onChange={selectChange}
               color="secondary">
-              <MenuItem value="highttolow" color="secondary">
+              <MenuItem value="htl" color="secondary">
                 Price: Hight to Low
               </MenuItem>
-              <MenuItem value="lowtohigh" color="secondary">
+              <MenuItem value="lth" color="secondary">
                 Price: Low to Hight
               </MenuItem>
               <MenuItem value="All" color="secondary">

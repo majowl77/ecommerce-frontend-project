@@ -1,24 +1,34 @@
+import { Route, Routes, useLocation } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
+import { useSelector } from 'react-redux'
+import { useEffect } from 'react'
+import 'react-toastify/dist/ReactToastify.css'
+
 import './App.css'
 import Home from './pages/Home'
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import Products from './pages/Products'
 import Cart from './components/cart/Cart'
 import ProductDetails from './components/products/ProductDetails'
 import Admin from './pages/Admin'
-import { ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
-import { useSelector } from 'react-redux'
 import { RootState } from './redux/store'
 import LoginRegister from './pages/LoginRegister'
 import Footer from './components/home/Footer'
 import NavBar from './components/home/NavBar'
-import AdminDashboard from './pages/Admin'
 import Profile from './pages/Profile'
+import api from './api'
 
 function App() {
-  const { isLogedIn, userRole } = useSelector((state: RootState) => state.usersR)
-  const navigate = useNavigate()
+  const { userRole } = useSelector((state: RootState) => state.usersR)
   const location = useLocation()
+  //fetching the data form my backend
+  useEffect(() => {
+    const fetchProductsData = async () => {
+      const res = await api.get(`/products`)
+      console.log('🚀 ~ file: App.tsx:26 ~ fetchProductsData ~ res:', res.data)
+    }
+    fetchProductsData()
+  })
+
   return (
     <div className="App">
       {location.pathname !== '/admin' ? <NavBar /> : null}

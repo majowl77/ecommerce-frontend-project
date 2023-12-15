@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const isDevelopment = import.meta.env.MODE === 'development'
-let baseURL = 'http://localhost:3000/'
+let baseURL = process.env.BACKEND_ORIGIN
 
 if (!isDevelopment) {
   // Update this later when you have a working backend server

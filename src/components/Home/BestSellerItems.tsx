@@ -38,7 +38,7 @@ export default function BestSellerItems() {
             prodcutsList.length > 0 &&
             prodcutsList.slice(0, 7).map((product) => {
               return (
-                <div className="bsetItemsCard">
+                <div className="bsetItemsCard" key={product.id}>
                   <div className="HandleTextOfItemsCard">
                     <div className="cardImage">
                       <img src={'/' + product.image} alt={product.name} />
