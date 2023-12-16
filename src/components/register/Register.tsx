@@ -20,6 +20,7 @@ import { toast } from 'react-toastify'
 import { DevTool } from '@hookform/devtools'
 import { SignUpFormValues } from '../../types/loginRegister/loginRegister'
 import { logInRegisterActions } from '../../redux/slices/loginRegister/loginRegisterSlice'
+
 function Copyright(props: any) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>

@@ -756,7 +756,7 @@ svg path {
 
 /* Login styling */
 .loginPage {
-  padding-top: 30px;
+  padding-top: 1px;
   background-color: #f2f7f2;
   height: 100vh;
 }
@@ -764,6 +764,7 @@ svg path {
 .register .MuiAvatar-root {
   background-color: #506d3b;
 }
+
 .tabsLoginSignup {
   display: flex;
   justify-content: center;
