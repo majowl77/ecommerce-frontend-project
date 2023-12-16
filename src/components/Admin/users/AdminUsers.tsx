@@ -14,7 +14,7 @@ import Stack from '@mui/material/Stack'
 
 import { usersSliceActions } from '../../../redux/slices/user/userSlice'
 import { AppDispatch, RootState } from '../../../redux/store'
-import { Users } from '../../../types/users/usersType'
+import { User } from '../../../types/users/usersType'
 
 export default function AdminUsers() {
   const dispatch = useDispatch<AppDispatch>()
@@ -33,7 +33,7 @@ export default function AdminUsers() {
   }, [])
 
   //removing a User
-  function onRemove(user: Users) {
+  function onRemove(user: User) {
     if (user != null) {
       dispatch(usersSliceActions.removeUser({ userID: user.id }))
       console.log(user)

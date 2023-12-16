@@ -3,11 +3,11 @@ import TextField from '@mui/material/TextField'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import CloseIcon from '@mui/icons-material/Close'
-import { Users } from '../../types/users/usersType'
+import { User } from '../../types/users/usersType'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../redux/store'
 import { usersSliceActions } from '../../redux/slices/user/userSlice'
-const initialUSerState: Users = {
+const initialUSerState: User = {
   id: 0,
   firstName: '',
   lastName: '',
@@ -17,7 +17,7 @@ const initialUSerState: Users = {
 }
 export default function ProfileForm() {
   const dispatch = useDispatch<AppDispatch>()
-  const [userInfo, setUserInfo] = useState<Users>(initialUSerState)
+  const [userInfo, setUserInfo] = useState<User>(initialUSerState)
   const usersList = useSelector((state: RootState) => state.usersR.users)
   const isEditForm = useSelector((state: RootState) => state.usersR.isEditForm)
   const LoggedInUser = useSelector((state: RootState) => state.usersR.loggedUser)
