@@ -1,7 +1,7 @@
 import jwt_decode from 'jwt-decode'
 
 import { isDecodedUser } from '../types/type-guards'
-import { User } from '../redux/slices/admin/adminSlice'
+import { tokenUser } from '../types/users/usersType'
 
 export function getDecodedTokenFromStorage() {
   const token = localStorage.getItem('token')
@@ -11,7 +11,7 @@ export function getDecodedTokenFromStorage() {
     const decodedUser = jwt_decode(token)
     if (!isDecodedUser(decodedUser)) return null
 
-    const user: User = {
+    const user: tokenUser = {
       username: decodedUser.username,
       id: decodedUser.user_id,
       role: decodedUser.role

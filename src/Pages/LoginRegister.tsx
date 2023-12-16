@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import Login from '../components/Login/Login'
+import Login from '../components/login/Login'
 import Register from '../components/register/Register'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../redux/store'
