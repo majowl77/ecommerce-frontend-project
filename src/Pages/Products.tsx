@@ -19,7 +19,7 @@ import Radio from '@mui/material/Radio'
 import FormLabel from '@mui/material/FormLabel'
 
 import { AppDispatch, RootState } from '../redux/store'
-import { productsActions } from '../redux/slices/products/productsSlice'
+import { getProductsThunk, productsActions } from '../redux/slices/products/productsSlice'
 import { Product } from '../types/products/productsTypes'
 import { cartSliceAction } from '../redux/slices/cart/cartSlice'
 import { navBarActions } from '../redux/slices/navbar/navbarSlice'
@@ -27,7 +27,6 @@ import { toast } from 'react-toastify'
 
 export default function Products() {
   const dispatch = useDispatch<AppDispatch>()
-  const url = 'public/mock/e-commerce/products.json'
   const prodcutsList = useSelector((state: RootState) => state.productsR.productList)
   const cartList = useSelector((state: RootState) => state.cartReducer.cartProducts)
   const errorMessage = useSelector((state: RootState) => state.productsR.error)
@@ -38,34 +37,32 @@ export default function Products() {
   const newProduct = useSelector((state: RootState) => state.adminR.newProduct)
   dispatch(navBarActions.navBarNotInHomePage())
 
-  //fetching the data form JSON file
-  useEffect(() => {
-    function fetchProductsData() {
-      axios
-        .get(url)
-        .then((response) => dispatch(productsActions.getProductsData(response.data)))
-        .catch((error) => dispatch(productsActions.getError(error.message)))
-    }
-    fetchProductsData()
-  }, [])
   // handling the request
-  if (isLoading === true) {
-    return (
-      <div className="productsListContainer">
-        <Box sx={{ display: 'flex' }}>
-          <CircularProgress />
-        </Box>
-      </div>
-    )
-  }
-  // error message handling
-  if (errorMessage && prodcutsList.length === 0) {
-    return (
-      <Stack sx={{ width: '100%' }} spacing={2}>
-        <Alert severity="error">{errorMessage}</Alert>
-      </Stack>
-    )
-  }
+  // if (isLoading === true) {
+  //   return (
+  //     <div className="productsListContainer">
+  //       <Box sx={{ display: 'flex' }}>
+  //         <CircularProgress />
+  //       </Box>
+  //     </div>
+  //   )
+  // }
+  // // // error message handling
+  // if (errorMessage && prodcutsList.length === 0) {
+  //   return (
+  //     <Stack sx={{ width: '100%' }} spacing={2}>
+  //       <Alert severity="error">{errorMessage}</Alert>
+  //     </Stack>
+  //   )
+  // }
+
+  //fetching the data form Reducx thunk
+  useEffect(() => {
+    const handleGetProducts = async () => {
+      dispatch(getProductsThunk())
+    }
+    handleGetProducts()
+  }, [])
   // handel new product by the admin
   const addnewProduct = () => {
     if (newProduct != null) {
@@ -140,7 +137,6 @@ export default function Products() {
       <div className="productsSection">
         <div className="productsfilteringSection">
           <h1> Filter products</h1>
-          {/* adding search features  */}
           <TextField
             label="Search By Name :"
             onChange={getSearchKeyword}
@@ -184,9 +180,9 @@ export default function Products() {
         </div>
         <div className="productsListContainer">
           <ul className="productsList">
-            {filteredProductsToShow &&
-              filteredProductsToShow.length > 0 &&
-              filteredProductsToShow.map((product) => (
+            {prodcutsList &&
+              prodcutsList.length > 0 &&
+              prodcutsList.map((product) => (
                 <li key={product.id} className="productCard">
                   <div className="productsImageContainer">
                     <img src={product.image} className="productImage" />

@@ -21,6 +21,7 @@ export const loginThunk = createAsyncThunk(
   async (credentials: { email: string; password: string }, { rejectWithValue }) => {
     try {
       const res = await api.post('/api/auth/login', credentials)
+      console.log('🚀 ~ file: userSlice.ts:28 ~ res.data:', res.data)
       return res.data
     } catch (error) {
       if (error instanceof AxiosError) return rejectWithValue(error.response?.data.msg)
@@ -84,7 +85,6 @@ const usersSlice = createSlice({
     })
     builder.addCase(loginThunk.rejected, (state, action) => {
       const errorMsg = action.payload
-      console.log('🚀 ~ file: userSlice.ts:89 ~ builder.addCase ~ errorMsg:', errorMsg)
       if (typeof errorMsg === 'string') {
         state.error = errorMsg
       } else {
@@ -97,7 +97,6 @@ const usersSlice = createSlice({
     })
     builder.addCase(loginThunk.fulfilled, (state, action) => {
       state.loggedUser = action.payload.user
-      console.log('🚀 ~ file: userSlice.ts:100 ~ builder.addCase ~ loggedUser:', state.loggedUser)
       state.isLogedIn = true
       state.isLoading = false
       return state
