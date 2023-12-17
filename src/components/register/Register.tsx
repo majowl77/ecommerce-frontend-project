@@ -45,10 +45,12 @@ export default function Register() {
     handleSubmit,
     formState: { errors }
   } = form
+  
   // for login Managing :
   function HandleLoginDisplay() {
     dispatch(logInRegisterActions.setLoginPage())
   }
+
   function onSubmitHandler(data: SignUpFormValues) {
     console.log('date before ', data)
     try {
@@ -57,7 +59,7 @@ export default function Register() {
         toast.error('Email already existed ! try to login inested ')
       } else if (!newUser) {
         data.id = +new Date()
-        data.role = 'visitor'
+        data.role = 'USER'
         dispatch(usersSliceActions.addOneUser({ data }))
         console.log('data after ', data)
         toast.success('Registration successful! Welcome to GreenPlant ')

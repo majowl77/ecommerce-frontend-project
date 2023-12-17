@@ -4,69 +4,74 @@ import { useForm } from 'react-hook-form'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import { useDispatch, useSelector } from 'react-redux'
-import { AppDispatch, RootState } from '../../redux/store'
-import axios from 'axios'
-import { usersSliceActions } from '../../redux/slices/user/userSlice'
 import { toast } from 'react-toastify'
 import { DevTool } from '@hookform/devtools'
-import { LogInFormValues } from '../../types/loginRegister/loginRegister'
 import { useNavigate } from 'react-router'
-
 import Avatar from '@mui/material/Avatar'
 import CssBaseline from '@mui/material/CssBaseline'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Checkbox from '@mui/material/Checkbox'
 import Link from '@mui/material/Link'
 import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Container from '@mui/material/Container'
+
+import { LogInFormValues } from '../../types/loginRegister/loginRegister'
+import { AppDispatch, RootState } from '../../redux/store'
+import { loginThunk, usersSliceActions } from '../../redux/slices/user/userSlice'
 import { logInRegisterActions } from '../../redux/slices/loginRegister/loginRegisterSlice'
+import { AxiosError } from 'axios'
+
 function Copyright(props: any) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
+      <Link color="inherit" href="/">
         Your Website
       </Link>
       {new Date().getFullYear()}
     </Typography>
   )
 }
+
 export default function Login() {
   const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>()
-  const isSignUp = useSelector((state: RootState) => state.loginRegisterR.signUpPage)
-  const usersList = useSelector((state: RootState) => state.usersR.users)
-  const form = useForm<LogInFormValues>()
+  const users = useSelector((state: RootState) => state.usersR)
+
   const {
     register,
     control,
     handleSubmit,
-    formState: { errors }
-  } = form
+    formState: { errors },
+    reset
+  } = useForm<LogInFormValues>()
 
   // for signup Managing :
-  function HandleSigninDisplay() {
+  function HandleSignUpDisplay() {
     dispatch(logInRegisterActions.setSignUpPage())
   }
-  function onSubmitHandler(data: LogInFormValues) {
-    console.log(data)
+
+  async function onSubmitHandler(data: LogInFormValues) {
     try {
-      const foundUser = usersList.find((userData) => userData.email === data.email)
-      if (foundUser && foundUser.password === data.password) {
-        dispatch(usersSliceActions.isLogedIn({ foundUser }))
-        toast.success("Welcome back! You've successfully logged in")
-        if (foundUser.role === 'admin') {
-          navigate('/admin')
-        } else {
-          navigate('/')
-        }
-      } else {
-        toast.error('Login failed. Please check your email and password')
+      const response = await dispatch(loginThunk(data))
+
+      if (response.meta.requestStatus === 'fulfilled') {
+        const res = response.payload.user.firstName
+        toast.success('Welcome back!' + res + response.payload.message)
+        //   navigate('/')
       }
-    } catch (error) {}
+      if (response.meta.requestStatus === 'rejected') {
+        toast.error('Login failed.' + response.payload)
+        //   navigate('/admin')
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        toast.error('somthing went wrong when login')
+      }
+    }
+    reset()
   }
+
   return (
     <div>
       <div className="login">
@@ -91,6 +96,7 @@ export default function Login() {
                 variant="outlined"
                 fullWidth
                 margin="normal"
+                type="email"
                 helperText={errors.email ? errors.email.message : ''}
                 error={!!errors.email}
                 {...register('email', {
@@ -106,6 +112,7 @@ export default function Login() {
                 variant="outlined"
                 fullWidth
                 margin="normal"
+                type="password"
                 error={!!errors.password}
                 helperText={errors.password ? errors.password.message : ''}
                 {...register('password', {
@@ -122,8 +129,13 @@ export default function Login() {
                 type="submit"
                 fullWidth
                 sx={{ mt: 3, mb: 2 }}>
-                Submit
+                {users.isLoading ? 'Loging...' : 'Login'}
               </Button>
+              {/* {users.isLogedIn
+                ? toast.success(
+                    `Welcome back!${users.loggedUser?.firstName} You've successfully logged in`
+                  )
+                : ''} */}
             </form>
             <Grid container>
               <Grid item xs>
@@ -133,7 +145,7 @@ export default function Login() {
               </Grid>
               <Grid item>
                 <Typography variant="body2">
-                  <button onClick={HandleSigninDisplay}>{"Don't have an account? Sign Up"}</button>
+                  <button onClick={HandleSignUpDisplay}>Don't have an account? Sign Up</button>
                 </Typography>
               </Grid>
             </Grid>

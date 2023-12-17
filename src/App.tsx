@@ -15,19 +15,10 @@ import LoginRegister from './pages/LoginRegister'
 import Footer from './components/home/Footer'
 import NavBar from './components/home/NavBar'
 import Profile from './pages/Profile'
-import api from './api'
 
 function App() {
   const { userRole } = useSelector((state: RootState) => state.usersR)
   const location = useLocation()
-  //fetching the data form my backend
-  useEffect(() => {
-    const fetchProductsData = async () => {
-      const res = await api.get(`/products`)
-      console.log('🚀 ~ file: App.tsx:26 ~ fetchProductsData ~ res:', res.data)
-    }
-    fetchProductsData()
-  })
 
   return (
     <div className="App">
@@ -38,7 +29,7 @@ function App() {
         <Route path="/login" element={<LoginRegister />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/profile" element={<Profile />} />
-        {userRole === 'admin' && <Route path="/admin" element={<Admin />} />}
+        {userRole === 'ADMIN' && <Route path="/admin" element={<Admin />} />}
         <Route path="/products/product-detail/:productId" element={<ProductDetails />} />
       </Routes>
       <ToastContainer

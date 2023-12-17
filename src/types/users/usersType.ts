@@ -1,3 +1,17 @@
+export const ROLES = {
+  USER: 'USER',
+  ADMIN: 'ADMIN'
+}
+
+export type Role = keyof typeof ROLES
+
+export type User = {
+  firstName: string
+  lastName: string
+  email: string
+  role: Role
+}
+
 export type UsersinitialState = {
   users: User[]
   isLogedIn: boolean
@@ -5,18 +19,9 @@ export type UsersinitialState = {
   error: null | string
   isLoading: boolean
   loggedUser: null | User
-  userRole: null | 'visitor' | 'admin'
+  userRole: null | Role
   isEditForm: boolean
   popUp: boolean
-}
-
-export type User = {
-  id: number
-  firstName: string
-  lastName: string
-  email: string
-  password: string
-  role: 'visitor' | 'admin'
 }
 
 export type tokenUser = {
