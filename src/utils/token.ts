@@ -1,23 +1,18 @@
 import jwt_decode from 'jwt-decode'
 
 import { isDecodedUser } from '../types/type-guards'
-import { tokenUser } from '../types/users/usersType'
 
 export function getDecodedTokenFromStorage() {
   const token = localStorage.getItem('token')
+  console.log('🚀 ~ file: token.ts:8 ~ getDecodedTokenFromStorage ~ token:', token)
   if (!token) return null
 
   try {
     const decodedUser = jwt_decode(token)
+    console.log('🚀 ~ file: token.ts:12 ~ getDecodedTokenFromStorage ~ decodedUser:', decodedUser)
     if (!isDecodedUser(decodedUser)) return null
 
-    const user: tokenUser = {
-      username: decodedUser.username,
-      id: decodedUser.user_id,
-      role: decodedUser.role
-    }
-
-    return user
+    return decodedUser
   } catch (error) {
     return null
   }

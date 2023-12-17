@@ -1,4 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { AxiosError } from 'axios'
 import { CategoriesState, Category } from '../../../types/categories/categoriesType'
 
 const initialState: CategoriesState = {
@@ -7,9 +8,15 @@ const initialState: CategoriesState = {
   isLoading: true,
   categoryID: null,
   isEditForm: false,
-  popUp: false 
+  popUp: false
 }
 
+// export const categoryThunk = createAsyncThunk('categories', async ({ rejectWithValue }) => {
+//   try {
+//   } catch (error) {
+//     if (error instanceof AxiosError) return rejectWithValue(error.response?.data.msg)
+//   }
+// })
 const adminCategoriesSlice = createSlice({
   name: 'categories',
   initialState: initialState,
@@ -18,43 +25,47 @@ const adminCategoriesSlice = createSlice({
       state.categoryList = action.payload
       state.isLoading = false
     },
-    addCategory: (state, action: { payload: { category: Category }}) => {
-        state.categoryList = [action.payload.category, ...state.categoryList]
-        state.isLoading = false
-      },
+    addCategory: (state, action: { payload: { category: Category } }) => {
+      state.categoryList = [action.payload.category, ...state.categoryList]
+      state.isLoading = false
+    },
     getError: (state, action: PayloadAction<string>) => {
       state.error = action.payload
       state.isLoading = false
     },
     removeCategory: (state, action: { payload: { categoryID: number } }) => {
-        const filteredItems = state.categoryList.filter((category) => category.id !== action.payload.categoryID)
-        state.categoryList = filteredItems
+      const filteredItems = state.categoryList.filter(
+        (category) => category.id !== action.payload.categoryID
+      )
+      state.categoryList = filteredItems
     },
     openEditCategoryForm: (state, action: PayloadAction<number>) => {
       state.categoryID = action.payload
       state.isEditForm = true
     },
-    editCategory: (state, action: PayloadAction<{ editedCategoryId: number | null, category: Category }>)=> {
-        const { editedCategoryId, category } = action.payload;
-        const categoryIndex = state.categoryList.findIndex((c) => c.id === editedCategoryId);
-        if (categoryIndex !== -1) {
-          state.categoryList[categoryIndex] = {
-            ...state.categoryList[categoryIndex],
-            ...category,
-          };
+    editCategory: (
+      state,
+      action: PayloadAction<{ editedCategoryId: number | null; category: Category }>
+    ) => {
+      const { editedCategoryId, category } = action.payload
+      const categoryIndex = state.categoryList.findIndex((c) => c.id === editedCategoryId)
+      if (categoryIndex !== -1) {
+        state.categoryList[categoryIndex] = {
+          ...state.categoryList[categoryIndex],
+          ...category
         }
-  
-      },
+      }
+    },
     closeEditForm: (state) => {
       state.isEditForm = false
     },
-    setPopUp: (state, action: PayloadAction<Boolean>)=>{
-        if (action.payload === true){
-          state.popUp = true 
-        }else if (action.payload === false){
-          state.popUp = false 
-        }
+    setPopUp: (state, action: PayloadAction<Boolean>) => {
+      if (action.payload === true) {
+        state.popUp = true
+      } else if (action.payload === false) {
+        state.popUp = false
       }
+    }
   }
 })
 

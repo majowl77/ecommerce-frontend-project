@@ -25,7 +25,7 @@ export type UsersinitialState = {
 }
 
 export type tokenUser = {
-  username: string
-  id: number
+  email: string
+  userID: number
   role: string
 }

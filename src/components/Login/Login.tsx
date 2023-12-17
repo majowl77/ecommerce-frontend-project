@@ -57,7 +57,10 @@ export default function Login() {
 
       if (response.meta.requestStatus === 'fulfilled') {
         const res = response.payload.user.firstName
-        toast.success('Welcome back!' + res + response.payload.message)
+        const msg = response.payload.message
+        const token = response.payload.token
+        toast.success('Welcome back!' + res + msg)
+        localStorage.setItem('token', token)
         //   navigate('/')
       }
       if (response.meta.requestStatus === 'rejected') {
@@ -131,11 +134,6 @@ export default function Login() {
                 sx={{ mt: 3, mb: 2 }}>
                 {users.isLoading ? 'Loging...' : 'Login'}
               </Button>
-              {/* {users.isLogedIn
-                ? toast.success(
-                    `Welcome back!${users.loggedUser?.firstName} You've successfully logged in`
-                  )
-                : ''} */}
             </form>
             <Grid container>
               <Grid item xs>

@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AxiosError } from 'axios'
+
 import api from '../../../api'
 import { User, UsersinitialState } from '../../../types/users/usersType'
 
