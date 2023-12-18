@@ -6,7 +6,6 @@ import { User, UsersinitialState } from '../../../types/users/usersType'
 import { getDecodedTokenFromStorage } from '../../../utils/token'
 
 const decodedUser = getDecodedTokenFromStorage()
-console.log('🚀 ~ file: userSlice.ts:21 ~ decodedUser:', decodedUser)
 
 const initialState: UsersinitialState = {
   users: [],
@@ -33,6 +32,7 @@ export const loginThunk = createAsyncThunk(
     }
   }
 )
+
 export const getUsersThunk = createAsyncThunk('users', async () => {
   try {
     const res = await api.get('/api/users/admin/getAllUsers')
@@ -41,6 +41,27 @@ export const getUsersThunk = createAsyncThunk('users', async () => {
     console.log('🚀 ~ file: userSlice.ts:42 ~ getUsersThunk ~ error:', error)
   }
 })
+
+export const deleteUsersThunk = createAsyncThunk('users/delete', async (userId: string) => {
+  try {
+    await api.delete(`/api/users/admin/deleteUser/:${userId}`)
+    return userId
+  } catch (error) {
+    console.log('🚀 ~ file: userSlice.ts:51 ~ deleteUsersThunk ~ error:', error)
+  }
+})
+
+export const grantRoleUserThunk = createAsyncThunk(
+  'users/role',
+  async ({ role, userId }: { role: string; userId: User['_id'] }, { rejectWithValue }) => {
+    try {
+      const user = await api.put('/api/users/admin/role', { role, userId })
+      return user.data.user
+    } catch (error) {
+      if (error instanceof AxiosError) return rejectWithValue(error.response?.data.msg)
+    }
+  }
+)
 
 const usersSlice = createSlice({
   name: 'users',
@@ -127,6 +148,31 @@ const usersSlice = createSlice({
     builder.addCase(getUsersThunk.fulfilled, (state, action) => {
       state.users = action.payload
       state.isLoading = false
+    })
+    builder.addCase(grantRoleUserThunk.pending, (state, action) => {
+      state.isLoading = true
+    })
+    builder.addCase(grantRoleUserThunk.fulfilled, (state, action) => {
+      const userId = action.payload._id
+      const updatedUsers = state.users.map((user) => {
+        if (user._id === userId) {
+          return action.payload
+        }
+        return user
+      })
+      state.users = updatedUsers
+      state.isLoading = false
+      return state
+    })
+    builder.addCase(grantRoleUserThunk.rejected, (state, action) => {
+      const errorMsg = action.payload
+      if (typeof errorMsg === 'string') {
+        state.error = errorMsg
+      } else {
+        state.error = 'somthing went wrong :('
+      }
+      state.isLoading = false
+      return state
     })
   }
 })

@@ -13,14 +13,21 @@ import Alert from '@mui/material/Alert'
 import Stack from '@mui/material/Stack'
 import Select from '@mui/joy/Select'
 import Option from '@mui/joy/Option'
+import LinearProgress from '@mui/joy/LinearProgress'
 
-import { getUsersThunk, usersSliceActions } from '../../../redux/slices/user/userSlice'
+import {
+  getUsersThunk,
+  grantRoleUserThunk,
+  usersSliceActions
+} from '../../../redux/slices/user/userSlice'
 import { AppDispatch, RootState } from '../../../redux/store'
-import { ROLES, User } from '../../../types/users/usersType'
+import { Role, ROLES, User } from '../../../types/users/usersType'
+import { toast } from 'react-toastify'
 
 export default function AdminUsers() {
   const dispatch = useDispatch<AppDispatch>()
   const usersList = useSelector((state: RootState) => state.usersR.users)
+  const users = useSelector((state: RootState) => state.usersR)
 
   //fetching the data form JSON file
   useEffect(() => {
@@ -31,12 +38,18 @@ export default function AdminUsers() {
   }, [])
 
   //handle role granting
-  const handleRoleChange = (
-    newValue: {} | null,
-    userId: User[] // Assuming user._id is a string; adjust the type accordingly
-  ) => {
+  const handleRoleChange = async (newValue: {} | null, userId: User['_id']) => {
     if (typeof newValue === 'string') {
-      console.log('🚀 ~ file: AdminUsers.tsx:36 ~ handleRoleChange ~ event?.target:', newValue)
+      const role = newValue
+      const res = await dispatch(grantRoleUserThunk({ role, userId }))
+      if (res.meta.requestStatus === 'fulfilled') {
+        toast.success('Role changed sccussfuly!')
+        return
+      }
+      if (res.meta.requestStatus === 'rejected') {
+        toast.error("Can't change the user Role!")
+        return
+      }
     }
   }
   //removing a User
@@ -86,18 +99,22 @@ export default function AdminUsers() {
                   <TableCell>{user.isActive ? 'activated' : 'inactive'}</TableCell>
                   <TableCell>{user.role}</TableCell>
                   <TableCell>
-                    <Select
+                    {/* <Select
                       color="neutral"
                       placeholder="Choose one…"
                       size="sm"
                       variant="outlined"
                       onChange={(_, newValue) => handleRoleChange(newValue, user._id)}>
-                      {Object.keys(ROLES).map((role) => (
-                        <Option key={role} value={role}>
-                          {role}
-                        </Option>
-                      ))}
-                    </Select>
+                      {users.isLoading ? (
+                        <LinearProgress variant="plain" />
+                      ) : (
+                        Object.keys(ROLES).map((role) => (
+                          <Option key={role} value={role}>
+                            {role}
+                          </Option>
+                        ))
+                      )}
+                    </Select> */}
                   </TableCell>
                   <TableCell>
                     <IconButton className="adminButton" onClick={() => onRemove(user)}>
@@ -106,7 +123,7 @@ export default function AdminUsers() {
                   </TableCell>
                 </TableRow>
               ))}
-            {usersList.length == 0 && (
+            {usersList.length === 0 && (
               <div>
                 <Stack sx={{ width: '100%' }} spacing={2}>
                   <Alert severity="warning">No users have signed in yet!</Alert>
