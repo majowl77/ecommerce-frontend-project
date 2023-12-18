@@ -99,22 +99,22 @@ export default function AdminUsers() {
                   <TableCell>{user.isActive ? 'activated' : 'inactive'}</TableCell>
                   <TableCell>{user.role}</TableCell>
                   <TableCell>
-                    {/* <Select
-                      color="neutral"
-                      placeholder="Choose one…"
-                      size="sm"
-                      variant="outlined"
-                      onChange={(_, newValue) => handleRoleChange(newValue, user._id)}>
-                      {users.isLoading ? (
-                        <LinearProgress variant="plain" />
-                      ) : (
-                        Object.keys(ROLES).map((role) => (
+                    {users.isLoading ? (
+                      <LinearProgress variant="plain" />
+                    ) : (
+                      <Select
+                        color="neutral"
+                        placeholder="Choose one…"
+                        size="sm"
+                        variant="outlined"
+                        onChange={(_, newValue) => handleRoleChange(newValue, user._id)}>
+                        {Object.keys(ROLES).map((role) => (
                           <Option key={role} value={role}>
                             {role}
                           </Option>
-                        ))
-                      )}
-                    </Select> */}
+                        ))}
+                      </Select>
+                    )}
                   </TableCell>
                   <TableCell>
                     <IconButton className="adminButton" onClick={() => onRemove(user)}>
