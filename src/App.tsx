@@ -15,9 +15,10 @@ import LoginRegister from './pages/LoginRegister'
 import Footer from './components/home/Footer'
 import NavBar from './components/home/NavBar'
 import Profile from './pages/Profile'
+import { ROLES } from './types/users/usersType'
 
 function App() {
-  const { userRole } = useSelector((state: RootState) => state.usersR)
+  const { decodedUser } = useSelector((state: RootState) => state.usersR)
   const location = useLocation()
 
   return (
@@ -29,7 +30,7 @@ function App() {
         <Route path="/login" element={<LoginRegister />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/profile" element={<Profile />} />
-        {userRole === 'ADMIN' && <Route path="/admin" element={<Admin />} />}
+        {decodedUser.role === ROLES.ADMIN && <Route path="/admin" element={<Admin />} />}
         <Route path="/products/product-detail/:productId" element={<ProductDetails />} />
       </Routes>
       <ToastContainer

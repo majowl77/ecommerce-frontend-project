@@ -3,6 +3,10 @@ import { AxiosError } from 'axios'
 
 import api from '../../../api'
 import { User, UsersinitialState } from '../../../types/users/usersType'
+import { getDecodedTokenFromStorage } from '../../../utils/token'
+
+const decodedUser = getDecodedTokenFromStorage()
+console.log('🚀 ~ file: userSlice.ts:21 ~ decodedUser:', decodedUser)
 
 const initialState: UsersinitialState = {
   users: [],
@@ -10,6 +14,7 @@ const initialState: UsersinitialState = {
   isLogedOut: false,
   error: null,
   isLoading: false,
+  decodedUser,
   loggedUser: null,
   userRole: null,
   isEditForm: false,
@@ -28,17 +33,21 @@ export const loginThunk = createAsyncThunk(
     }
   }
 )
+export const getUsersThunk = createAsyncThunk('users', async () => {
+  try {
+    const res = await api.get('/api/users/admin/getAllUsers')
+    return res.data.users
+  } catch (error) {
+    console.log('🚀 ~ file: userSlice.ts:42 ~ getUsersThunk ~ error:', error)
+  }
+})
 
 const usersSlice = createSlice({
   name: 'users',
   initialState: initialState,
   reducers: {
-    getAllUsers: (state, action: PayloadAction<User[]>) => {
-      state.users = action.payload
-    },
     addOneUser: (state, action: { payload: { data: User } }) => {
       state.users = [action.payload.data, ...state.users]
-      console.log('new user added ', state.users)
     },
     getError: (state, action: PayloadAction<string>) => {
       state.error = action.payload
@@ -97,9 +106,27 @@ const usersSlice = createSlice({
     })
     builder.addCase(loginThunk.fulfilled, (state, action) => {
       state.loggedUser = action.payload.user
+      state.userRole = action.payload.user.role
       state.isLogedIn = true
       state.isLoading = false
       return state
+    })
+    builder.addCase(getUsersThunk.pending, (state, action) => {
+      state.isLoading = true
+    })
+    builder.addCase(getUsersThunk.rejected, (state, action) => {
+      const errorMsg = action.payload
+      if (typeof errorMsg === 'string') {
+        state.error = errorMsg
+      } else {
+        state.error = 'somthing went wrong :('
+      }
+      state.isLoading = false
+      return state
+    })
+    builder.addCase(getUsersThunk.fulfilled, (state, action) => {
+      state.users = action.payload
+      state.isLoading = false
     })
   }
 })

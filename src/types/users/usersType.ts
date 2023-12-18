@@ -1,15 +1,25 @@
+import { getDecodedTokenFromStorage } from '../../utils/token'
+
 export const ROLES = {
   USER: 'USER',
   ADMIN: 'ADMIN'
 }
-
 export type Role = keyof typeof ROLES
 
+export type DecodedUser = {
+  email: string
+  exp: number
+  iat: number
+  role: Role
+  userID: string
+}
 export type User = {
+  _id: string
   firstName: string
   lastName: string
   email: string
   role: Role
+  isActive: boolean
 }
 
 export type UsersinitialState = {
@@ -18,6 +28,7 @@ export type UsersinitialState = {
   isLogedOut: boolean
   error: null | string
   isLoading: boolean
+  decodedUser: any
   loggedUser: null | User
   userRole: null | Role
   isEditForm: boolean

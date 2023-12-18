@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../redux/store'
 import { usersSliceActions } from '../../redux/slices/user/userSlice'
+import { ROLES } from '../../types/users/usersType'
 
 const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
   '& .MuiBadge-badge': {
@@ -22,7 +23,7 @@ const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
 }))
 export default function NavBar() {
   const isLogedIn = useSelector((state: RootState) => state.usersR.isLogedIn)
-  const userRole = useSelector((state: RootState) => state.usersR.userRole)
+  const { decodedUser } = useSelector((state: RootState) => state.usersR)
   const isLogedOut = useSelector((state: RootState) => state.usersR.isLogedOut)
   const cartItems = useSelector((state: RootState) => state.cartReducer.cartProducts)
   const dispatch = useDispatch<AppDispatch>()
@@ -60,7 +61,7 @@ export default function NavBar() {
           <li className="elementNavBar">
             <Link to="/products"> Products</Link>
           </li>
-          {userRole === 'admin' && (
+          {decodedUser.role === ROLES.ADMIN && (
             <li className="elementNavBar">
               <Link to="/admin"> Admin</Link>
             </li>

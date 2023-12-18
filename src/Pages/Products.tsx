@@ -29,32 +29,12 @@ export default function Products() {
   const dispatch = useDispatch<AppDispatch>()
   const prodcutsList = useSelector((state: RootState) => state.productsR.productList)
   const cartList = useSelector((state: RootState) => state.cartReducer.cartProducts)
-  const errorMessage = useSelector((state: RootState) => state.productsR.error)
   const isLoading = useSelector((state: RootState) => state.productsR.isLoading)
   const [searchKeyWord, setSearchKeyWord] = useState<null | string>(null)
   const [categorieValue, setCategorieValue] = useState<null | string>('All')
   const isProductAdded = useSelector((state: RootState) => state.adminR.isProductAdded)
   const newProduct = useSelector((state: RootState) => state.adminR.newProduct)
   dispatch(navBarActions.navBarNotInHomePage())
-
-  // handling the request
-  // if (isLoading === true) {
-  //   return (
-  //     <div className="productsListContainer">
-  //       <Box sx={{ display: 'flex' }}>
-  //         <CircularProgress />
-  //       </Box>
-  //     </div>
-  //   )
-  // }
-  // // // error message handling
-  // if (errorMessage && prodcutsList.length === 0) {
-  //   return (
-  //     <Stack sx={{ width: '100%' }} spacing={2}>
-  //       <Alert severity="error">{errorMessage}</Alert>
-  //     </Stack>
-  //   )
-  // }
 
   //fetching the data form Reducx thunk
   useEffect(() => {
@@ -184,6 +164,11 @@ export default function Products() {
               prodcutsList.length > 0 &&
               prodcutsList.map((product) => (
                 <li key={product.id} className="productCard">
+                    {isLoading ? 
+                    <div >
+                      <Box sx={{ display: 'flex' }}> <CircularProgress size="sm" /> </Box>
+                    </div> : ''}
+                    
                   <div className="productsImageContainer">
                     <img src={product.image} className="productImage" />
                   </div>
