@@ -16,6 +16,7 @@ import Option from '@mui/joy/Option'
 import LinearProgress from '@mui/joy/LinearProgress'
 
 import {
+  deleteUsersThunk,
   getUsersThunk,
   grantRoleUserThunk,
   usersSliceActions
@@ -53,10 +54,10 @@ export default function AdminUsers() {
     }
   }
   //removing a User
-  function onRemove(user: User) {
-    if (user != null) {
-      // dispatch(usersSliceActions.removeUser({ userID: user.id }))
-      console.log(user)
+  function handleDeletingUser(userId: User['_id']) {
+    if (userId != null) {
+      console.log('🚀 ~ file: AdminUsers.tsx:58 ~ handleDeletingUser ~ userId:', userId)
+      dispatch(deleteUsersThunk(userId))
     }
   }
   return (
@@ -117,7 +118,9 @@ export default function AdminUsers() {
                     )}
                   </TableCell>
                   <TableCell>
-                    <IconButton className="adminButton" onClick={() => onRemove(user)}>
+                    <IconButton
+                      className="adminButton"
+                      onClick={() => handleDeletingUser(user._id)}>
                       <DeleteForeverIcon />
                     </IconButton>
                   </TableCell>

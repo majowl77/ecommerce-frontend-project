@@ -33,18 +33,18 @@ export const loginThunk = createAsyncThunk(
   }
 )
 
-export const getUsersThunk = createAsyncThunk('users', async () => {
+export const getUsersThunk = createAsyncThunk('users/getAllUsers', async () => {
   try {
     const res = await api.get('/api/users/admin/getAllUsers')
     return res.data.users
   } catch (error) {
-    console.log('🚀 ~ file: userSlice.ts:42 ~ getUsersThunk ~ error:', error)
+    console.log('🚀 ~ file: userSlice.ts:41 ~ getUsersThunk ~ error:', error)
   }
 })
 
 export const deleteUsersThunk = createAsyncThunk('users/delete', async (userId: string) => {
   try {
-    await api.delete(`/api/users/admin/deleteUser/:${userId}`)
+    await api.delete(`/api/users/admin/deleteUser/${userId}`)
     return userId
   } catch (error) {
     console.log('🚀 ~ file: userSlice.ts:51 ~ deleteUsersThunk ~ error:', error)
@@ -152,6 +152,16 @@ const usersSlice = createSlice({
     builder.addCase(grantRoleUserThunk.pending, (state, action) => {
       state.isLoading = true
     })
+    builder.addCase(grantRoleUserThunk.rejected, (state, action) => {
+      const errorMsg = action.payload
+      if (typeof errorMsg === 'string') {
+        state.error = errorMsg
+      } else {
+        state.error = 'somthing went wrong :('
+      }
+      state.isLoading = false
+      return state
+    })
     builder.addCase(grantRoleUserThunk.fulfilled, (state, action) => {
       const userId = action.payload._id
       const updatedUsers = state.users.map((user) => {
@@ -164,14 +174,19 @@ const usersSlice = createSlice({
       state.isLoading = false
       return state
     })
-    builder.addCase(grantRoleUserThunk.rejected, (state, action) => {
-      const errorMsg = action.payload
-      if (typeof errorMsg === 'string') {
-        state.error = errorMsg
-      } else {
-        state.error = 'somthing went wrong :('
-      }
-      state.isLoading = false
+    builder.addCase(deleteUsersThunk.rejected, (state, action) => {
+      // const errorMsg = action.payload
+      // if (typeof errorMsg === 'string') {
+      //   state.error = errorMsg
+      // } else {
+      //   state.error = 'somthing went wrong :('
+      // }
+      // return state
+    })
+    builder.addCase(deleteUsersThunk.fulfilled, (state, action) => {
+      const userId = action.payload
+      const updatedUsers = state.users.filter((user) => user._id !== userId)
+      state.users = updatedUsers
       return state
     })
   }
