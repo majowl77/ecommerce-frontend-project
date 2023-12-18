@@ -86,7 +86,7 @@ export default function Products() {
   }
   //adding a product to a cart
   function addProductToCart(id: number) {
-    const productToAdd = prodcutsList.find((product) => product.id === id)
+    const productToAdd = prodcutsList.find((product) => product._id === id)
     if (productToAdd != null) {
       dispatch(cartSliceAction.addCartProduct(productToAdd))
       toast.success('Product Added successfully ')
@@ -159,32 +159,36 @@ export default function Products() {
           </FormControl>
         </div>
         <div className="productsListContainer">
-          <ul className="productsList">
-            {prodcutsList &&
-              prodcutsList.length > 0 &&
-              prodcutsList.map((product) => (
-                <li key={product.id} className="productCard">
-                    {isLoading ? 
-                    <div >
-                      <Box sx={{ display: 'flex' }}> <CircularProgress size="sm" /> </Box>
-                    </div> : ''}
-                    
-                  <div className="productsImageContainer">
-                    <img src={product.image} className="productImage" />
-                  </div>
-                  <div className="productNamePrice">
-                    <h1> {product.name}</h1>
-                    <p> {product.price}$</p>
-                    <div className="productsButton">
-                      <button onClick={() => addProductToCart(product.id)}> Buy</button>
-                      <Link to={`/products/product-detail/${product.id}`}>
-                        <button id="linkToProductDetails"> More Details... </button>
-                      </Link>
+          {isLoading ? (
+            <div>
+              <Box sx={{ display: 'flex' }}>
+                {' '}
+                <CircularProgress size="sm" />{' '}
+              </Box>
+            </div>
+          ) : (
+            <ul className="productsList">
+              {prodcutsList &&
+                prodcutsList.length > 0 &&
+                prodcutsList.map((product) => (
+                  <li key={product._id} className="productCard">
+                    <div className="productsImageContainer">
+                      <img src={product.image} className="productImage" />
                     </div>
-                  </div>
-                </li>
-              ))}
-          </ul>
+                    <div className="productNamePrice">
+                      <h1> {product.name}</h1>
+                      <p> {product.price}$</p>
+                      <div className="productsButton">
+                        <button onClick={() => addProductToCart(product._id)}> Buy</button>
+                        <Link to={`/products/product-detail/${product._id}`}>
+                          <button id="linkToProductDetails"> More Details... </button>
+                        </Link>
+                      </div>
+                    </div>
+                  </li>
+                ))}
+            </ul>
+          )}
         </div>
       </div>
       <div className="pagination">

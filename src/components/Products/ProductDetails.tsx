@@ -12,7 +12,10 @@ import axios from 'axios'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router'
-import { productDetailsAtions } from '../../redux/slices/products/productDetailsSlice'
+import {
+  getSingleProductThunk,
+  productDetailsAtions
+} from '../../redux/slices/products/productDetailsSlice'
 import { productsActions } from '../../redux/slices/products/productsSlice'
 import { AppDispatch, RootState } from '../../redux/store'
 import { Product } from '../../types/products/productsTypes'
@@ -23,54 +26,30 @@ export default function ProductDetails() {
   const { productId } = useParams()
   console.log('id', productId)
   const dispatch = useDispatch<AppDispatch>()
-  const url = 'public/mock/e-commerce/products.json'
-  const prodcutsList = useSelector((state: RootState) => state.productsR.productList)
-  const productDetails = useSelector((state: RootState) => state.productsR.productList)
-  const isLoading = useSelector((state: RootState) => state.productsR.isLoading)
-  const errorMessage = useSelector((state: RootState) => state.productsR.error)
-  const currentProduct = productDetails.find((product) => product.id === Number(productId))
-  console.log('product list ', productDetails)
-  console.log('product  ', currentProduct)
+  const product = useSelector((state: RootState) => state.productDetails.product)
+  const productList = useSelector((state: RootState) => state.productsR.productList)
 
-  //fetching the data form JSON file
   useEffect(() => {
-    function fetchProductsData() {
-      axios
-        .get(url)
-        .then((response) => dispatch(productsActions.getProductsData(response.data)))
-        .catch((error) => dispatch(productsActions.getError(error.message)))
+    function fetchSingleProductData() {
+      if (typeof productId === 'string') {
+        dispatch(getSingleProductThunk(productId))
+      }
     }
-    fetchProductsData()
+    fetchSingleProductData()
   }, [])
 
-  // handling the request
-  if (isLoading === true) {
-    return (
-      <div className="productsListContainer">
-        <Box sx={{ display: 'flex' }}>
-          <CircularProgress />
-        </Box>
-      </div>
-    )
-  }
-  // handling the failure
-  if (errorMessage && !productDetails) {
-    return (
-      <Stack sx={{ width: '100%' }} spacing={2}>
-        <Alert severity="error">{errorMessage}, Company not found.</Alert>
-      </Stack>
-    )
-  }
   //adding a product to a cart
   function addProductToCart(id: number) {
-    const productToAdd = prodcutsList.find((product) => product.id === id)
-    if (productToAdd != null) {
-      dispatch(cartSliceAction.addCartProduct(productToAdd))
+    if (product) {
+      const productToAdd = productList.find((pro) => pro._id === id)
+      if (productToAdd != null) {
+        dispatch(cartSliceAction.addCartProduct(productToAdd))
+      }
     }
   }
   return (
     <div className="oneProduct">
-      {currentProduct && (
+      {product && (
         <div className="displayProductsDetails">
           <div className="bottomBorder">
             <div className="backButton">
@@ -83,17 +62,17 @@ export default function ProductDetails() {
           </div>
           <div className="insideProductDetails">
             <div className="productDetailsImage">
-              <img src={'/' + currentProduct.image} />
+              <img src={'/' + product.image} />
             </div>
             <div className="productsInfo">
-              <h1 id="productName"> {currentProduct.name}</h1>
-              <h6 id="subName"> {currentProduct.subName}</h6>
-              <p id="productPrice"> {currentProduct.price}$ </p>
-              <p id="productDescription"> {currentProduct.description} </p>
-              {currentProduct.sizes.length > 0 && (
+              <h1 id="productName"> {product.name}</h1>
+              <h6 id="subName"> {product.subName}</h6>
+              <p id="productPrice"> {product.price}$ </p>
+              <p id="productDescription"> {product.description} </p>
+              {product.sizes.length > 0 && (
                 <ButtonGroup variant="outlined" aria-label="outlined button group" color="inherit">
                   <span id="productSize">sizes:</span>
-                  {currentProduct.sizes.map((size) => (
+                  {product.sizes.map((size) => (
                     <Button>{size}</Button>
                   ))}
                 </ButtonGroup>
@@ -113,7 +92,7 @@ export default function ProductDetails() {
                 </div>
               </div>
               <div className="productButton">
-                <button id="productDButton" onClick={() => addProductToCart(currentProduct.id)}>
+                <button id="productDButton" onClick={() => addProductToCart(product._id)}>
                   Buy
                 </button>
               </div>

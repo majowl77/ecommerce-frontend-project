@@ -30,7 +30,6 @@ export default function AdminUsers() {
   const usersList = useSelector((state: RootState) => state.usersR.users)
   const users = useSelector((state: RootState) => state.usersR)
 
-  //fetching the data form JSON file
   useEffect(() => {
     function fetchUsersData() {
       dispatch(getUsersThunk())

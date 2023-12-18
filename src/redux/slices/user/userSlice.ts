@@ -174,15 +174,6 @@ const usersSlice = createSlice({
       state.isLoading = false
       return state
     })
-    builder.addCase(deleteUsersThunk.rejected, (state, action) => {
-      // const errorMsg = action.payload
-      // if (typeof errorMsg === 'string') {
-      //   state.error = errorMsg
-      // } else {
-      //   state.error = 'somthing went wrong :('
-      // }
-      // return state
-    })
     builder.addCase(deleteUsersThunk.fulfilled, (state, action) => {
       const userId = action.payload
       const updatedUsers = state.users.filter((user) => user._id !== userId)
