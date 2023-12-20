@@ -85,7 +85,7 @@ export default function Products() {
     console.log(event.target.value)
   }
   //adding a product to a cart
-  function addProductToCart(id: number) {
+  function addProductToCart(id: string) {
     const productToAdd = prodcutsList.find((product) => product._id === id)
     if (productToAdd != null) {
       dispatch(cartSliceAction.addCartProduct(productToAdd))

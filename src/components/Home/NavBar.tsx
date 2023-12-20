@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../redux/store'
 import { usersSliceActions } from '../../redux/slices/user/userSlice'
@@ -21,21 +21,25 @@ const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
     padding: '0 4px'
   }
 }))
+
 export default function NavBar() {
+  const dispatch = useDispatch<AppDispatch>()
   const isLogedIn = useSelector((state: RootState) => state.usersR.isLogedIn)
-  const { decodedUser } = useSelector((state: RootState) => state.usersR)
+  const decodedUser = useSelector((state: RootState) => state.usersR.decodedUser)
   const isLogedOut = useSelector((state: RootState) => state.usersR.isLogedOut)
   const cartItems = useSelector((state: RootState) => state.cartReducer.cartProducts)
-  const dispatch = useDispatch<AppDispatch>()
   const isNavBarInHomePage = useSelector((state: RootState) => state.navBarR.isNavBarInHome)
+  const navigate = useNavigate()
   const [scrollBackground, setScrollBackground] = useState(false)
   useEffect(() => {
     const handleScroll = () => {
       setScrollBackground(window.scrollY > 700)
     }
     window.addEventListener('scroll', handleScroll)
+    console.log('decodedUser', decodedUser)
+    console.log('isLogedIn', isLogedIn)
     return () => window.removeEventListener('scroll', handleScroll)
-  })
+  }, [decodedUser])
   const cartCounter = cartItems.reduce((totalItems, oneItem) => {
     return (totalItems += oneItem.quantity)
   }, 0)
@@ -47,7 +51,12 @@ export default function NavBar() {
   const handleClose = () => {
     setAnchorEl(null)
   }
-
+  const handleLogOut = () => {
+    dispatch(usersSliceActions.isLogedOut())
+    localStorage.removeItem('token')
+    navigate('/')
+    console.log('check the devil', decodedUser)
+  }
   return (
     <header>
       <nav
@@ -61,17 +70,18 @@ export default function NavBar() {
           <li className="elementNavBar">
             <Link to="/products"> Products</Link>
           </li>
-          {decodedUser.role === ROLES.ADMIN && (
+          {isLogedIn && decodedUser && decodedUser.role === ROLES.ADMIN ? (
             <li className="elementNavBar">
               <Link to="/admin"> Admin</Link>
             </li>
+          ) : (
+            ''
           )}
           {!isLogedIn && (
             <li className="elementNavBar" id={isLogedIn ? '' : 'loginItem'}>
               <Link to="/login"> Login</Link>
             </li>
           )}
-
           <li className="elementNavBar" id="cartItem">
             <Link to="/cart">
               <IconButton aria-label="cart" color="inherit">
@@ -82,8 +92,8 @@ export default function NavBar() {
             </Link>
           </li>
         </ul>
-        <div>
-          {isLogedIn && (
+        {decodedUser ? (
+          <div>
             <div className="elementNavBar" id="profileItem">
               <Button
                 id="basic-button"
@@ -95,7 +105,7 @@ export default function NavBar() {
                   alt="profile photo "
                   src="https://pm1.aminoapps.com/6433/2d53860cc9f31563802a703e639488110518b69c_hq.jpg"
                   className="profile-photo"
-                />{' '}
+                />
               </Button>
 
               <Menu
@@ -115,12 +125,16 @@ export default function NavBar() {
                   <Link to="/profile">Profile</Link>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
-                  <button onClick={() => dispatch(usersSliceActions.isLogedOut())}>Logout</button>
+                  <Link onClick={handleLogOut} to="/">
+                    Logout
+                  </Link>
                 </MenuItem>
               </Menu>
             </div>
-          )}
-        </div>
+          </div>
+        ) : (
+          ''
+        )}
       </nav>
     </header>
   )

@@ -61,7 +61,13 @@ export default function Login() {
         const token = response.payload.token
         toast.success('Welcome back!' + res + msg)
         localStorage.setItem('token', token)
-        //   navigate('/')
+        if (users.loggedUser?.role === 'ADMIN') {
+          console.log(
+            '🚀 ~ file: Login.tsx:65 ~ onSubmitHandler ~ users.loggedUser:',
+            users.loggedUser
+          )
+          navigate('/admin')
+        } else if (users.loggedUser?.role === 'USER') navigate('/')
       }
       if (response.meta.requestStatus === 'rejected') {
         toast.error('Login failed.' + response.payload)
@@ -72,6 +78,7 @@ export default function Login() {
         toast.error('somthing went wrong when login')
       }
     }
+    console.log(users.decodedUser, 'ddddecodedUser')
     reset()
   }
 

@@ -59,6 +59,7 @@ const productDetailsSlice = createSlice({
     })
     builder.addCase(getSingleProductThunk.fulfilled, (state, action) => {
       state.product = action.payload
+      
       state.isLoading = false
     })
   }

@@ -52,6 +52,7 @@ export default function AdminUsers() {
       }
     }
   }
+
   //removing a User
   function handleDeletingUser(userId: User['_id']) {
     if (userId != null) {
@@ -61,6 +62,8 @@ export default function AdminUsers() {
   }
   return (
     <div>
+      {users.isLoading === true && <LinearProgress color="success" value={40} variant="solid" />}
+
       <React.Fragment>
         <Typography
           component="div"
@@ -75,7 +78,7 @@ export default function AdminUsers() {
         </Typography>
         <Table size="small">
           <TableHead>
-            {usersList.length > 0 && (
+            {usersList && (
               <TableRow>
                 <TableCell> ID</TableCell>
                 <TableCell> First Name</TableCell>
@@ -89,7 +92,7 @@ export default function AdminUsers() {
             )}
           </TableHead>
           <TableBody>
-            {usersList.length > 0 &&
+            {usersList &&
               usersList.map((user) => (
                 <TableRow key={user._id}>
                   <TableCell>{user._id}</TableCell>
@@ -125,7 +128,7 @@ export default function AdminUsers() {
                   </TableCell>
                 </TableRow>
               ))}
-            {usersList.length === 0 && (
+            {usersList.length === 0 && users.isLoading === false && (
               <div>
                 <Stack sx={{ width: '100%' }} spacing={2}>
                   <Alert severity="warning">No users have signed in yet!</Alert>

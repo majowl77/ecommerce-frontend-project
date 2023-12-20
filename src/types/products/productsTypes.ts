@@ -1,12 +1,12 @@
 export type Product = {
-  _id: number
+  _id: string
   name: string
   subName?: string
   description: string
   quantity: number
   image: string
   price: number
-  categories: number[]
+  categories: string[]
   variants: string[]
   sizes: string[]
 }

@@ -19,7 +19,7 @@ export type User = {
   lastName: string
   email: string
   role: Role
-  isActive: boolean
+  isActive: boolean | null
 }
 
 export type UsersinitialState = {

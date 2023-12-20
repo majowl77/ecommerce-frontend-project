@@ -33,14 +33,17 @@ export const loginThunk = createAsyncThunk(
   }
 )
 
-export const getUsersThunk = createAsyncThunk('users/getAllUsers', async () => {
-  try {
-    const res = await api.get('/api/users/admin/getAllUsers')
-    return res.data.users
-  } catch (error) {
-    console.log('🚀 ~ file: userSlice.ts:41 ~ getUsersThunk ~ error:', error)
+export const getUsersThunk = createAsyncThunk(
+  'users/getAllUsers',
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await api.get('/api/users/admin/getAllUsers')
+      return res.data.users
+    } catch (error) {
+      if (error instanceof AxiosError) return rejectWithValue(error.response?.data.msg)
+    }
   }
-})
+)
 
 export const deleteUsersThunk = createAsyncThunk('users/delete', async (userId: string) => {
   try {
@@ -73,20 +76,11 @@ const usersSlice = createSlice({
     getError: (state, action: PayloadAction<string>) => {
       state.error = action.payload
     },
-    // removeUser: (state, action: { payload: { userID: number } }) => {
-    //   const filteredItems = state.users.filter((user) => user.id !== action.payload.userID)
-    //   state.users = filteredItems
-    // },
-    // isLogedIn: (state, action: { payload: { foundUser: User } }) => {
-    //   state.isLogedIn = true
-    //   state.isLogedOut = false
-    //   state.loggedUser = action.payload.foundUser
-    //   state.userRole = action.payload.foundUser.role
-    // },
     isLogedOut: (state) => {
       state.isLogedOut = true
       state.isLogedIn = false
-      state.userRole = null
+      state.decodedUser = null
+      state.loggedUser = null
     },
     openEditProfileForm: (state) => {
       state.isEditForm = true
@@ -127,7 +121,7 @@ const usersSlice = createSlice({
     })
     builder.addCase(loginThunk.fulfilled, (state, action) => {
       state.loggedUser = action.payload.user
-      state.userRole = action.payload.user.role
+      state.decodedUser = decodedUser
       state.isLogedIn = true
       state.isLoading = false
       return state

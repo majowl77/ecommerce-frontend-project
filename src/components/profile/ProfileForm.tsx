@@ -8,23 +8,23 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../redux/store'
 import { usersSliceActions } from '../../redux/slices/user/userSlice'
 const initialUSerState: User = {
-  id: 0,
+  _id: '',
   firstName: '',
   lastName: '',
   email: '',
-  password: '',
-  role: 'visitor'
+  role: 'USER',
+  isActive: null
 }
 export default function ProfileForm() {
   const dispatch = useDispatch<AppDispatch>()
   const [userInfo, setUserInfo] = useState<User>(initialUSerState)
   const usersList = useSelector((state: RootState) => state.usersR.users)
   const isEditForm = useSelector((state: RootState) => state.usersR.isEditForm)
-  const LoggedInUser = useSelector((state: RootState) => state.usersR.loggedUser)
+  const LoggedInUser = useSelector((state: RootState) => state.usersR.decodedUser)
 
   useEffect(() => {
-    if (isEditForm && LoggedInUser?.id) {
-      const userData = usersList.find((user) => user.id === LoggedInUser.id)
+    if (isEditForm && LoggedInUser?._id) {
+      const userData = usersList.find((user) => user._id === LoggedInUser._id)
       if (userData) {
         setUserInfo(LoggedInUser)
       }

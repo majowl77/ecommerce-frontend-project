@@ -8,6 +8,7 @@ import { adminSliceAction } from '../../../redux/slices/admin/adminSlice'
 import { AppDispatch, RootState } from '../../../redux/store'
 import { Category } from '../../../types/categories/categoriesType'
 import { adminCategoriesActions } from '../../../redux/slices/admin/adminCategorySlice'
+import { Paper } from '@mui/material'
 
 const initialCategoryState: Category = {
   id: 0,
@@ -62,7 +63,15 @@ export default function CategoriesForm() {
           <CloseIcon />
         </Button>
       </div>
-      <Box width="50%">
+      <Paper
+        elevation={0}
+        sx={{
+          height: '170px',
+          width: '350px',
+          overflow: 'auto',
+          padding: '16px',
+          marginBottom: '8px'
+        }}>
         <form onSubmit={handleSubmit}>
           <div>
             <TextField
@@ -79,12 +88,13 @@ export default function CategoriesForm() {
           </div>
           <Button
             type="submit"
-            variant="outlined"
+            variant="contained"
+            color="inherit"
             sx={{ padding: '8px', marginTop: '10px', color: '#889889' }}>
             {isEditForm ? 'Save Changes' : 'Add Category'}
           </Button>
         </form>
-      </Box>
+      </Paper>
     </div>
   )
 }

@@ -39,7 +39,7 @@ export default function ProductDetails() {
   }, [])
 
   //adding a product to a cart
-  function addProductToCart(id: number) {
+  function addProductToCart(id: string) {
     if (product) {
       const productToAdd = productList.find((pro) => pro._id === id)
       if (productToAdd != null) {

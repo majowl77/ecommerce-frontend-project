@@ -1,4 +1,4 @@
-import { Route, Routes, useLocation } from 'react-router-dom'
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import { useSelector } from 'react-redux'
 import { useEffect } from 'react'
@@ -20,7 +20,6 @@ import { ROLES } from './types/users/usersType'
 function App() {
   const { decodedUser } = useSelector((state: RootState) => state.usersR)
   const location = useLocation()
-
   return (
     <div className="App">
       {location.pathname !== '/admin' ? <NavBar /> : null}
@@ -30,7 +29,14 @@ function App() {
         <Route path="/login" element={<LoginRegister />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/profile" element={<Profile />} />
-        {decodedUser.role === ROLES.ADMIN && <Route path="/admin" element={<Admin />} />}
+
+        <Route
+          path="/admin"
+          element={
+            decodedUser && decodedUser.role === ROLES.ADMIN ? <Admin /> : <Navigate to="/" />
+          }
+        />
+
         <Route path="/products/product-detail/:productId" element={<ProductDetails />} />
       </Routes>
       <ToastContainer

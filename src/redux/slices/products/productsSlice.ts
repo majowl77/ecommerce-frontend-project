@@ -20,6 +20,8 @@ export const getProductsThunk = createAsyncThunk('products', async () => {
   }
 })
 
+
+
 const productSlice = createSlice({
   name: 'productsList',
   initialState: initialState,
