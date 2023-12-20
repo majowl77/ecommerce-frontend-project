@@ -47,13 +47,11 @@ export default function AdminProducts() {
   //** deleting a product */
   function handleDeletingProduct(productId: Product['_id']) {
     if (productId != null) {
-      console.log('🚀 ~ file: AdminProducts.tsx:50 ~ handleDeletingProduct ~ productId:', productId)
       dispatch(deleteProductThunk(productId))
     }
   }
   //open Edit product form
   function onEdit(productId: string) {
-    console.log('🚀 ~ file: AdminProducts.tsx:55 ~ onEdit ~ productId:', productId)
     dispatch(adminSliceAction.openEditProductForm(productId))
     dispatch(adminSliceAction.setPopUp(true))
     function fetchSingleProductData() {

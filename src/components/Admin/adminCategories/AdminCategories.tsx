@@ -8,6 +8,7 @@ import TableRow from '@mui/material/TableRow'
 import Typography from '@mui/material/Typography'
 import { IconButton } from '@mui/material'
 import Button from '@mui/material/Button'
+import LinearProgress from '@mui/joy/LinearProgress'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import EditIcon from '@mui/icons-material/Edit'
 import AddBoxIcon from '@mui/icons-material/AddBox'
@@ -18,59 +19,62 @@ import CircularProgress from '@mui/material/CircularProgress'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../../redux/store'
-import { adminCategoriesActions } from '../../../redux/slices/admin/adminCategorySlice'
+import {
+  adminCategoriesActions,
+  deleteCategoryThunk,
+  getAllCategoriesThunk,
+  getSingleCategoryThunk
+} from '../../../redux/slices/admin/adminCategorySlice'
 import { Category } from '../../../types/categories/categoriesType'
 import CategoriesForm from './CategoriesFrom'
+import { toast } from 'react-toastify'
 
 export default function AdminCategories() {
   const dispatch = useDispatch<AppDispatch>()
-  const url = 'public/mock/e-commerce/categories.json'
   const categoryList = useSelector((state: RootState) => state.categoriesR.categoryList)
-  const errorMessage = useSelector((state: RootState) => state.categoriesR.error)
   const isLoading = useSelector((state: RootState) => state.categoriesR.isLoading)
   const popUp = useSelector((state: RootState) => state.categoriesR.popUp)
   const isEditForm = useSelector((state: RootState) => state.categoriesR.isEditForm)
 
   useEffect(() => {
-    function fetchCategoriesData() {
-      axios
-        .get(url)
-        .then((response) => dispatch(adminCategoriesActions.getCategories(response.data)))
-        .catch((error) => dispatch(adminCategoriesActions.getError(error.message)))
+    const handleGetCategories = async () => {
+      dispatch(getAllCategoriesThunk())
     }
-    fetchCategoriesData()
+    handleGetCategories()
   }, [])
-  // handling the request
-  if (isLoading === true) {
-    return (
-      <Box sx={{ display: 'flex', width: 60, height: 23 }}>
-        <CircularProgress />
-      </Box>
-    )
-  }
-  // error message handling
-  if (errorMessage && categoryList.length === 0) {
-    return (
-      <Stack sx={{ width: '100%' }} spacing={2}>
-        <Alert severity="error">{errorMessage}</Alert>
-      </Stack>
-    )
-  }
-  //removing a category
-  function onRemove(category: Category) {
-    if (category != null) {
-      dispatch(adminCategoriesActions.removeCategory({ categoryID: category.id }))
-      console.log(category)
+
+  //deleting a category
+  async function handleDelete(categoryID: Category['_id']) {
+    console.log(categoryID)
+    if (categoryID != null) {
+      const res = await dispatch(deleteCategoryThunk(categoryID))
+      if (res.meta.requestStatus === 'fulfilled') {
+        toast.success('Category deleted successfully !')
+        return
+      }
+      if (res.meta.requestStatus === 'rejected') {
+        toast.error("Can't delete the category!")
+        return
+      }
     }
   }
   //open Edit category form
-  function onEdit(categoryID: number) {
+  function onEdit(categoryID: string) {
+    console.log('🚀 ~ file: AdminCategories.tsx:62 ~ onEdit ~ categoryID:', categoryID)
     dispatch(adminCategoriesActions.openEditCategoryForm(categoryID))
     dispatch(adminCategoriesActions.setPopUp(true))
+    function fetchSingleCategoryData() {
+      if (typeof categoryID === 'string') {
+        dispatch(getSingleCategoryThunk(categoryID))
+      }
+    }
+    fetchSingleCategoryData()
   }
 
   return (
     <div>
+      {isLoading === true && <LinearProgress color="success" value={40} variant="solid" />}
+
       <React.Fragment>
         <Typography
           component="div"
@@ -94,16 +98,16 @@ export default function AdminCategories() {
           </TableHead>
           <TableBody>
             {categoryList.map((category) => (
-              <TableRow key={category.id}>
-                <TableCell>{category.id}</TableCell>
+              <TableRow key={category._id}>
+                <TableCell>{category._id}</TableCell>
                 <TableCell>{category.name}</TableCell>
                 <TableCell>
-                  <IconButton className="adminButton" onClick={() => onRemove(category)}>
+                  <IconButton className="adminButton" onClick={() => handleDelete(category._id)}>
                     <DeleteForeverIcon />
                   </IconButton>
                 </TableCell>
                 <TableCell>
-                  <IconButton className="adminButton" onClick={() => onEdit(category.id)}>
+                  <IconButton className="adminButton" onClick={() => onEdit(category._id)}>
                     <EditIcon />
                   </IconButton>
                 </TableCell>

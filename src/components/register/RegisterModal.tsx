@@ -43,7 +43,7 @@ export default function RegisterModal(prop: Prop) {
             Hello there,
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            {message ? message.msg : ''}
+            {message && typeof message === 'object' ? message.msg : message}
           </Typography>
         </Box>
       </Modal>

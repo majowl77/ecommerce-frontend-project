@@ -1,22 +1,87 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AxiosError } from 'axios'
+
+import api from '../../../api'
 import { CategoriesState, Category } from '../../../types/categories/categoriesType'
 
 const initialState: CategoriesState = {
   categoryList: [],
   error: null,
   isLoading: true,
-  categoryID: null,
+  categoryID: '',
   isEditForm: false,
-  popUp: false
+  popUp: false,
+  category: null
 }
+// --Admin Category Management CRUD operations--
+export const getAllCategoriesThunk = createAsyncThunk(
+  'categories',
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await api.get('/api/categories')
+      return res.data
+    } catch (error) {
+      if (error instanceof AxiosError) return rejectWithValue(error.response?.data.msg)
+    }
+  }
+)
 
-// export const categoryThunk = createAsyncThunk('categories', async ({ rejectWithValue }) => {
-//   try {
-//   } catch (error) {
-//     if (error instanceof AxiosError) return rejectWithValue(error.response?.data.msg)
-//   }
-// })
+export const getSingleCategoryThunk = createAsyncThunk(
+  'users/getSingleCategory',
+  async (categoryId: string) => {
+    try {
+      const res = await api.get(`/api/categories/${categoryId}`)
+      return res.data
+    } catch (error) {
+      console.log('🚀 ~ file: adminCategorySlice.ts:35 ~ error:', error)
+    }
+  }
+)
+
+export const deleteCategoryThunk = createAsyncThunk(
+  'admin/deleteCategory',
+  async (categoryId: string, { rejectWithValue }) => {
+    try {
+      await api.delete(`/api/categories/${categoryId}`)
+      return categoryId
+    } catch (error) {
+      if (error instanceof AxiosError) return rejectWithValue(error.response?.data.msg)
+    }
+  }
+)
+
+export const createAdminCategoryThunk = createAsyncThunk(
+  'admin/createCategory',
+  async (categoryData: Omit<Category, '_id'>, { rejectWithValue }) => {
+    try {
+      const res = await api.post('/api/categories', categoryData)
+      return res.data.category
+    } catch (error) {
+      console.log('🚀 ~ file: adminCategorySlice.ts:60 ~ error:', error)
+      if (error instanceof AxiosError) return rejectWithValue(error.response?.data.msg)
+    }
+  }
+)
+
+export const updateAdminCategoryThunk = createAsyncThunk(
+  'admin/updateCategory',
+  async (
+    {
+      categoryData,
+      editedCategoryId
+    }: { categoryData: Omit<Category, '_id'>; editedCategoryId: Category['_id'] },
+    { rejectWithValue }
+  ) => {
+    try {
+      const res = await api.put(`/api/categories/${editedCategoryId}`, categoryData)
+      console.log('🚀 ~ file: adminCategorySlice.ts:78 ~ res:', res.data)
+      return res.data.updatedCategory
+    } catch (error) {
+      if (error instanceof AxiosError) return rejectWithValue(error.response?.data.msg)
+    }
+  }
+)
+
 const adminCategoriesSlice = createSlice({
   name: 'categories',
   initialState: initialState,
@@ -33,22 +98,22 @@ const adminCategoriesSlice = createSlice({
       state.error = action.payload
       state.isLoading = false
     },
-    removeCategory: (state, action: { payload: { categoryID: number } }) => {
+    removeCategory: (state, action: { payload: { categoryID: string } }) => {
       const filteredItems = state.categoryList.filter(
-        (category) => category.id !== action.payload.categoryID
+        (category) => category._id !== action.payload.categoryID
       )
       state.categoryList = filteredItems
     },
-    openEditCategoryForm: (state, action: PayloadAction<number>) => {
+    openEditCategoryForm: (state, action: PayloadAction<string>) => {
       state.categoryID = action.payload
       state.isEditForm = true
     },
     editCategory: (
       state,
-      action: PayloadAction<{ editedCategoryId: number | null; category: Category }>
+      action: PayloadAction<{ editedCategoryId: string | null; category: Category }>
     ) => {
       const { editedCategoryId, category } = action.payload
-      const categoryIndex = state.categoryList.findIndex((c) => c.id === editedCategoryId)
+      const categoryIndex = state.categoryList.findIndex((c) => c._id === editedCategoryId)
       if (categoryIndex !== -1) {
         state.categoryList[categoryIndex] = {
           ...state.categoryList[categoryIndex],
@@ -66,6 +131,107 @@ const adminCategoriesSlice = createSlice({
         state.popUp = false
       }
     }
+  },
+  extraReducers: (builder) => {
+    builder.addCase(getAllCategoriesThunk.pending, (state, action) => {
+      state.isLoading = true
+    })
+    builder.addCase(getAllCategoriesThunk.rejected, (state, action) => {
+      const errorMsg = action.payload
+      if (typeof errorMsg === 'string') {
+        state.error = errorMsg
+      } else {
+        state.error = 'somthing went wrong :('
+      }
+      state.isLoading = false
+      return state
+    })
+    builder.addCase(getAllCategoriesThunk.fulfilled, (state, action) => {
+      state.categoryList = action.payload
+      state.isLoading = false
+      return state
+    })
+    builder.addCase(deleteCategoryThunk.pending, (state, action) => {
+      state.isLoading = true
+    })
+    builder.addCase(deleteCategoryThunk.rejected, (state, action) => {
+      const errorMsg = action.payload
+      if (typeof errorMsg === 'string') {
+        state.error = errorMsg
+      } else {
+        state.error = 'somthing went wrong :('
+      }
+      state.isLoading = false
+      return state
+    })
+    builder.addCase(deleteCategoryThunk.fulfilled, (state, action) => {
+      const categoryId = action.payload
+      const updatedProducts = state.categoryList.filter((category) => category._id !== categoryId)
+      state.categoryList = updatedProducts
+      state.isLoading = false
+
+      return state
+    })
+    builder.addCase(createAdminCategoryThunk.pending, (state, action) => {
+      state.isLoading = true
+    })
+    builder.addCase(createAdminCategoryThunk.rejected, (state, action) => {
+      const errorMsg = action.payload
+      if (typeof errorMsg === 'string') {
+        state.error = errorMsg
+      } else {
+        state.error = 'somthing went wrong :('
+      }
+      state.isLoading = false
+      return state
+    })
+    builder.addCase(createAdminCategoryThunk.fulfilled, (state, action) => {
+      state.categoryList = [...state.categoryList, action.payload]
+      state.isLoading = false
+      return state
+    })
+    builder.addCase(updateAdminCategoryThunk.pending, (state, action) => {
+      state.isLoading = true
+    })
+    builder.addCase(updateAdminCategoryThunk.rejected, (state, action) => {
+      const errorMsg = action.payload
+      if (typeof errorMsg === 'string') {
+        state.error = errorMsg
+      } else {
+        state.error = 'somthing went wrong :('
+      }
+      state.isLoading = false
+      return state
+    })
+    builder.addCase(updateAdminCategoryThunk.fulfilled, (state, action) => {
+      const updatedCategory = action.payload
+      const updatedCategories = state.categoryList.map((category) => {
+        if (category._id === updatedCategory._id) {
+          return updatedCategory
+        }
+        return category
+      })
+      state.categoryList = updatedCategories
+      state.isLoading = false
+      return state
+    })
+    builder.addCase(getSingleCategoryThunk.pending, (state, action) => {
+      state.isLoading = true
+    })
+    builder.addCase(getSingleCategoryThunk.rejected, (state, action) => {
+      const errorMsg = action.payload
+      if (typeof errorMsg === 'string') {
+        state.error = errorMsg
+      } else {
+        state.error = 'somthing went wrong :('
+      }
+      state.isLoading = false
+      return state
+    })
+    builder.addCase(getSingleCategoryThunk.fulfilled, (state, action) => {
+      state.category = action.payload
+      state.isLoading = false
+    })
   }
 })
 

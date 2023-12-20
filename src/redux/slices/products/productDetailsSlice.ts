@@ -10,7 +10,7 @@ const initialState: ProductInitialState = {
 }
 
 export const getSingleProductThunk = createAsyncThunk(
-  'users/getAllUsers',
+  'users/getSingleProduct',
   async (productId: string) => {
     try {
       const res = await api.get(`/api/products/${productId}`)
@@ -59,7 +59,7 @@ const productDetailsSlice = createSlice({
     })
     builder.addCase(getSingleProductThunk.fulfilled, (state, action) => {
       state.product = action.payload
-      
+
       state.isLoading = false
     })
   }

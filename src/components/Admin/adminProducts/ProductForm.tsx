@@ -2,8 +2,6 @@ import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import CloseIcon from '@mui/icons-material/Close'
-import Input from '@mui/joy/Input'
-import FormLabel from '@mui/joy/FormLabel'
 import InputAdornment from '@mui/material/InputAdornment'
 import { Paper } from '@mui/material'
 
@@ -35,7 +33,6 @@ export default function ProductForm() {
   const dispatch = useDispatch<AppDispatch>()
   const [product, setProduct] = useState<Product>(initialProductState)
   const [image, setImage] = useState<File | undefined>(undefined)
-  const productItems = useSelector((state: RootState) => state.adminR.productItems)
   const isEditForm = useSelector((state: RootState) => state.adminR.isEditForm)
   const editedProductId = useSelector((state: RootState) => state.adminR.productID)
   const updatedProduct = useSelector((state: RootState) => state.productDetails.product)
@@ -44,7 +41,6 @@ export default function ProductForm() {
 
   useEffect(() => {
     if (isEditForm && editedProductId) {
-      console.log('🚀 ~ file: ProductForm.tsx:43 ~ useEffect ~ isEditForm:', isEditForm)
       if (updatedProduct) {
         console.log('🚀 ~ file: ProductForm.tsx:49 ~ useEffect ~ updatedProduct:', updatedProduct)
         setProduct(updatedProduct)
@@ -104,7 +100,6 @@ export default function ProductForm() {
     }
 
     if (isEditForm && updatedProduct) {
-      console.log('🌟🌟🌟🌟🌟🌟🌟 updated product', product)
       dispatch(updateAdminProductsThunk({ productData: formData, editedProductId }))
     } else {
       dispatch(createAdminProductsThunk(formData))

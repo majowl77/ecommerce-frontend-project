@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography'
 import { useForm } from 'react-hook-form'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
-import { DevTool } from '@hookform/devtools'
+import CircularProgress from '@mui/material/CircularProgress'
 import { useNavigate } from 'react-router'
 import Avatar from '@mui/material/Avatar'
 import CssBaseline from '@mui/material/CssBaseline'
@@ -136,7 +136,7 @@ export default function Login() {
                 type="submit"
                 fullWidth
                 sx={{ mt: 3, mb: 2 }}>
-                {users.isLoading ? 'Loging...' : 'Login'}
+                {users.isLoading ? 'Logging...' : 'Login'}
               </Button>
             </form>
             <Grid container>

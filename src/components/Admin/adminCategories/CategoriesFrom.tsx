@@ -7,11 +7,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import { adminSliceAction } from '../../../redux/slices/admin/adminSlice'
 import { AppDispatch, RootState } from '../../../redux/store'
 import { Category } from '../../../types/categories/categoriesType'
-import { adminCategoriesActions } from '../../../redux/slices/admin/adminCategorySlice'
+import {
+  adminCategoriesActions,
+  createAdminCategoryThunk,
+  updateAdminCategoryThunk
+} from '../../../redux/slices/admin/adminCategorySlice'
 import { Paper } from '@mui/material'
 
 const initialCategoryState: Category = {
-  id: 0,
+  _id: '',
   name: ''
 }
 
@@ -21,16 +25,21 @@ export default function CategoriesForm() {
   const categoryList = useSelector((state: RootState) => state.categoriesR.categoryList)
   const isEditForm = useSelector((state: RootState) => state.categoriesR.isEditForm)
   const editedCategoryId = useSelector((state: RootState) => state.categoriesR.categoryID)
+  const updatedCategory = useSelector((state: RootState) => state.categoriesR.category)
   const popUp = useSelector((state: RootState) => state.categoriesR.popUp)
 
   useEffect(() => {
     if (isEditForm && editedCategoryId) {
-      const categoryData = categoryList.find((category) => category.id === editedCategoryId)
-      if (categoryData) {
-        setCategory(categoryData)
+      console.log('🚀 ~ file: CategoriesFrom.tsx:28 ~ useEffect ~ isEditForm:', isEditForm)
+      if (updatedCategory) {
+        console.log(
+          '🚀 ~ file: CategoriesFrom.tsx:34 ~ useEffect ~ updatedCategory:',
+          updatedCategory
+        )
+        setCategory(updatedCategory)
       }
     }
-  }, [isEditForm, editedCategoryId])
+  }, [isEditForm, editedCategoryId, updatedCategory])
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -43,13 +52,15 @@ export default function CategoriesForm() {
     dispatch(adminCategoriesActions.setPopUp(false))
     dispatch(adminCategoriesActions.closeEditForm())
   }
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
-    if (isEditForm) {
-      dispatch(adminCategoriesActions.editCategory({ editedCategoryId, category }))
+    if (isEditForm && updatedCategory) {
+      console.log('🚀 we are hereeee ~ handleSubmit ~ isEditForm:', isEditForm)
+      dispatch(updateAdminCategoryThunk({ categoryData: category, editedCategoryId }))
     } else {
-      category.id = +new Date()
-      dispatch(adminCategoriesActions.addCategory({ category }))
+      console.log('ihave got hereeeeee')
+      dispatch(createAdminCategoryThunk({ name: category.name }))
     }
 
     setCategory(initialCategoryState)
