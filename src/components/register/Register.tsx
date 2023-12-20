@@ -4,11 +4,8 @@ import { useNavigate } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
-import { DevTool } from '@hookform/devtools'
 import CssBaseline from '@mui/material/CssBaseline'
 import TextField from '@mui/material/TextField'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Checkbox from '@mui/material/Checkbox'
 import Link from '@mui/material/Link'
 import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
@@ -16,14 +13,14 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import { toast } from 'react-toastify'
 import Container from '@mui/material/Container'
-import { z, ZodError } from 'zod'
 
-import { registerThunk, usersSliceActions } from '../../redux/slices/user/userSlice'
+import { registerThunk } from '../../redux/slices/user/userSlice'
 import { AppDispatch, RootState } from '../../redux/store'
-import { SignUpFormValues } from '../../types/loginRegister/loginRegister'
+import { RegisterSchema } from '../../types/loginRegister/loginRegister'
 import { logInRegisterActions } from '../../redux/slices/loginRegister/loginRegisterSlice'
 import { zodResolver } from '@hookform/resolvers/zod'
 import RegisterModal from './RegisterModal'
+import { registerSchema } from '../../utils/constants'
 
 function Copyright(props: any) {
   return (
@@ -37,23 +34,6 @@ function Copyright(props: any) {
     </Typography>
   )
 }
-
-const registerSchema = z.object({
-  firstName: z
-    .string()
-    .min(3, 'First name must be at least 8 characters')
-    .max(30, 'First name must be less than or equal to 30 characters')
-    .regex(/^[a-zA-Z\s]*$/, 'First name must consist of letters and spaces only.'),
-  lastName: z
-    .string()
-    .min(3, 'Last name must be at least 8 characters')
-    .max(30, 'First name must be less than or equal to 30 characters')
-    .regex(/^[a-zA-Z\s]*$/, 'First name must consist of letters and spaces only.'),
-  email: z.string().email(),
-  password: z.string().min(8, 'Password must be at least 8 characters')
-})
-
-export type RegisterSchema = z.infer<typeof registerSchema>
 
 export default function Register() {
   const dispatch = useDispatch<AppDispatch>()
@@ -82,10 +62,10 @@ export default function Register() {
     try {
       const response = await dispatch(registerThunk(userData))
       if (response.meta.requestStatus === 'fulfilled') {
-        const msg = response.payload.msg
         setOpen(true)
-        // toast.success(msg)
-        // navigate('/')
+        setTimeout(() => {
+          navigate('/')
+        }, 10000)
       }
       if (response.meta.requestStatus === 'rejected') {
         // Handle error from zod in the backend

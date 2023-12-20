@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { AxiosError } from 'axios'
-import z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
@@ -18,11 +17,12 @@ import Box from '@mui/material/Box'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Container from '@mui/material/Container'
 
-import { LogInFormValues } from '../../types/loginRegister/loginRegister'
 import { AppDispatch, RootState } from '../../redux/store'
-import { loginThunk, usersSliceActions } from '../../redux/slices/user/userSlice'
+import { loginThunk } from '../../redux/slices/user/userSlice'
 import { logInRegisterActions } from '../../redux/slices/loginRegister/loginRegisterSlice'
 import api from '../../api'
+import { loginSchema } from '../../utils/constants'
+import { LoginSchema } from '../../types/loginRegister/loginRegister'
 
 function Copyright(props: any) {
   return (
@@ -36,12 +36,6 @@ function Copyright(props: any) {
   )
 }
 
-const loginSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(8, 'Password must be at least 8 characters')
-})
-
-type LoginSchema = z.infer<typeof loginSchema>
 export default function Login() {
   const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>()
@@ -49,7 +43,6 @@ export default function Login() {
 
   const {
     register,
-    control,
     handleSubmit,
     formState: { errors },
     reset

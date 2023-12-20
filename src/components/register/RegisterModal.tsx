@@ -1,22 +1,12 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import Modal from '@mui/material/Modal'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
+import { style } from '../../utils/constants'
 
-const style = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #fffff',
-  boxShadow: 24,
-  p: 4
-}
 type Prop = {
   open: boolean
   handleOpen: () => void
@@ -24,11 +14,24 @@ type Prop = {
 }
 export default function RegisterModal(prop: Prop) {
   const message = useSelector((state: RootState) => state.usersR.message)
-  console.log('🚀 ~ file: RegisterModal.tsx:27 ~ RegisterModal ~ message:', message)
-  // Use useEffect to automatically open the modal when there's a message
+  const [countdown, setCountdown] = useState(10)
+
   useEffect(() => {
     if (message) {
       prop.handleOpen()
+    }
+    let timer: NodeJS.Timeout
+
+    if (prop.open) {
+      // Start the countdown when the modal opens
+      timer = setInterval(() => {
+        setCountdown((prevCountdown) => (prevCountdown > 0 ? prevCountdown - 1 : 0))
+      }, 1000)
+    }
+
+    return () => {
+      // Clear the timer when the modal closes
+      clearInterval(timer)
     }
   }, [message])
   return (
@@ -44,6 +47,11 @@ export default function RegisterModal(prop: Prop) {
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             {message && typeof message === 'object' ? message.msg : message}
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            {countdown > 0
+              ? `Redirecting to the home page in ${countdown} seconds`
+              : 'Auto-closing...'}
           </Typography>
         </Box>
       </Modal>

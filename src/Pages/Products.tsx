@@ -72,7 +72,7 @@ export default function Products() {
     }
     if (categorieValue !== 'All') {
       newProductsList = newProductsList.filter((product) =>
-        product.categories.includes(Number(categorieValue))
+        product.categories.includes(categorieValue)
       )
     }
     return newProductsList
@@ -104,13 +104,13 @@ export default function Products() {
   const endIndex = startIndex + rowsPerPage
   const productsToDisplay = filteredProductsList.slice(startIndex, endIndex)
 
-  // Apply search and category filtering only to the products to display
-  const filteredProductsToShow = productsToDisplay.filter((product) => {
-    const matchesSearch = product.name.toLowerCase().includes(searchKeyWord?.toLowerCase() || '')
-    const matchesCategory =
-      categorieValue === 'All' || product.categories.includes(Number(categorieValue))
-    return matchesSearch && matchesCategory
-  })
+  // // Apply search and category filtering only to the products to display
+  // const filteredProductsToShow = productsToDisplay.filter((product) => {
+  //   const matchesSearch = product.name.toLowerCase().includes(searchKeyWord?.toLowerCase() || '')
+  //   // const matchesCategory =
+  //   //   categorieValue === 'All' || product.categories.includes(Number(categorieValue))
+  //   return matchesSearch && matchesCategory
+  // })
   return (
     <div className="products">
       <h2>products</h2>
