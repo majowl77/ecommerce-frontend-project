@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
+import { AxiosError } from 'axios'
+import z from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useDispatch, useSelector } from 'react-redux'
+import { toast } from 'react-toastify'
 import Typography from '@mui/material/Typography'
 import { useForm } from 'react-hook-form'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
-import { useDispatch, useSelector } from 'react-redux'
-import { toast } from 'react-toastify'
 import { DevTool } from '@hookform/devtools'
 import { useNavigate } from 'react-router'
 import Avatar from '@mui/material/Avatar'
@@ -19,7 +22,7 @@ import { LogInFormValues } from '../../types/loginRegister/loginRegister'
 import { AppDispatch, RootState } from '../../redux/store'
 import { loginThunk, usersSliceActions } from '../../redux/slices/user/userSlice'
 import { logInRegisterActions } from '../../redux/slices/loginRegister/loginRegisterSlice'
-import { AxiosError } from 'axios'
+import api from '../../api'
 
 function Copyright(props: any) {
   return (
@@ -33,6 +36,12 @@ function Copyright(props: any) {
   )
 }
 
+const loginSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8, 'Password must be at least 8 characters')
+})
+
+type LoginSchema = z.infer<typeof loginSchema>
 export default function Login() {
   const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>()
@@ -44,14 +53,16 @@ export default function Login() {
     handleSubmit,
     formState: { errors },
     reset
-  } = useForm<LogInFormValues>()
+  } = useForm<LoginSchema>({
+    resolver: zodResolver(loginSchema)
+  })
 
   // for signup Managing :
   function HandleSignUpDisplay() {
     dispatch(logInRegisterActions.setSignUpPage())
   }
 
-  async function onSubmitHandler(data: LogInFormValues) {
+  async function onSubmitHandler(data: LoginSchema) {
     try {
       const response = await dispatch(loginThunk(data))
 
@@ -59,19 +70,17 @@ export default function Login() {
         const res = response.payload.user.firstName
         const msg = response.payload.message
         const token = response.payload.token
-        toast.success('Welcome back!' + res + msg)
+        const user = response.payload.user
+        toast.success(`Welcome back! ${res} ${msg}`)
+        console.log('🚀 ~ file: Login.tsx:65 ~ onSubmitHandler ~ users.user:', user)
         localStorage.setItem('token', token)
-        if (users.loggedUser?.role === 'ADMIN') {
-          console.log(
-            '🚀 ~ file: Login.tsx:65 ~ onSubmitHandler ~ users.loggedUser:',
-            users.loggedUser
-          )
+        api.defaults.headers['Authorization'] = `Bearer ${token}`
+        if (user.role === 'ADMIN') {
           navigate('/admin')
-        } else if (users.loggedUser?.role === 'USER') navigate('/')
+        } else if (user.role === 'USER') navigate('/')
       }
       if (response.meta.requestStatus === 'rejected') {
         toast.error('Login failed.' + response.payload)
-        //   navigate('/admin')
       }
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -109,13 +118,7 @@ export default function Login() {
                 type="email"
                 helperText={errors.email ? errors.email.message : ''}
                 error={!!errors.email}
-                {...register('email', {
-                  required: 'Email is required',
-                  pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                    message: 'Invalid email address. email@example.com'
-                  }
-                })}
+                {...register('email')}
               />
               <TextField
                 label="Password"
@@ -125,13 +128,7 @@ export default function Login() {
                 type="password"
                 error={!!errors.password}
                 helperText={errors.password ? errors.password.message : ''}
-                {...register('password', {
-                  required: 'Password is required',
-                  minLength: {
-                    value: 8,
-                    message: 'Password must be at least 8 characters long'
-                  }
-                })}
+                {...register('password')}
               />
               <Button
                 variant="contained"

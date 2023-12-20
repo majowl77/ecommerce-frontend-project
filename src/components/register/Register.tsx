@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
-import { AppDispatch, RootState } from '../../redux/store'
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
+import { DevTool } from '@hookform/devtools'
 import CssBaseline from '@mui/material/CssBaseline'
 import TextField from '@mui/material/TextField'
 import FormControlLabel from '@mui/material/FormControlLabel'
@@ -14,18 +14,22 @@ import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
-import Container from '@mui/material/Container'
-import { usersSliceActions } from '../../redux/slices/user/userSlice'
 import { toast } from 'react-toastify'
-import { DevTool } from '@hookform/devtools'
+import Container from '@mui/material/Container'
+import { z, ZodError } from 'zod'
+
+import { registerThunk, usersSliceActions } from '../../redux/slices/user/userSlice'
+import { AppDispatch, RootState } from '../../redux/store'
 import { SignUpFormValues } from '../../types/loginRegister/loginRegister'
 import { logInRegisterActions } from '../../redux/slices/loginRegister/loginRegisterSlice'
+import { zodResolver } from '@hookform/resolvers/zod'
+import RegisterModal from './RegisterModal'
 
 function Copyright(props: any) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
+      <Link color="inherit" href="#">
         Your Website
       </Link>{' '}
       {new Date().getFullYear()}
@@ -33,41 +37,72 @@ function Copyright(props: any) {
     </Typography>
   )
 }
+
+const registerSchema = z.object({
+  firstName: z
+    .string()
+    .min(3, 'First name must be at least 8 characters')
+    .max(30, 'First name must be less than or equal to 30 characters')
+    .regex(/^[a-zA-Z\s]*$/, 'First name must consist of letters and spaces only.'),
+  lastName: z
+    .string()
+    .min(3, 'Last name must be at least 8 characters')
+    .max(30, 'First name must be less than or equal to 30 characters')
+    .regex(/^[a-zA-Z\s]*$/, 'First name must consist of letters and spaces only.'),
+  email: z.string().email(),
+  password: z.string().min(8, 'Password must be at least 8 characters')
+})
+
+export type RegisterSchema = z.infer<typeof registerSchema>
+
 export default function Register() {
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
   const isLogin = useSelector((state: RootState) => state.loginRegisterR.signUpPage)
   const usersList = useSelector((state: RootState) => state.usersR.users)
-  const form = useForm<SignUpFormValues>()
+  const [open, setOpen] = useState(false)
+  const handleOpen = () => setOpen(true)
+  const handleClose = () => setOpen(false)
   const {
     register,
-    control,
     handleSubmit,
     formState: { errors }
-  } = form
-  
+  } = useForm<RegisterSchema>({
+    resolver: zodResolver(registerSchema)
+  })
+
   // for login Managing :
   function HandleLoginDisplay() {
     dispatch(logInRegisterActions.setLoginPage())
   }
 
-  function onSubmitHandler(data: SignUpFormValues) {
+  async function onSubmitHandler(data: RegisterSchema) {
     console.log('date before ', data)
+    const userData = data
     try {
-      const newUser = usersList.find((userData) => userData.email === data.email)
-      if (newUser) {
-        toast.error('Email already existed ! try to login inested ')
-      } else if (!newUser) {
-        data.id = +new Date()
-        data.role = 'USER'
-        dispatch(usersSliceActions.addOneUser({ data }))
-        console.log('data after ', data)
-        toast.success('Registration successful! Welcome to GreenPlant ')
-        navigate('/')
-      } else {
-        toast.error('Registration failed ')
+      const response = await dispatch(registerThunk(userData))
+      if (response.meta.requestStatus === 'fulfilled') {
+        const msg = response.payload.msg
+        setOpen(true)
+        // toast.success(msg)
+        // navigate('/')
       }
-    } catch (error) {}
+      if (response.meta.requestStatus === 'rejected') {
+        // Handle error from zod in the backend
+        const errors = response.payload
+        if (typeof errors === 'string') {
+          toast.error(errors)
+          return
+        }
+
+        // Iterate through each error and display a toast for each
+        errors.forEach((error: any) => {
+          toast.error(`${error.path.join('.')} ${error.message.replace(/String /i, '')}`)
+        })
+      }
+    } catch (error) {
+      toast.error(error + 'Registration failed ')
+    }
   }
   return (
     <div className="register">
@@ -96,12 +131,7 @@ export default function Register() {
                   margin="normal"
                   error={!!errors.firstName}
                   helperText={errors.firstName ? errors.firstName.message : ''}
-                  {...register('firstName', {
-                    pattern: {
-                      value: /^[a-zA-Z\s]*$/,
-                      message: 'First name must consist of letters and spaces only.'
-                    }
-                  })}
+                  {...register('firstName')}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -112,12 +142,7 @@ export default function Register() {
                   margin="normal"
                   error={!!errors.lastName}
                   helperText={errors.lastName ? errors.lastName.message : ''}
-                  {...register('lastName', {
-                    pattern: {
-                      value: /^[a-zA-Z\s]*$/,
-                      message: 'Last name must consist of letters and spaces only.'
-                    }
-                  })}
+                  {...register('lastName')}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -128,12 +153,7 @@ export default function Register() {
                   margin="normal"
                   helperText={errors.email ? errors.email.message : ''}
                   error={!!errors.email}
-                  {...register('email', {
-                    pattern: {
-                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                      message: 'Invalid email address. email@example.com'
-                    }
-                  })}
+                  {...register('email')}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -144,13 +164,7 @@ export default function Register() {
                   margin="normal"
                   error={!!errors.password}
                   helperText={errors.password ? errors.password.message : ''}
-                  {...register('password', {
-                    required: 'Password is required',
-                    minLength: {
-                      value: 8,
-                      message: 'Password must be at least 8 characters long'
-                    }
-                  })}
+                  {...register('password')}
                 />
               </Grid>
             </Grid>
@@ -173,6 +187,7 @@ export default function Register() {
         </Box>
         <Copyright sx={{ mt: 5 }} />
       </Container>
+      {open && <RegisterModal open={open} handleOpen={handleOpen} handleClose={handleClose} />}
     </div>
   )
 }

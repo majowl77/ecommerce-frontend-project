@@ -33,6 +33,7 @@ export type UsersinitialState = {
   userRole: null | Role
   isEditForm: boolean
   popUp: boolean
+  message: string | null
 }
 
 export type tokenUser = {

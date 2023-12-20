@@ -26,7 +26,7 @@ export default function NavBar() {
   const dispatch = useDispatch<AppDispatch>()
   const isLogedIn = useSelector((state: RootState) => state.usersR.isLogedIn)
   const decodedUser = useSelector((state: RootState) => state.usersR.decodedUser)
-  const isLogedOut = useSelector((state: RootState) => state.usersR.isLogedOut)
+  const loggedUser = useSelector((state: RootState) => state.usersR.loggedUser)
   const cartItems = useSelector((state: RootState) => state.cartReducer.cartProducts)
   const isNavBarInHomePage = useSelector((state: RootState) => state.navBarR.isNavBarInHome)
   const navigate = useNavigate()
@@ -52,10 +52,10 @@ export default function NavBar() {
     setAnchorEl(null)
   }
   const handleLogOut = () => {
+    console.log('check the devil', decodedUser)
     dispatch(usersSliceActions.isLogedOut())
     localStorage.removeItem('token')
     navigate('/')
-    console.log('check the devil', decodedUser)
   }
   return (
     <header>
@@ -70,14 +70,14 @@ export default function NavBar() {
           <li className="elementNavBar">
             <Link to="/products"> Products</Link>
           </li>
-          {isLogedIn && decodedUser && decodedUser.role === ROLES.ADMIN ? (
+          {decodedUser && decodedUser.role === ROLES.ADMIN ? (
             <li className="elementNavBar">
               <Link to="/admin"> Admin</Link>
             </li>
           ) : (
             ''
           )}
-          {!isLogedIn && (
+          {!decodedUser && (
             <li className="elementNavBar" id={isLogedIn ? '' : 'loginItem'}>
               <Link to="/login"> Login</Link>
             </li>
@@ -103,7 +103,7 @@ export default function NavBar() {
                 onClick={handleClick}>
                 <Avatar
                   alt="profile photo "
-                  src="https://pm1.aminoapps.com/6433/2d53860cc9f31563802a703e639488110518b69c_hq.jpg"
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgmKPN7_d0D_NxxRu4H4oSGEp0dAHoQH10VLyTrSrQYOmNSj1dXr32IgNaJRewkDwmC60&usqp=CAU"
                   className="profile-photo"
                 />
               </Button>

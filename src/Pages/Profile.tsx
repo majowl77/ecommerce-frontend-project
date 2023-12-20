@@ -7,6 +7,7 @@ import { AppDispatch, RootState } from '../redux/store'
 import { navBarActions } from '../redux/slices/navbar/navbarSlice'
 import { usersSliceActions } from '../redux/slices/user/userSlice'
 import ProfileForm from '../components/profile/ProfileForm'
+import { ROLES, User } from '../types/users/usersType'
 export default function Profile() {
   const dispatch = useDispatch<AppDispatch>()
   const currentUser = useSelector((state: RootState) => state.usersR.loggedUser)
@@ -16,8 +17,8 @@ export default function Profile() {
   dispatch(navBarActions.navBarNotInHomePage())
 
   //open Edit category form
-  function onEdit(userId: number) {
-    dispatch(usersSliceActions.openEditProfileForm(userId))
+  function onEdit(userId: User['_id']) {
+    dispatch(usersSliceActions.openEditProfileForm())
     dispatch(usersSliceActions.setPopUp(true))
   }
   return (
@@ -39,7 +40,7 @@ export default function Profile() {
               <div className="profileImage">
                 <img
                   src={
-                    'https://pm1.aminoapps.com/6433/2d53860cc9f31563802a703e639488110518b69c_hq.jpg'
+                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgmKPN7_d0D_NxxRu4H4oSGEp0dAHoQH10VLyTrSrQYOmNSj1dXr32IgNaJRewkDwmC60&usqp=CAU'
                   }
                   alt="Profile Photo"
                 />
@@ -49,10 +50,10 @@ export default function Profile() {
                 <h1 id="profileName"> First Name : {currentUser.firstName}</h1>
                 <h1 id="profileName"> Last Name :{currentUser.lastName}</h1>
                 <p id="productDescription">
-                  {currentUser?.role === 'admin' ? <p> Admin</p> : <p> Customer</p>}
+                  {currentUser?.role === ROLES.ADMIN ? <p> Admin</p> : <p> Customer</p>}
                 </p>
                 <div className="profileButton">
-                  <button id="profileButton" onClick={() => onEdit(currentUser.id)}>
+                  <button id="profileButton" onClick={() => onEdit(currentUser._id)}>
                     Edit Profile Info
                   </button>
                 </div>

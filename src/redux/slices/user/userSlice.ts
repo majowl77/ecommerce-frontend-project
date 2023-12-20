@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AxiosError } from 'axios'
 
 import api from '../../../api'
+import { RegisterSchema } from '../../../components/register/Register'
 import { User, UsersinitialState } from '../../../types/users/usersType'
 import { getDecodedTokenFromStorage } from '../../../utils/token'
 
@@ -17,9 +18,9 @@ const initialState: UsersinitialState = {
   loggedUser: null,
   userRole: null,
   isEditForm: false,
-  popUp: false
+  popUp: false,
+  message: null
 }
-
 export const loginThunk = createAsyncThunk(
   'user/login',
   async (credentials: { email: string; password: string }, { rejectWithValue }) => {
@@ -29,6 +30,25 @@ export const loginThunk = createAsyncThunk(
       return res.data
     } catch (error) {
       if (error instanceof AxiosError) return rejectWithValue(error.response?.data.msg)
+    }
+  }
+)
+
+export const registerThunk = createAsyncThunk(
+  'user/register',
+  async (userData: RegisterSchema, { rejectWithValue }) => {
+    try {
+      const res = await api.post('/api/auth/register', userData)
+      console.log('🚀 ~ file: userSlice.ts:42 registerThunk ~ res:', res.data)
+      return res.data
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        console.log(
+          '🚀 ~ file: userSlice.ts:48 ~ error.response?.data.msg:',
+          error.response?.data.msg
+        )
+        return rejectWithValue(error.response?.data.msg)
+      }
     }
   }
 )
@@ -70,9 +90,6 @@ const usersSlice = createSlice({
   name: 'users',
   initialState: initialState,
   reducers: {
-    addOneUser: (state, action: { payload: { data: User } }) => {
-      state.users = [action.payload.data, ...state.users]
-    },
     getError: (state, action: PayloadAction<string>) => {
       state.error = action.payload
     },
@@ -104,6 +121,7 @@ const usersSlice = createSlice({
     }
   },
   extraReducers: (builder) => {
+    // ---Login handling---
     builder.addCase(loginThunk.pending, (state, action) => {
       state.isLoading = true
     })
@@ -121,11 +139,34 @@ const usersSlice = createSlice({
     })
     builder.addCase(loginThunk.fulfilled, (state, action) => {
       state.loggedUser = action.payload.user
+      console.log('🚀 ~ file: userSlice.ts:124 ~ builder.addCase ~ action.payload:', action.payload)
       state.decodedUser = decodedUser
       state.isLogedIn = true
       state.isLoading = false
       return state
     })
+    // ---Register handling---
+    builder.addCase(registerThunk.pending, (state, action) => {
+      state.isLoading = true
+    })
+    builder.addCase(registerThunk.rejected, (state, action) => {
+      const errorMsg = action.payload
+      if (typeof errorMsg === 'string') {
+        state.error = errorMsg
+      } else {
+        state.error = 'somthing went wrong :('
+      }
+      state.isLoading = false
+      state.isLogedIn = false
+
+      return state
+    })
+    builder.addCase(registerThunk.fulfilled, (state, action) => {
+      state.message = action.payload
+      state.isLoading = false
+      return state
+    })
+    // --- Handling the retrieval of users information ---
     builder.addCase(getUsersThunk.pending, (state, action) => {
       state.isLoading = true
     })
@@ -143,6 +184,7 @@ const usersSlice = createSlice({
       state.users = action.payload
       state.isLoading = false
     })
+    // --- Granting user roles ---
     builder.addCase(grantRoleUserThunk.pending, (state, action) => {
       state.isLoading = true
     })
@@ -168,6 +210,7 @@ const usersSlice = createSlice({
       state.isLoading = false
       return state
     })
+    // --- handle deleting the user ---
     builder.addCase(deleteUsersThunk.fulfilled, (state, action) => {
       const userId = action.payload
       const updatedUsers = state.users.filter((user) => user._id !== userId)
