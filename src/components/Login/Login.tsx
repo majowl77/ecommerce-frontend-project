@@ -65,7 +65,6 @@ export default function Login() {
         const token = response.payload.token
         const user = response.payload.user
         toast.success(`Welcome back! ${res} ${msg}`)
-        console.log('🚀 ~ file: Login.tsx:65 ~ onSubmitHandler ~ users.user:', user)
         localStorage.setItem('token', token)
         api.defaults.headers['Authorization'] = `Bearer ${token}`
         if (user.role === 'ADMIN') {

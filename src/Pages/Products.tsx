@@ -24,66 +24,55 @@ import { Product } from '../types/products/productsTypes'
 import { cartSliceAction } from '../redux/slices/cart/cartSlice'
 import { navBarActions } from '../redux/slices/navbar/navbarSlice'
 import { toast } from 'react-toastify'
+import { getAllCategoriesThunk } from '../redux/slices/admin/adminCategorySlice'
 
 export default function Products() {
   const dispatch = useDispatch<AppDispatch>()
   const prodcutsList = useSelector((state: RootState) => state.productsR.productList)
+  const categoriesList = useSelector((state: RootState) => state.categoriesR.categoryList)
   const cartList = useSelector((state: RootState) => state.cartReducer.cartProducts)
   const isLoading = useSelector((state: RootState) => state.productsR.isLoading)
-  const [searchKeyWord, setSearchKeyWord] = useState<null | string>(null)
-  const [categorieValue, setCategorieValue] = useState<null | string>('All')
-  const isProductAdded = useSelector((state: RootState) => state.adminR.isProductAdded)
-  const newProduct = useSelector((state: RootState) => state.adminR.newProduct)
+  const [sortOption, setSortOprtion] = useState<string>('')
+  const [searchKeyWord, setSearchKeyWord] = useState<string>('')
+  const [categoryValue, setCategorieValue] = useState<string>('')
+  const [pagination, setPagination] = useState({
+    pageNumber: 0,
+    totalPages: 0
+  })
+  console.log('🚀 ~ file: Products.tsx:42 ~ Products ~ pageNumber:', pagination.pageNumber)
+
   dispatch(navBarActions.navBarNotInHomePage())
 
   //fetching the data form Reducx thunk
   useEffect(() => {
-    const handleGetProducts = async () => {
-      dispatch(getProductsThunk())
-    }
     handleGetProducts()
-  }, [])
-  // handel new product by the admin
-  const addnewProduct = () => {
-    if (newProduct != null) {
-      dispatch(productsActions.addProduct({ newProduct }))
-    }
+    dispatch(getAllCategoriesThunk())
+  }, [sortOption, categoryValue, searchKeyWord, pagination.pageNumber])
+
+  const handleGetProducts = async () => {
+    const res = await dispatch(
+      getProductsThunk({
+        sortOption,
+        categoryValue,
+        searchKeyWord,
+        pageNumber: pagination.pageNumber
+      })
+    )
+    const { pageNumber, totalPages } = res.payload
+    setPagination({ pageNumber, totalPages })
   }
   // search with each letters the user is typing
   function getSearchKeyword(event: React.ChangeEvent<HTMLInputElement>) {
     setSearchKeyWord(event.target.value)
-    console.log(searchKeyWord)
+    console.log('setSearchKeyWord', searchKeyWord)
   }
   const handleCategorieChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCategorieValue(event.target.value)
-    console.log(categorieValue)
   }
-  // search featuer and filter by categories
-  const filterProducts = (
-    searchKeyword: string | null,
-    categorieValue: string | null,
-    products: Product[]
-  ) => {
-    let newProductsList = products.slice()
-    if (searchKeyword !== null) {
-      newProductsList = newProductsList.filter((product) =>
-        product.name.toLocaleLowerCase().includes(searchKeyword.toLocaleLowerCase())
-      )
-    }
-    if (categorieValue !== 'All') {
-      newProductsList = newProductsList.filter((product) =>
-        product.categories.includes(categorieValue)
-      )
-    }
-    return newProductsList
+  const selectSortChange = (event: SelectChangeEvent) => {
+    setSortOprtion(event.target.value)
   }
-  const filteredProductsList = filterProducts(searchKeyWord, categorieValue, prodcutsList)
 
-  // sorting a list by the price of the prodcuts
-  const selectChange = (event: SelectChangeEvent) => {
-    dispatch(productsActions.getSelectedSort(event.target.value))
-    console.log(event.target.value)
-  }
   //adding a product to a cart
   function addProductToCart(id: string) {
     const productToAdd = prodcutsList.find((product) => product._id === id)
@@ -95,20 +84,17 @@ export default function Products() {
     }
   }
 
-  // pagination feature
-  const [page, setPage] = useState(1)
-  const [rowsPerPage] = useState(5) // Number of items per page
-
   // Modify your filteredProductsList to return only the products for the current page
-  const startIndex = (page - 1) * rowsPerPage
-  const endIndex = startIndex + rowsPerPage
-  const productsToDisplay = filteredProductsList.slice(startIndex, endIndex)
+  // const startIndex = (page - 1) * rowsPerPage
+  // const endIndex = startIndex + rowsPerPage
 
-  // // Apply search and category filtering only to the products to display
+  // const productsToDisplay = filteredProductsList.slice(startIndex, endIndex)
+
+  // Apply search and category filtering only to the products to display
   // const filteredProductsToShow = productsToDisplay.filter((product) => {
   //   const matchesSearch = product.name.toLowerCase().includes(searchKeyWord?.toLowerCase() || '')
-  //   // const matchesCategory =
-  //   //   categorieValue === 'All' || product.categories.includes(Number(categorieValue))
+  //   const matchesCategory =
+  //     categorieValue === 'All' || product.categories.includes(Number(categorieValue))
   //   return matchesSearch && matchesCategory
   // })
   return (
@@ -130,10 +116,15 @@ export default function Products() {
               aria-labelledby="demo-radio-buttons-group-label"
               name="radio-buttons-group"
               onChange={handleCategorieChange}>
-              <FormControlLabel value="1" control={<Radio />} label="Natural Plants" />
-              <FormControlLabel value="2" control={<Radio />} label="Plant Accessories" />
-              <FormControlLabel value="3" control={<Radio />} label="Artificial Plants" />
-              <FormControlLabel value="All" control={<Radio />} label="All" />
+              {categoriesList.map((category) => {
+                return (
+                  <FormControlLabel
+                    value={category._id}
+                    control={<Radio />}
+                    label={category.name}
+                  />
+                )
+              })}
             </RadioGroup>
           </FormControl>
           <FormControl sx={{ m: 1, minWidth: 150 }} size="medium" color="secondary">
@@ -144,28 +135,29 @@ export default function Products() {
               labelId="demo-simple-select-helper-label"
               id="demo-simple-select-helper"
               label="Sort"
-              onChange={selectChange}
+              onChange={selectSortChange}
               color="secondary">
-              <MenuItem value="htl" color="secondary">
+              <MenuItem value="desc" color="secondary">
                 Price: Hight to Low
               </MenuItem>
-              <MenuItem value="lth" color="secondary">
+              <MenuItem value="asc" color="secondary">
                 Price: Low to Hight
               </MenuItem>
-              <MenuItem value="All" color="secondary">
-                Price: All
+              <MenuItem value="newest" color="secondary">
+                Newet products
               </MenuItem>
             </Select>
           </FormControl>
         </div>
         <div className="productsListContainer">
           {isLoading ? (
-            <div>
-              <Box sx={{ display: 'flex' }}>
-                {' '}
-                <CircularProgress size="sm" />{' '}
-              </Box>
-            </div>
+            // <div>
+            //   <Box sx={{ display: 'flex' }}>
+            //     {' '}
+            //     <CircularProgress size="sm" />{' '}
+            //   </Box>
+            // </div>
+            ''
           ) : (
             <ul className="productsList">
               {prodcutsList &&
@@ -193,10 +185,10 @@ export default function Products() {
       </div>
       <div className="pagination">
         <Pagination
-          count={Math.ceil(filteredProductsList.length / rowsPerPage)}
+          count={pagination.totalPages}
           variant="outlined"
-          page={page}
-          onChange={(event, value) => setPage(value)}
+          page={pagination.pageNumber}
+          onChange={(event, value) => setPagination({ ...pagination, pageNumber: value })}
         />
       </div>
     </div>

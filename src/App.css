@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Handlee&family=Montserrat:wght@300&family=Syne:wght@600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Handlee&family=Montserrat:wght@300&family=Raleway:wght@200;400&family=Syne:wght@600&display=swap');
+
 #root {
   max-width: 1880px;
   margin: 0 auto;
@@ -61,7 +62,7 @@
   margin-right: -88px;
 }
 #loginItem {
-  margin-right: 130px;
+  margin-right: 357px;
 }
 #logoutItem {
   margin-right: 100px;
@@ -924,7 +925,6 @@ svg path {
   align-self: self-start;
 }
 
-
 .formProduct {
   height: 600px;
 }
@@ -1065,4 +1065,28 @@ svg path {
   justify-content: space-between;
   align-items: center;
   color: #011627;
+}
+
+.notFoundPage {
+  height: 30rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  color: #395635;
+  gap: 30px;
+}
+
+.notFoundPage .subtitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+  gap: 30px;
+}
+.notFoundPage .titleAndSubtitle {
+  padding-top: 71px;
+}
+.subtitle .linktoHome {
+  text-decoration: underline #395635;
 }

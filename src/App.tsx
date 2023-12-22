@@ -16,6 +16,8 @@ import Footer from './components/home/Footer'
 import NavBar from './components/home/NavBar'
 import Profile from './pages/Profile'
 import { ROLES } from './types/users/usersType'
+import { isAdmin } from './utils/IsAdmin'
+import NotFound from './pages/NotFound'
 
 function App() {
   const { decodedUser } = useSelector((state: RootState) => state.usersR)
@@ -25,19 +27,16 @@ function App() {
       {location.pathname !== '/admin' ? <NavBar /> : null}
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/*" element={<NotFound />} />
         <Route path="/products" element={<Products />} />
         <Route path="/login" element={<LoginRegister />} />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/profile" element={<Profile />} />
-
+        <Route path="/profile" element={decodedUser ? <Profile /> : <NotFound />} />
+        <Route path="/products/product-detail/:productId" element={<ProductDetails />} />
         <Route
           path="/admin"
-          element={
-            decodedUser && decodedUser.role === ROLES.ADMIN ? <Admin /> : <Navigate to="/" />
-          }
+          element={decodedUser && isAdmin() ? <Admin /> : <Navigate to="/*" />}
         />
-
-        <Route path="/products/product-detail/:productId" element={<ProductDetails />} />
       </Routes>
       <ToastContainer
         position="top-right"

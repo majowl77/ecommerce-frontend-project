@@ -10,15 +10,30 @@ const initialState: ProductsInitialState = {
   isLoading: false
 }
 
-export const getProductsThunk = createAsyncThunk('products', async () => {
-  try {
-    const res = await api.get('/api/products')
-    console.log('🚀 ~ file: productsSlice.ts:15 ~ getProductsThunk ~ res:', res.data)
-    return res.data.products
-  } catch (error) {
-    console.log('🚀 ~ file: productsSlice.ts:19 ~ getProductThunk ~ error:', error)
+export const getProductsThunk = createAsyncThunk(
+  'products',
+  async ({
+    sortOption,
+    categoryValue,
+    searchKeyWord,
+    pageNumber
+  }: {
+    sortOption: string
+    categoryValue: string
+    searchKeyWord: string
+    pageNumber: number
+  }) => {
+    try {
+      const res = await api.get(
+        `/api/products?pageNumber=${pageNumber}&category=${categoryValue}&searchText=${searchKeyWord}&sortBy=${sortOption}`
+      )
+      console.log('🚀 ~ file: productsSlice.ts:15 ~ getProductsThunk ~ res:', res.data)
+      return res.data
+    } catch (error) {
+      console.log('🚀 ~ file: productsSlice.ts:19 ~ getProductThunk ~ error:', error)
+    }
   }
-})
+)
 
 const productSlice = createSlice({
   name: 'productsList',
@@ -83,7 +98,7 @@ const productSlice = createSlice({
       return state
     })
     builder.addCase(getProductsThunk.fulfilled, (state, action) => {
-      state.productList = action.payload
+      state.productList = action.payload.products
       state.isLoading = false
       return state
     })

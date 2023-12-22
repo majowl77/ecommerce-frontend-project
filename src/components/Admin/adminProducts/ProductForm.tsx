@@ -13,8 +13,7 @@ import {
 } from '../../../redux/slices/admin/adminSlice'
 import { AppDispatch, RootState } from '../../../redux/store'
 import { Product } from '../../../types/products/productsTypes'
-import { productsActions } from '../../../redux/slices/products/productsSlice'
-import { getSingleProductThunk } from '../../../redux/slices/products/productDetailsSlice'
+import { toast } from 'react-toastify'
 
 const initialProductState: Product = {
   _id: '',
@@ -42,7 +41,6 @@ export default function ProductForm() {
   useEffect(() => {
     if (isEditForm && editedProductId) {
       if (updatedProduct) {
-        console.log('🚀 ~ file: ProductForm.tsx:49 ~ useEffect ~ updatedProduct:', updatedProduct)
         setProduct(updatedProduct)
       }
     }
@@ -67,10 +65,8 @@ export default function ProductForm() {
   }
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
-    console.log('🚀 ~ file: ProductForm.tsx:65 ~ handleFileChange ~ files:', files)
     if (files && files.length > 0) {
       setImage(files[0])
-      console.log('🚀 ~ file: ProductForm.tsx:70 ~ handleFileChange ~ setImage:', image)
     } else {
     }
   }
@@ -80,7 +76,7 @@ export default function ProductForm() {
     dispatch(adminSliceAction.closeEditForm())
   }
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     // setProduct({ ...product, image: image })
     const formData = new FormData()
@@ -102,7 +98,23 @@ export default function ProductForm() {
     if (isEditForm && updatedProduct) {
       dispatch(updateAdminProductsThunk({ productData: formData, editedProductId }))
     } else {
-      dispatch(createAdminProductsThunk(formData))
+      const response = await dispatch(createAdminProductsThunk(formData))
+      if (response.meta.requestStatus === 'fulfilled') {
+        toast.success('New product added successfully')
+      }
+      if (response.meta.requestStatus === 'rejected') {
+        // Handle error from zod in the backend
+        const errors = response.payload
+        if (typeof errors === 'string') {
+          toast.error(errors)
+          return
+        }
+
+        // Iterate through each error and display a toast for each
+        errors.forEach((error: any) => {
+          toast.error(`${error.path.join('.')} ${error.message.replace(/String /i, '')}`)
+        })
+      }
     }
 
     setProduct(initialProductState)
@@ -154,10 +166,9 @@ export default function ProductForm() {
               <TextField
                 id="quantity"
                 label="quantity"
-                multiline
                 variant="outlined"
                 name="quantity"
-                type="text"
+                type="number"
                 value={product.quantity}
                 onChange={handleChange}
                 fullWidth

@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AxiosError } from 'axios'
 
 import api from '../../../api'
-import { RegisterSchema } from '../../../components/register/Register'
+import { RegisterSchema } from '../../../types/loginRegister/loginRegister'
 import { User, UsersinitialState } from '../../../types/users/usersType'
 import { getDecodedTokenFromStorage } from '../../../utils/token'
 
@@ -21,6 +21,7 @@ const initialState: UsersinitialState = {
   popUp: false,
   message: null
 }
+
 export const loginThunk = createAsyncThunk(
   'user/login',
   async (credentials: { email: string; password: string }, { rejectWithValue }) => {

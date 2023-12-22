@@ -18,10 +18,13 @@ import { RootState } from '../../redux/store'
 import { cartSliceAction } from '../../redux/slices/cart/cartSlice'
 import { Paper } from '@mui/material'
 import { Link } from 'react-router-dom'
+import { navBarActions } from '../../redux/slices/navbar/navbarSlice'
 
 const Cart = () => {
   const cartItems = useSelector((state: RootState) => state.cartReducer.cartProducts)
   const dispatch = useDispatch()
+
+  dispatch(navBarActions.navBarNotInHomePage())
 
   const handleRemove = (productId: number) => {
     const removedProduct = cartItems.find((product) => product.id === productId)
@@ -61,12 +64,12 @@ const Cart = () => {
                 </TableHead>
                 <TableBody>
                   {cartItems.map((item) => (
-                    <TableRow key={item.id}>
+                    <TableRow key={item._id}>
                       <TableCell>
                         <CartItem
-                          key={item.id}
+                          key={item._id}
                           product={item}
-                          onRemove={() => handleRemove(item.id)}
+                          onRemove={() => handleRemove(item._id)}
                           onIncrease={handleIncrease}
                           onDecrease={handleDecrease}
                         />
