@@ -23,7 +23,7 @@ export default function NotFound() {
           <Typography variant="subtitle2" gutterBottom align="left">
             Let's get you back on track:
             <Typography variant="body2" gutterBottom align="left">
-              - Go back to the<Link href="/" underline="always"> Home Page </Link>
+              - Go back to the <Link href="/" underline="always"> Home Page </Link>
             </Typography>
             <Typography variant="body2" gutterBottom align="left">
               - Use the navigation menu above
