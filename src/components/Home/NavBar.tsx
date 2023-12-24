@@ -11,6 +11,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../redux/store'
 import { usersSliceActions } from '../../redux/slices/user/userSlice'
+import { cartSliceAction } from '../../redux/slices/cart/cartSlice'
 import { ROLES } from '../../types/users/usersType'
 
 const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
@@ -24,13 +25,16 @@ const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
 
 export default function NavBar() {
   const dispatch = useDispatch<AppDispatch>()
+  const navigate = useNavigate()
   const isLogedIn = useSelector((state: RootState) => state.usersR.isLogedIn)
   const decodedUser = useSelector((state: RootState) => state.usersR.decodedUser)
-  const loggedUser = useSelector((state: RootState) => state.usersR.loggedUser)
   const cartItems = useSelector((state: RootState) => state.cartReducer.cartProducts)
+  const cart = useSelector((state: RootState) => state.cartReducer)
   const isNavBarInHomePage = useSelector((state: RootState) => state.navBarR.isNavBarInHome)
-  const navigate = useNavigate()
   const [scrollBackground, setScrollBackground] = useState(false)
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const open = Boolean(anchorEl)
+
   useEffect(() => {
     const handleScroll = () => {
       setScrollBackground(window.scrollY > 700)
@@ -40,21 +44,19 @@ export default function NavBar() {
     console.log('isLogedIn', isLogedIn)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [decodedUser])
-  const cartCounter = cartItems.reduce((totalItems, oneItem) => {
-    return (totalItems += oneItem.quantity)
-  }, 0)
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
-  const open = Boolean(anchorEl)
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
   }
+
   const handleClose = () => {
     setAnchorEl(null)
   }
+
   const handleLogOut = () => {
-    console.log('check the devil', decodedUser)
-    dispatch(usersSliceActions.isLogedOut())
     localStorage.removeItem('token')
+    dispatch(usersSliceActions.isLogedOut())
+    dispatch(cartSliceAction.clearCartIfLogedOut())
     navigate('/')
   }
   return (
@@ -82,19 +84,19 @@ export default function NavBar() {
               <Link to="/login"> Login</Link>
             </li>
           )}
-          <li className="elementNavBar" id="cartItem">
-            <Link to="/cart">
-              <IconButton aria-label="cart" color="inherit">
-                <StyledBadge badgeContent={cartCounter} color="error">
-                  <ShoppingCartIcon />
-                </StyledBadge>
-              </IconButton>
-            </Link>
-          </li>
         </ul>
-        {decodedUser ? (
-          <div>
-            <div className="elementNavBar" id="profileItem">
+        <div className="elementNavBar" id="cartItem">
+          <Link to="/cart">
+            <IconButton aria-label="cart" color="inherit">
+              <StyledBadge badgeContent={cart.itemAtCartCounter} color="error">
+                <ShoppingCartIcon />
+              </StyledBadge>
+            </IconButton>
+          </Link>
+        </div>
+        <div className="elementNavBar" id="profileItem">
+          {decodedUser ? (
+            <div>
               <Button
                 id="basic-button"
                 aria-controls={open ? 'basic-menu' : undefined}
@@ -131,10 +133,10 @@ export default function NavBar() {
                 </MenuItem>
               </Menu>
             </div>
-          </div>
-        ) : (
-          ''
-        )}
+          ) : (
+            ''
+          )}
+        </div>
       </nav>
     </header>
   )

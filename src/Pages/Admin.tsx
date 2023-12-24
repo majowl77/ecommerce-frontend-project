@@ -19,7 +19,7 @@ import AdminProducts from '../components/admin/adminProducts/AdminProducts'
 import AdminCategories from '../components/admin/adminCategories/AdminCategories'
 import { useSelector } from 'react-redux'
 import { RootState } from '../redux/store'
-import AdminUsers from '../components/admin/users/AdminUsers'
+import AdminUsers from '../components/admin/adminUsers/AdminUsers'
 
 const drawerWidth: number = 240
 

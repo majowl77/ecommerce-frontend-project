@@ -21,7 +21,7 @@ import FormLabel from '@mui/material/FormLabel'
 import { AppDispatch, RootState } from '../redux/store'
 import { getProductsThunk, productsActions } from '../redux/slices/products/productsSlice'
 import { Product } from '../types/products/productsTypes'
-import { cartSliceAction } from '../redux/slices/cart/cartSlice'
+import { addItemToCart, cartSliceAction, getCartItemsThunk } from '../redux/slices/cart/cartSlice'
 import { navBarActions } from '../redux/slices/navbar/navbarSlice'
 import { toast } from 'react-toastify'
 import { getAllCategoriesThunk } from '../redux/slices/admin/adminCategorySlice'
@@ -39,7 +39,6 @@ export default function Products() {
     pageNumber: 0,
     totalPages: 0
   })
-  console.log('🚀 ~ file: Products.tsx:42 ~ Products ~ pageNumber:', pagination.pageNumber)
 
   dispatch(navBarActions.navBarNotInHomePage())
 
@@ -47,6 +46,7 @@ export default function Products() {
   useEffect(() => {
     handleGetProducts()
     dispatch(getAllCategoriesThunk())
+    dispatch(getCartItemsThunk())
   }, [sortOption, categoryValue, searchKeyWord, pagination.pageNumber])
 
   const handleGetProducts = async () => {
@@ -64,7 +64,6 @@ export default function Products() {
   // search with each letters the user is typing
   function getSearchKeyword(event: React.ChangeEvent<HTMLInputElement>) {
     setSearchKeyWord(event.target.value)
-    console.log('setSearchKeyWord', searchKeyWord)
   }
   const handleCategorieChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCategorieValue(event.target.value)
@@ -74,29 +73,17 @@ export default function Products() {
   }
 
   //adding a product to a cart
-  function addProductToCart(id: string) {
-    const productToAdd = prodcutsList.find((product) => product._id === id)
-    if (productToAdd != null) {
-      dispatch(cartSliceAction.addCartProduct(productToAdd))
-      toast.success('Product Added successfully ')
-
-      console.log(cartList)
+  async function addProductToCart(productId: string) {
+    const productToAdd = prodcutsList.find((product) => product._id === productId)
+    const res = await dispatch(addItemToCart({ productId }))
+    if (res.meta.requestStatus === 'fulfilled') {
+      toast.success(res.payload.message)
+    }
+    if (res.meta.requestStatus === 'rejected') {
+      return toast.error('Login first to add to your Cart')
     }
   }
 
-  // Modify your filteredProductsList to return only the products for the current page
-  // const startIndex = (page - 1) * rowsPerPage
-  // const endIndex = startIndex + rowsPerPage
-
-  // const productsToDisplay = filteredProductsList.slice(startIndex, endIndex)
-
-  // Apply search and category filtering only to the products to display
-  // const filteredProductsToShow = productsToDisplay.filter((product) => {
-  //   const matchesSearch = product.name.toLowerCase().includes(searchKeyWord?.toLowerCase() || '')
-  //   const matchesCategory =
-  //     categorieValue === 'All' || product.categories.includes(Number(categorieValue))
-  //   return matchesSearch && matchesCategory
-  // })
   return (
     <div className="products">
       <h2>products</h2>

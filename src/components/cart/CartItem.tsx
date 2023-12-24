@@ -6,12 +6,16 @@ import AddIcon from '@mui/icons-material/Add'
 import RemoveIcon from '@mui/icons-material/Remove'
 import { Product } from '../../types/products/productsTypes'
 interface CartItemProps {
-  product: Product
-  onRemove: (productId: number) => void
-  onIncrease: (productId: number) => void
-  onDecrease: (productId: number) => void
+  item: {
+    _id: string
+    product: Product
+    quantity: number
+  }
+  onRemove: (productId: string) => void
+  onIncrease: (productId: string) => void
+  onDecrease: (productId: string) => void
 }
-const CartItem: React.FC<CartItemProps> = ({ product, onRemove, onIncrease, onDecrease }) => {
+const CartItem: React.FC<CartItemProps> = ({ item, onRemove, onIncrease, onDecrease }) => {
   return (
     <div className="cartItem">
       <Box
@@ -21,22 +25,22 @@ const CartItem: React.FC<CartItemProps> = ({ product, onRemove, onIncrease, onDe
         boxShadow={0}
         padding={2}
         marginBottom={0}>
-        <img src={product.image} alt={product.name} style={{ width: '100px' }} />
+        <img src={item.product.image} alt={item.product.name} style={{ width: '100px' }} />
         <div>
-          <Typography variant="h6">{product.name}</Typography>
+          <Typography variant="h6">{item.product.name}</Typography>
         </div>
         <div>
-          <Typography variant="subtitle1">{product.price * product.quantity}$</Typography>
+          <Typography variant="subtitle1">{item.product.price * item.product.quantity}$</Typography>
         </div>
         <div className="cartButtons">
-          <IconButton onClick={() => onRemove(product.id)}>
+          <IconButton onClick={() => onRemove(item.product._id)}>
             <DeleteIcon />
           </IconButton>
-          <IconButton onClick={() => onIncrease(product.id)}>
+          <IconButton onClick={() => onIncrease(item.product._id)}>
             <AddIcon />
           </IconButton>
-          {product.quantity >= 0 && product.quantity}
-          <IconButton onClick={() => onDecrease(product.id)}>
+          {item.quantity >= 0 && item.quantity}
+          <IconButton onClick={() => onDecrease(item.product._id)}>
             <RemoveIcon />
           </IconButton>
         </div>

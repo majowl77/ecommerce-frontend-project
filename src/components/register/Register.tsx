@@ -141,6 +141,7 @@ export default function Register() {
                   label="Password"
                   variant="outlined"
                   fullWidth
+                  type="password"
                   margin="normal"
                   error={!!errors.password}
                   helperText={errors.password ? errors.password.message : ''}

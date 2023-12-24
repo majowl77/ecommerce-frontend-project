@@ -1,18 +1,20 @@
 import Button from '@mui/material/Button'
 import WestIcon from '@mui/icons-material/West'
-
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+
 import { AppDispatch, RootState } from '../redux/store'
 import { navBarActions } from '../redux/slices/navbar/navbarSlice'
-import { usersSliceActions } from '../redux/slices/user/userSlice'
+import { getUsersThunk, usersSliceActions } from '../redux/slices/user/userSlice'
 import ProfileForm from '../components/profile/ProfileForm'
 import { ROLES, User } from '../types/users/usersType'
+
 export default function Profile() {
   const dispatch = useDispatch<AppDispatch>()
-  const currentUser = useSelector((state: RootState) => state.usersR.loggedUser)
+  const currentUser = useSelector((state: RootState) => state.usersR.decodedUser)
   const popUp = useSelector((state: RootState) => state.usersR.popUp)
-  const isLogedIn = useSelector((state: RootState) => state.usersR.isLogedIn)
+  const loggedUser = useSelector((state: RootState) => state.usersR.loggedUser)
+  console.log('🚀 ~ file: Profile.tsx:17 ~ Profile ~ loggedUser:', loggedUser)
   const duringPopUp = popUp ? ' duringPopup' : ''
   dispatch(navBarActions.navBarNotInHomePage())
 
@@ -20,6 +22,12 @@ export default function Profile() {
   function onEdit(userId: User['_id']) {
     dispatch(usersSliceActions.openEditProfileForm())
     dispatch(usersSliceActions.setPopUp(true))
+    // function fetchSingleUserData() {
+    //   if (typeof userId === 'string') {
+    //     dispatch(getUsersThunk())
+    //   }
+    // }
+    // fetchSingleUserData()
   }
   return (
     <div className={'profilePage' + duringPopUp}>
@@ -53,7 +61,7 @@ export default function Profile() {
                   {currentUser?.role === ROLES.ADMIN ? <p> Admin</p> : <p> Customer</p>}
                 </p>
                 <div className="profileButton">
-                  <button id="profileButton" onClick={() => onEdit(currentUser._id)}>
+                  <button id="profileButton" onClick={() => onEdit(currentUser.userID)}>
                     Edit Profile Info
                   </button>
                 </div>

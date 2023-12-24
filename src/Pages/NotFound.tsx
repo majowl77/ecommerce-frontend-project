@@ -14,7 +14,7 @@ export default function NotFound() {
     <div className="notFoundPage">
       <div className="titleAndSubtitle">
         <Typography variant="h2" gutterBottom marginBottom={0}>
-          404 Page Not Found
+         <span id='f404'>404 </span>  Page Not Found
         </Typography>
         <Typography variant="subtitle1" gutterBottom marginTop={2}>
           Oops! It seems like the page you were trying to reach doesn't exist.

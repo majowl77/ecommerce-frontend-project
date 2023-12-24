@@ -1,28 +1,26 @@
 import axios from 'axios'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { getAdminProductsThunk } from '../../redux/slices/admin/adminSlice'
 import { cartSliceAction } from '../../redux/slices/cart/cartSlice'
-import { productsActions } from '../../redux/slices/products/productsSlice'
 import { AppDispatch, RootState } from '../../redux/store'
 
 export default function BestSellerItems() {
-  const prodcutsList = useSelector((state: RootState) => state.productsR.productList)
+  const prodcutsList = useSelector((state: RootState) => state.adminR.productItems)
   const dispatch = useDispatch<AppDispatch>()
   const url = 'public/mock/e-commerce/products.json'
 
   //fetching the data form JSON file
   useEffect(() => {
     function fetchProductsData() {
-      axios
-        .get(url)
-        .then((response) => dispatch(productsActions.getProductsData(response.data)))
-        .catch((error) => dispatch(productsActions.getError(error.message)))
+      dispatch(getAdminProductsThunk())
     }
     fetchProductsData()
   }, [])
+
   //adding a product to a cart
-  function addProductToCart(id: number) {
-    const productToAdd = prodcutsList.find((product) => product.id === id)
+  function addProductToCart(id: string) {
+    const productToAdd = prodcutsList.find((product) => product._id === id)
     if (productToAdd != null) {
       dispatch(cartSliceAction.addCartProduct(productToAdd))
     }
@@ -36,9 +34,9 @@ export default function BestSellerItems() {
         <div className="bsetSellerItems">
           {prodcutsList &&
             prodcutsList.length > 0 &&
-            prodcutsList.slice(0, 7).map((product) => {
+            prodcutsList.slice(0, 5).map((product) => {
               return (
-                <div className="bsetItemsCard" key={product.id}>
+                <div className="bsetItemsCard" key={product._id}>
                   <div className="HandleTextOfItemsCard">
                     <div className="cardImage">
                       <img src={'/' + product.image} alt={product.name} />
@@ -49,7 +47,7 @@ export default function BestSellerItems() {
                         {product.price}$<span> 48$</span>
                       </p>
                       <div>
-                        <button onClick={() => addProductToCart(product.id)}>Add To Cart </button>
+                        <button onClick={() => addProductToCart(product._id)}>Add To Cart </button>
                       </div>
                     </div>
                   </div>

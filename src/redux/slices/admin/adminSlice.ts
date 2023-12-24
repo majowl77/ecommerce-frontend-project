@@ -18,12 +18,12 @@ const initialState: AdminState = {
   newProduct: null
 }
 
-// --Admin Product Management CRUD operations--
+// --Admin Products Management CRUD operations--
 export const getAdminProductsThunk = createAsyncThunk(
   'admin/products',
   async (_, { rejectWithValue }) => {
     try {
-      const res = await api.get('/api/products')
+      const res = await api.get('/api/products/admin')
       return res.data.products
     } catch (error) {
       if (error instanceof AxiosError) return rejectWithValue(error.response?.data.msg)
@@ -66,6 +66,20 @@ export const updateAdminProductsThunk = createAsyncThunk(
       const res = await api.put(`/api/products/${editedProductId}`, productData)
       console.log('🚀 ~ file: productsSlice.ts:15 ~ createAdminProductsThunk ~ res:', res.data)
       return res.data.newProduct
+    } catch (error) {
+      if (error instanceof AxiosError) return rejectWithValue(error.response?.data.msg)
+    }
+  }
+)
+
+// --Admin Orders Management CRUD operations--
+export const getAllOrdersThunk = createAsyncThunk(
+  'admin/orders',
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await api.get('/api/orders')
+      console.log('🚀 ~ file: adminSlice.ts:81 getAllOrdersThunk ~ res:', res.data)
+      return res.data
     } catch (error) {
       if (error instanceof AxiosError) return rejectWithValue(error.response?.data.msg)
     }
@@ -176,6 +190,24 @@ export const adminSlice = createSlice({
         return product
       })
       state.productItems = updatedProducts
+      state.isLoading = false
+      return state
+    })
+    builder.addCase(getAllOrdersThunk.pending, (state, action) => {
+      state.isLoading = true
+    })
+    builder.addCase(getAllOrdersThunk.rejected, (state, action) => {
+      const errorMsg = action.payload
+      if (typeof errorMsg === 'string') {
+        state.error = errorMsg
+      } else {
+        state.error = 'somthing went wrong :('
+      }
+      state.isLoading = false
+      return state
+    })
+    builder.addCase(getAllOrdersThunk.fulfilled, (state, action) => {
+      state.orderList = action.payload
       state.isLoading = false
       return state
     })

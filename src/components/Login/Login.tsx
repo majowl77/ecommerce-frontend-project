@@ -20,16 +20,16 @@ import Container from '@mui/material/Container'
 import { AppDispatch, RootState } from '../../redux/store'
 import { loginThunk } from '../../redux/slices/user/userSlice'
 import { logInRegisterActions } from '../../redux/slices/loginRegister/loginRegisterSlice'
-import api from '../../api'
 import { loginSchema } from '../../utils/constants'
 import { LoginSchema } from '../../types/loginRegister/loginRegister'
+import { getCartItemsThunk } from '../../redux/slices/cart/cartSlice'
 
 function Copyright(props: any) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <Link color="inherit" href="/">
-        Your Website
+        GreenPlants
       </Link>
       {new Date().getFullYear()}
     </Typography>
@@ -57,29 +57,21 @@ export default function Login() {
 
   async function onSubmitHandler(data: LoginSchema) {
     try {
-      const response = await dispatch(loginThunk(data))
-
-      if (response.meta.requestStatus === 'fulfilled') {
-        const res = response.payload.user.firstName
-        const msg = response.payload.message
-        const token = response.payload.token
-        const user = response.payload.user
-        toast.success(`Welcome back! ${res} ${msg}`)
-        localStorage.setItem('token', token)
-        api.defaults.headers['Authorization'] = `Bearer ${token}`
-        if (user.role === 'ADMIN') {
-          navigate('/admin')
-        } else if (user.role === 'USER') navigate('/')
-      }
-      if (response.meta.requestStatus === 'rejected') {
-        toast.error('Login failed.' + response.payload)
-      }
+      const action = await dispatch(loginThunk(data)).unwrap()
+      const { user, message } = action?.data
+      const { firstName, role } = user
+      toast.success(`Welcome back! ${firstName} ${message}`)
+      dispatch(getCartItemsThunk())
+      if (user.role === 'ADMIN') {
+        navigate('/admin')
+      } else if (user.role === 'USER') navigate('/')
     } catch (error) {
       if (error instanceof AxiosError) {
-        toast.error('somthing went wrong when login')
+        toast.error('somthing went wrong' + error)
+        return
       }
+      toast.error('Login failed.' + error)
     }
-    console.log(users.decodedUser, 'ddddecodedUser')
     reset()
   }
 

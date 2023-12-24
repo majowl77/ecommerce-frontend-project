@@ -6,30 +6,32 @@ import CloseIcon from '@mui/icons-material/Close'
 import { User } from '../../types/users/usersType'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../redux/store'
-import { usersSliceActions } from '../../redux/slices/user/userSlice'
-const initialUSerState: User = {
-  _id: '',
-  firstName: '',
-  lastName: '',
-  email: '',
-  role: 'USER',
-  isActive: null
+import { updateSingleUserInfoThunk, usersSliceActions } from '../../redux/slices/user/userSlice'
+import { getDecodedTokenFromStorage } from '../../utils/token'
+import { toast } from 'react-toastify'
+
+export type UserInfo = {
+  firstName: string
+  lastName: string
 }
+const initialUSerState: UserInfo = {
+  firstName: '',
+  lastName: ''
+}
+
 export default function ProfileForm() {
   const dispatch = useDispatch<AppDispatch>()
-  const [userInfo, setUserInfo] = useState<User>(initialUSerState)
+  const [userInfo, setUserInfo] = useState<UserInfo>(initialUSerState)
   const usersList = useSelector((state: RootState) => state.usersR.users)
   const isEditForm = useSelector((state: RootState) => state.usersR.isEditForm)
-  const LoggedInUser = useSelector((state: RootState) => state.usersR.decodedUser)
+  const currentUser = useSelector((state: RootState) => state.usersR.decodedUser)
 
   useEffect(() => {
-    if (isEditForm && LoggedInUser?._id) {
-      const userData = usersList.find((user) => user._id === LoggedInUser._id)
-      if (userData) {
-        setUserInfo(LoggedInUser)
-      }
+    if (isEditForm && currentUser?.userID) {
+      const { firstName, lastName } = currentUser
+      setUserInfo({ firstName, lastName })
     }
-  }, [isEditForm, LoggedInUser])
+  }, [isEditForm, currentUser])
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -38,14 +40,25 @@ export default function ProfileForm() {
       [name]: value
     })
   }
+
   function handleClosePopUp() {
     dispatch(usersSliceActions.closeEditForm())
     dispatch(usersSliceActions.setPopUp(false))
   }
-  const handleSubmit = (e: FormEvent) => {
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    if (isEditForm) {
-      dispatch(usersSliceActions.editUserInfo({ userInfo }))
+
+    const userId = currentUser?.userID
+    if (isEditForm && userId) {
+      const res = await dispatch(updateSingleUserInfoThunk({ userId, updatedData: userInfo }))
+      console.log('🚀 ~ file: ProfileForm.tsx:55 ~ handleSubmit ~ res:', res)
+      if (res.meta.requestStatus === 'fulfilled') {
+        toast.success(res.payload.msg)
+      }
+      if (res.meta.requestStatus === 'rejected') {
+        toast.error('somthing went wrong while updateing profile info ')
+      }
     }
     setUserInfo(initialUSerState)
     dispatch(usersSliceActions.closeEditForm())

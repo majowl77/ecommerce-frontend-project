@@ -1,7 +1,6 @@
-import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import { useSelector } from 'react-redux'
-import { useEffect } from 'react'
 import 'react-toastify/dist/ReactToastify.css'
 
 import './App.css'
@@ -15,7 +14,6 @@ import LoginRegister from './pages/LoginRegister'
 import Footer from './components/home/Footer'
 import NavBar from './components/home/NavBar'
 import Profile from './pages/Profile'
-import { ROLES } from './types/users/usersType'
 import { isAdmin } from './utils/IsAdmin'
 import NotFound from './pages/NotFound'
 

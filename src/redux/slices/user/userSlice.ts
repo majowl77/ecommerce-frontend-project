@@ -2,8 +2,9 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AxiosError } from 'axios'
 
 import api from '../../../api'
+import { requestHandler } from '../../../api/requestHandler'
 import { RegisterSchema } from '../../../types/loginRegister/loginRegister'
-import { User, UsersinitialState } from '../../../types/users/usersType'
+import { DecodedUser, User, UsersinitialState } from '../../../types/users/usersType'
 import { getDecodedTokenFromStorage } from '../../../utils/token'
 
 const decodedUser = getDecodedTokenFromStorage()
@@ -26,9 +27,15 @@ export const loginThunk = createAsyncThunk(
   'user/login',
   async (credentials: { email: string; password: string }, { rejectWithValue }) => {
     try {
+      // you can change the type User[] to be the shape of your response
+
       const res = await api.post('/api/auth/login', credentials)
-      console.log('🚀 ~ file: userSlice.ts:28 ~ res.data:', res.data)
-      return res.data
+      const token = res.data.token
+      localStorage.setItem('token', token)
+      api.defaults.headers['Authorization'] = `Bearer ${token}`
+      const decodedUser = getDecodedTokenFromStorage()
+
+      return { data: res.data, decodedUser }
     } catch (error) {
       if (error instanceof AxiosError) return rejectWithValue(error.response?.data.msg)
     }
@@ -40,20 +47,34 @@ export const registerThunk = createAsyncThunk(
   async (userData: RegisterSchema, { rejectWithValue }) => {
     try {
       const res = await api.post('/api/auth/register', userData)
-      console.log('🚀 ~ file: userSlice.ts:42 registerThunk ~ res:', res.data)
       return res.data
     } catch (error) {
       if (error instanceof AxiosError) {
-        console.log(
-          '🚀 ~ file: userSlice.ts:48 ~ error.response?.data.msg:',
-          error.response?.data.msg
-        )
         return rejectWithValue(error.response?.data.msg)
       }
     }
   }
 )
 
+export const updateSingleUserInfoThunk = createAsyncThunk(
+  'users/getUserData',
+  async (
+    {
+      userId,
+      updatedData
+    }: { userId: User['_id']; updatedData: { firstName: string; lastName: string } },
+    { rejectWithValue }
+  ) => {
+    try {
+      const user = await api.put(`/api/users/profile/${userId}`, updatedData)
+      return user.data
+    } catch (error) {
+      if (error instanceof AxiosError) return rejectWithValue(error.response?.data.msg)
+    }
+  }
+)
+
+// --- Handle user Info By the Admin ---
 export const getUsersThunk = createAsyncThunk(
   'users/getAllUsers',
   async (_, { rejectWithValue }) => {
@@ -66,14 +87,17 @@ export const getUsersThunk = createAsyncThunk(
   }
 )
 
-export const deleteUsersThunk = createAsyncThunk('users/delete', async (userId: string) => {
-  try {
-    await api.delete(`/api/users/admin/deleteUser/${userId}`)
-    return userId
-  } catch (error) {
-    console.log('🚀 ~ file: userSlice.ts:51 ~ deleteUsersThunk ~ error:', error)
+export const deleteUsersThunk = createAsyncThunk(
+  'users/delete',
+  async (userId: string, { rejectWithValue }) => {
+    try {
+      await api.delete(`/api/users/admin/deleteUser/${userId}`)
+      return userId
+    } catch (error) {
+      if (error instanceof AxiosError) return rejectWithValue(error.response?.data.msg)
+    }
   }
-})
+)
 
 export const grantRoleUserThunk = createAsyncThunk(
   'users/role',
@@ -139,9 +163,10 @@ const usersSlice = createSlice({
       return state
     })
     builder.addCase(loginThunk.fulfilled, (state, action) => {
-      state.loggedUser = action.payload.user
+      state.loggedUser = action.payload?.data.user
       console.log('🚀 ~ file: userSlice.ts:124 ~ builder.addCase ~ action.payload:', action.payload)
-      state.decodedUser = decodedUser
+
+      state.decodedUser = action.payload?.decodedUser
       state.isLogedIn = true
       state.isLoading = false
       return state
@@ -216,6 +241,33 @@ const usersSlice = createSlice({
       const userId = action.payload
       const updatedUsers = state.users.filter((user) => user._id !== userId)
       state.users = updatedUsers
+      return state
+    })
+    // --- Update User Info
+    builder.addCase(updateSingleUserInfoThunk.pending, (state, action) => {
+      state.isLoading = true
+    })
+    builder.addCase(updateSingleUserInfoThunk.rejected, (state, action) => {
+      const errorMsg = action.payload
+      if (typeof errorMsg === 'string') {
+        state.error = errorMsg
+      } else {
+        state.error = 'somthing went wrong :('
+      }
+      state.isLoading = false
+      return state
+    })
+    builder.addCase(updateSingleUserInfoThunk.fulfilled, (state, action) => {
+      const userId = action.payload._id
+      const updatedUsers = state.users.map((user) => {
+        if (user._id === userId) {
+          return action.payload
+        }
+        return user
+      })
+      state.users = updatedUsers
+      state.loggedUser = action.payload.user
+      state.isLoading = false
       return state
     })
   }

@@ -32,6 +32,7 @@ import { toast } from 'react-toastify'
 export default function AdminCategories() {
   const dispatch = useDispatch<AppDispatch>()
   const categoryList = useSelector((state: RootState) => state.categoriesR.categoryList)
+  const category = useSelector((state: RootState) => state.categoriesR)
   const isLoading = useSelector((state: RootState) => state.categoriesR.isLoading)
   const popUp = useSelector((state: RootState) => state.categoriesR.popUp)
   const isEditForm = useSelector((state: RootState) => state.categoriesR.isEditForm)
@@ -87,34 +88,42 @@ export default function AdminCategories() {
           <h1 className="titleAdminCategory">Categories Mangement</h1>
           <h2 className="subTitleAdmin">Total Categories: {categoryList.length}</h2>
         </Typography>
-        <Table size="small">
-          <TableHead>
-            <TableRow>
-              <TableCell>Category ID </TableCell>
-              <TableCell> Category Name</TableCell>
-              <TableCell> Delete </TableCell>
-              <TableCell> Edit</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {categoryList.map((category) => (
-              <TableRow key={category._id}>
-                <TableCell>{category._id}</TableCell>
-                <TableCell>{category.name}</TableCell>
-                <TableCell>
-                  <IconButton className="adminButton" onClick={() => handleDelete(category._id)}>
-                    <DeleteForeverIcon />
-                  </IconButton>
-                </TableCell>
-                <TableCell>
-                  <IconButton className="adminButton" onClick={() => onEdit(category._id)}>
-                    <EditIcon />
-                  </IconButton>
-                </TableCell>
+        {categoryList.length === 0 && category.isLoading === false ? (
+          <div>
+            <Stack sx={{ width: '100%' }} spacing={2}>
+              <Alert severity="warning">No Categories is existed!</Alert>
+            </Stack>
+          </div>
+        ) : (
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell>Category ID </TableCell>
+                <TableCell> Category Name</TableCell>
+                <TableCell> Delete </TableCell>
+                <TableCell> Edit</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHead>
+            <TableBody>
+              {categoryList.map((category) => (
+                <TableRow key={category._id}>
+                  <TableCell>{category._id}</TableCell>
+                  <TableCell>{category.name}</TableCell>
+                  <TableCell>
+                    <IconButton className="adminButton" onClick={() => handleDelete(category._id)}>
+                      <DeleteForeverIcon />
+                    </IconButton>
+                  </TableCell>
+                  <TableCell>
+                    <IconButton className="adminButton" onClick={() => onEdit(category._id)}>
+                      <EditIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )}
       </React.Fragment>
       <div id="addNewCategory">
         <Button

@@ -12,7 +12,10 @@ export type DecodedUser = {
   iat: number
   role: Role
   userID: string
+  firstName: string
+  lastName: string
 }
+
 export type User = {
   _id: string
   firstName: string
@@ -28,7 +31,7 @@ export type UsersinitialState = {
   isLogedOut: boolean
   error: null | string
   isLoading: boolean
-  decodedUser: any
+  decodedUser: DecodedUser | null | any
   loggedUser: null | User
   userRole: null | Role
   isEditForm: boolean

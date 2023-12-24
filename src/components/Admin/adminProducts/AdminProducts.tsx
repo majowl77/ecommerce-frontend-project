@@ -79,51 +79,52 @@ export default function AdminProducts() {
             <h2 className="subTitleAdmin">Total Products: {prodcutsList.length}</h2>
           </Typography>
           <TableContainer sx={{ maxHeight: '400px' }}>
-            <Table size="small">
-              <TableHead>
-                <TableRow>
-                  <TableCell>Product ID </TableCell>
-                  <TableCell> Image</TableCell>
-                  <TableCell> Name</TableCell>
-                  <TableCell> Variants</TableCell>
-                  <TableCell> Price</TableCell>
-                  <TableCell> Delete</TableCell>
-                  <TableCell> Edit</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {prodcutsList.map((product) => (
-                  <TableRow key={product._id}>
-                    <TableCell>{product._id}</TableCell>
-                    <TableCell>
-                      <img src={product.image} alt="Product Image" id="adminProductImage" />{' '}
-                    </TableCell>
-                    <TableCell>{product.name}</TableCell>
-                    <TableCell>{product.variants}</TableCell>
-                    <TableCell>{product.price}$</TableCell>
-                    <TableCell>
-                      <IconButton
-                        className="adminButton"
-                        onClick={() => handleDeletingProduct(product._id)}>
-                        <DeleteForeverIcon />
-                      </IconButton>
-                    </TableCell>
-                    <TableCell>
-                      <IconButton className="adminButton" onClick={() => onEdit(product._id)}>
-                        <EditIcon />
-                      </IconButton>
-                    </TableCell>
+            {prodcutsList.length === 0 && isLoading === false ? (
+              <div>
+                <Stack sx={{ width: '100%' }} spacing={2}>
+                  <Alert severity="warning">No product in stock!</Alert>
+                </Stack>
+              </div>
+            ) : (
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Product ID </TableCell>
+                    <TableCell> Image</TableCell>
+                    <TableCell> Name</TableCell>
+                    <TableCell> Variants</TableCell>
+                    <TableCell> Price</TableCell>
+                    <TableCell> Delete</TableCell>
+                    <TableCell> Edit</TableCell>
                   </TableRow>
-                ))}
-                {prodcutsList.length === 0 && isLoading === false && (
-                  <div>
-                    <Stack sx={{ width: '100%' }} spacing={2}>
-                      <Alert severity="warning">No product in stock!</Alert>
-                    </Stack>
-                  </div>
-                )}
-              </TableBody>
-            </Table>
+                </TableHead>
+                <TableBody>
+                  {prodcutsList.map((product) => (
+                    <TableRow key={product._id}>
+                      <TableCell>{product._id}</TableCell>
+                      <TableCell>
+                        <img src={product.image} alt="Product Image" id="adminProductImage" />{' '}
+                      </TableCell>
+                      <TableCell>{product.name}</TableCell>
+                      <TableCell>{product.variants}</TableCell>
+                      <TableCell>{product.price}$</TableCell>
+                      <TableCell>
+                        <IconButton
+                          className="adminButton"
+                          onClick={() => handleDeletingProduct(product._id)}>
+                          <DeleteForeverIcon />
+                        </IconButton>
+                      </TableCell>
+                      <TableCell>
+                        <IconButton className="adminButton" onClick={() => onEdit(product._id)}>
+                          <EditIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            )}
           </TableContainer>
         </React.Fragment>
       </div>
