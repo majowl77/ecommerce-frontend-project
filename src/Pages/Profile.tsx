@@ -5,29 +5,35 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { AppDispatch, RootState } from '../redux/store'
 import { navBarActions } from '../redux/slices/navbar/navbarSlice'
-import { getUsersThunk, usersSliceActions } from '../redux/slices/user/userSlice'
+import {
+  getSingleUserThunk,
+  getUsersThunk,
+  usersSliceActions
+} from '../redux/slices/user/userSlice'
 import ProfileForm from '../components/profile/ProfileForm'
 import { ROLES, User } from '../types/users/usersType'
+import { useEffect } from 'react'
 
 export default function Profile() {
   const dispatch = useDispatch<AppDispatch>()
   const currentUser = useSelector((state: RootState) => state.usersR.decodedUser)
   const popUp = useSelector((state: RootState) => state.usersR.popUp)
   const loggedUser = useSelector((state: RootState) => state.usersR.loggedUser)
-  console.log('🚀 ~ file: Profile.tsx:17 ~ Profile ~ loggedUser:', loggedUser)
   const duringPopUp = popUp ? ' duringPopup' : ''
   dispatch(navBarActions.navBarNotInHomePage())
+
+  useEffect(() => {
+    async function fetchUsersData() {
+      const userId = currentUser.userID
+      dispatch(getSingleUserThunk(userId))
+    }
+    fetchUsersData()
+  }, [])
 
   //open Edit category form
   function onEdit(userId: User['_id']) {
     dispatch(usersSliceActions.openEditProfileForm())
     dispatch(usersSliceActions.setPopUp(true))
-    // function fetchSingleUserData() {
-    //   if (typeof userId === 'string') {
-    //     dispatch(getUsersThunk())
-    //   }
-    // }
-    // fetchSingleUserData()
   }
   return (
     <div className={'profilePage' + duringPopUp}>
@@ -42,7 +48,7 @@ export default function Profile() {
               </Link>
             </div>
           </div>
-          {currentUser && (
+          {loggedUser && (
             // fixed pictuer for now :)
             <div className="insideProductDetails">
               <div className="profileImage">
@@ -55,8 +61,8 @@ export default function Profile() {
               </div>
 
               <div className="profileInfo">
-                <h1 id="profileName"> First Name : {currentUser.firstName}</h1>
-                <h1 id="profileName"> Last Name :{currentUser.lastName}</h1>
+                <h1 id="profileName"> First Name : {loggedUser.firstName}</h1>
+                <h1 id="profileName"> Last Name :{loggedUser.lastName}</h1>
                 <p id="productDescription">
                   {currentUser?.role === ROLES.ADMIN ? <p> Admin</p> : <p> Customer</p>}
                 </p>

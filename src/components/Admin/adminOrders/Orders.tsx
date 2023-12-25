@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
-import Link from '@mui/material/Link'
+import Button from '@mui/material/Button'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
@@ -10,6 +10,8 @@ import TableRow from '@mui/material/TableRow'
 import Typography from '@mui/material/Typography'
 import Alert from '@mui/material/Alert'
 import Stack from '@mui/material/Stack'
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
+import { IconButton } from '@mui/material'
 
 import { AppDispatch, RootState } from '../../../redux/store'
 import { getAllOrdersThunk } from '../../../redux/slices/admin/adminSlice'
@@ -51,7 +53,9 @@ export default function Orders() {
             <TableRow>
               <TableCell>Order ID </TableCell>
               <TableCell>Purchased At</TableCell>
+              <TableCell>Order Status</TableCell>
               <TableCell>User ID</TableCell>
+              <TableCell>Delete Order</TableCell>
               <TableCell> Products</TableCell>
             </TableRow>
           </TableHead>
@@ -60,9 +64,17 @@ export default function Orders() {
               <TableRow key={order._id}>
                 <TableCell>{order._id}</TableCell>
                 <TableCell>{order.purchasedAt}</TableCell>
+                <TableCell>{order.orderStatus}</TableCell>
                 <TableCell>{order.userId}</TableCell>
                 <TableCell>
-                  <a href={'#'}> more info</a>
+                  <IconButton className="adminButton">
+                    <DeleteForeverIcon />
+                  </IconButton>
+                </TableCell>
+                <TableCell>
+                  <Button size="small" color="success">
+                    More Info
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}

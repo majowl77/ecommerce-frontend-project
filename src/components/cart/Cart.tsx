@@ -12,8 +12,6 @@ import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import WestIcon from '@mui/icons-material/West'
 import { useSelector, useDispatch } from 'react-redux'
-import Typography from '@mui/material/Typography'
-import Alert from '@mui/material/Alert'
 
 import CartItem from './CartItem'
 import { AppDispatch, RootState } from '../../redux/store'
@@ -32,14 +30,14 @@ import { AxiosError } from 'axios'
 import CartCheckoutModal from './CartCheckoutModal'
 
 const Cart = () => {
+  const dispatch = useDispatch<AppDispatch>()
+  const navigate = useNavigate()
   const cartItems = useSelector((state: RootState) => state.cartReducer.cartProducts)
   const cart = useSelector((state: RootState) => state.cartReducer)
   const decodedUser = getDecodedTokenFromStorage()
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
-  const dispatch = useDispatch<AppDispatch>()
-  const navigate = useNavigate()
   dispatch(navBarActions.navBarNotInHomePage())
 
   useEffect(() => {
@@ -52,11 +50,19 @@ const Cart = () => {
     }
   }
 
-  const handleIncrease = (productId: string) => {
+  const handleIncrease = async (productId: string) => {
     const increase = 'inc'
-    dispatch(updateProductQuantity({ productId, updateType: increase }))
+    const res = await dispatch(updateProductQuantity({ productId, updateType: increase }))
+    if (res.meta.requestStatus === 'fulfilled') {
+      toast.success(res.payload.message)
+      return
+    }
+    if (res.meta.requestStatus === 'rejected') {
+      toast.error(res.payload.message)
+      return
+    }
   }
-  const handleDecrease = (productId: string) => {
+  const handleDecrease = async (productId: string) => {
     const cartProduct = cartItems.find((item) => item.product._id === productId)
     if (cartProduct?.quantity === 1) {
       const removedProduct = cartItems.find((product) => product.product._id === productId)
@@ -65,7 +71,15 @@ const Cart = () => {
       }
     }
     const decrease = 'dec'
-    dispatch(updateProductQuantity({ productId, updateType: decrease }))
+    const res = await dispatch(updateProductQuantity({ productId, updateType: decrease }))
+    if (res.meta.requestStatus === 'fulfilled') {
+      toast.success(res.payload.message)
+      return
+    }
+    if (res.meta.requestStatus === 'rejected') {
+      toast.error(res.payload.message)
+      return
+    }
   }
   const handleCheckout = async (cartId: string) => {
     console.log('🚀 ~ file: Cart.tsx:66 ~ handleCheckout ~ cartId:', cartId)

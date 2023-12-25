@@ -3,17 +3,13 @@ import TextField from '@mui/material/TextField'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import CloseIcon from '@mui/icons-material/Close'
-import { User } from '../../types/users/usersType'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../redux/store'
 import { updateSingleUserInfoThunk, usersSliceActions } from '../../redux/slices/user/userSlice'
-import { getDecodedTokenFromStorage } from '../../utils/token'
 import { toast } from 'react-toastify'
+import { UserInfo } from '../../types/users/usersType'
+import { AxiosError } from 'axios'
 
-export type UserInfo = {
-  firstName: string
-  lastName: string
-}
 const initialUSerState: UserInfo = {
   firstName: '',
   lastName: ''
@@ -22,16 +18,15 @@ const initialUSerState: UserInfo = {
 export default function ProfileForm() {
   const dispatch = useDispatch<AppDispatch>()
   const [userInfo, setUserInfo] = useState<UserInfo>(initialUSerState)
-  const usersList = useSelector((state: RootState) => state.usersR.users)
   const isEditForm = useSelector((state: RootState) => state.usersR.isEditForm)
-  const currentUser = useSelector((state: RootState) => state.usersR.decodedUser)
+  const loggedUser = useSelector((state: RootState) => state.usersR.loggedUser)
 
   useEffect(() => {
-    if (isEditForm && currentUser?.userID) {
-      const { firstName, lastName } = currentUser
+    if (isEditForm && loggedUser?._id) {
+      const { firstName, lastName } = loggedUser
       setUserInfo({ firstName, lastName })
     }
-  }, [isEditForm, currentUser])
+  }, [isEditForm, loggedUser])
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -49,14 +44,18 @@ export default function ProfileForm() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
 
-    const userId = currentUser?.userID
+    const userId = loggedUser?._id
     if (isEditForm && userId) {
-      const res = await dispatch(updateSingleUserInfoThunk({ userId, updatedData: userInfo }))
-      console.log('🚀 ~ file: ProfileForm.tsx:55 ~ handleSubmit ~ res:', res)
-      if (res.meta.requestStatus === 'fulfilled') {
-        toast.success(res.payload.msg)
-      }
-      if (res.meta.requestStatus === 'rejected') {
+      try {
+        const res = await dispatch(
+          updateSingleUserInfoThunk({ userId, updatedData: userInfo })
+        ).unwrap()
+        toast.success(res.msg)
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          toast.error('somthing went wrong' + error)
+          return
+        }
         toast.error('somthing went wrong while updateing profile info ')
       }
     }

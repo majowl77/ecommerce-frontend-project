@@ -25,17 +25,17 @@ import {
 import { Product } from '../../../types/products/productsTypes'
 import ProductForm from './ProductForm'
 import { getSingleProductThunk } from '../../../redux/slices/products/productDetailsSlice'
+import { toast } from 'react-toastify'
+import { AxiosError } from 'axios'
 
 export default function AdminProducts() {
   const dispatch = useDispatch<AppDispatch>()
   const prodcutsList = useSelector((state: RootState) => state.adminR.productItems)
   const isLoading = useSelector((state: RootState) => state.adminR.isLoading)
   const popup = useSelector((state: RootState) => state.adminR.popUp)
-  const isEditForm = useSelector((state: RootState) => state.adminR.isEditForm)
 
   const productPopUp = useSelector((state: RootState) => state.adminR.popUp)
   const categoryPopUp = useSelector((state: RootState) => state.categoriesR.popUp)
-  const duringPopUp = productPopUp || categoryPopUp ? ' during-popup' : ''
 
   useEffect(() => {
     const handleGetProducts = async () => {
@@ -45,11 +45,21 @@ export default function AdminProducts() {
   }, [])
 
   //** deleting a product */
-  function handleDeletingProduct(productId: Product['_id']) {
+  async function handleDeletingProduct(productId: Product['_id']) {
     if (productId != null) {
-      dispatch(deleteProductThunk(productId))
+      try {
+        const res = await dispatch(deleteProductThunk(productId)).unwrap()
+        toast.success('Product deleted succussfully')
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          toast.error('somthing went wrong' + error)
+          return
+        }
+        toast.error('Deleting product failed.' + error)
+      }
     }
   }
+
   //open Edit product form
   function onEdit(productId: string) {
     dispatch(adminSliceAction.openEditProductForm(productId))

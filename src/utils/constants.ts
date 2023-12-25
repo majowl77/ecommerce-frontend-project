@@ -31,3 +31,15 @@ export const loginSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8, 'Password must be at least 8 characters')
 })
+
+export const forgotPassEmailSchema = z.object({
+  email: z.string().email()
+})
+
+export const resetPasswordlSchema = z.object({
+  password: z.string().min(8, 'Password must be at least 8 characters'),
+  confirmPassword: z.string()
+}).refine((data)=> data.password === data.confirmPassword, {
+  message: 'Passwords must match',
+  path: ["confirmPassword"]
+})

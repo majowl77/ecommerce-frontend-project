@@ -11,4 +11,6 @@ export type AdminState = {
   popUp: boolean
   isProductAdded: boolean
   newProduct: Product | null
+  adminMangement: boolean
+  adminAnaylitcs: boolean
 }

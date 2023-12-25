@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import React, { ChangeEvent, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Table from '@mui/material/Table'
@@ -18,8 +18,7 @@ import LinearProgress from '@mui/joy/LinearProgress'
 import {
   deleteUsersThunk,
   getUsersThunk,
-  grantRoleUserThunk,
-  usersSliceActions
+  grantRoleUserThunk
 } from '../../../redux/slices/user/userSlice'
 import { AppDispatch, RootState } from '../../../redux/store'
 import { Role, ROLES, User } from '../../../types/users/usersType'
@@ -55,13 +54,15 @@ export default function AdminUsers() {
     if (typeof newValue === 'string') {
       const role = newValue
       const res = await dispatch(grantRoleUserThunk({ role, userId }))
-      if (res.meta.requestStatus === 'fulfilled') {
+      try {
+        const res = await dispatch(grantRoleUserThunk({ role, userId })).unwrap()
         toast.success('Role changed sccussfuly!')
-        return
-      }
-      if (res.meta.requestStatus === 'rejected') {
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          toast.error('somthing went wrong' + error)
+          return
+        }
         toast.error("Can't change the user Role!")
-        return
       }
     }
   }

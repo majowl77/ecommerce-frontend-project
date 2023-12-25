@@ -15,7 +15,9 @@ const initialState: AdminState = {
   isEditForm: false,
   popUp: false,
   isProductAdded: false,
-  newProduct: null
+  newProduct: null,
+  adminMangement: false,
+  adminAnaylitcs: true
 }
 
 // --Admin Products Management CRUD operations--
@@ -123,6 +125,19 @@ export const adminSlice = createSlice({
     getError: (state, action: PayloadAction<string>) => {
       state.error = action.payload
       state.isLoading = false
+    },
+    adminPageHandel: (state, action: PayloadAction<string>) => {
+      console.log('🚀 ~ file: adminSlice.ts:131 ~ action.payload:', action.payload)
+      if (action.payload === 'mangement') {
+        state.adminMangement = true
+        state.adminAnaylitcs = false
+        console.log('🚀 ~ file: adminSlice.ts:131 ~ MMMMMMMMMMMMMMMM:', state.adminMangement)
+        console.log('got here manag')
+      } else {
+        state.adminMangement = false
+        state.adminAnaylitcs = true
+        console.log('got here ana')
+      }
     }
   },
   extraReducers: (builder) => {

@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import React, { useEffect } from 'react'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -48,14 +48,15 @@ export default function AdminCategories() {
   async function handleDelete(categoryID: Category['_id']) {
     console.log(categoryID)
     if (categoryID != null) {
-      const res = await dispatch(deleteCategoryThunk(categoryID))
-      if (res.meta.requestStatus === 'fulfilled') {
+      try {
+        const res = await dispatch(deleteCategoryThunk(categoryID))
         toast.success('Category deleted successfully !')
-        return
-      }
-      if (res.meta.requestStatus === 'rejected') {
-        toast.error("Can't delete the category!")
-        return
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          toast.error('somthing went wrong' + error)
+          return
+        }
+        toast.error("Can't delete the category!." + error)
       }
     }
   }

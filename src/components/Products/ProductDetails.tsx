@@ -62,7 +62,7 @@ export default function ProductDetails() {
           </div>
           <div className="insideProductDetails">
             <div className="productDetailsImage">
-              <img src={'/' + product.image} />
+              <img src={product.image} />
             </div>
             <div className="productsInfo">
               <h1 id="productName"> {product.name}</h1>

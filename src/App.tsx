@@ -16,6 +16,8 @@ import NavBar from './components/home/NavBar'
 import Profile from './pages/Profile'
 import { isAdmin } from './utils/IsAdmin'
 import NotFound from './pages/NotFound'
+import ResetPassword from './components/forgotPassword/ResetPassword'
+import ForgotPassword from './components/forgotPassword/ForgotPassword'
 
 function App() {
   const { decodedUser } = useSelector((state: RootState) => state.usersR)
@@ -26,16 +28,19 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/*" element={<NotFound />} />
-        <Route path="/products" element={<Products />} />
         <Route path="/login" element={<LoginRegister />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/profile" element={decodedUser ? <Profile /> : <NotFound />} />
+        <Route path="/products" element={<Products />} />
         <Route path="/products/product-detail/:productId" element={<ProductDetails />} />
+        <Route path="/forgotPassword" element={<ForgotPassword />} />
+        <Route path="/resetPassword/:forgotPasswordCode" element={<ResetPassword />} />
         <Route
           path="/admin"
           element={decodedUser && isAdmin() ? <Admin /> : <Navigate to="/*" />}
         />
       </Routes>
+
       <ToastContainer
         position="top-right"
         autoClose={5000}

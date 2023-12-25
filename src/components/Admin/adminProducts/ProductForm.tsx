@@ -4,8 +4,9 @@ import Button from '@mui/material/Button'
 import CloseIcon from '@mui/icons-material/Close'
 import InputAdornment from '@mui/material/InputAdornment'
 import { Paper } from '@mui/material'
-
+import { toast } from 'react-toastify'
 import { useDispatch, useSelector } from 'react-redux'
+
 import {
   adminSliceAction,
   createAdminProductsThunk,
@@ -13,7 +14,6 @@ import {
 } from '../../../redux/slices/admin/adminSlice'
 import { AppDispatch, RootState } from '../../../redux/store'
 import { Product } from '../../../types/products/productsTypes'
-import { toast } from 'react-toastify'
 
 const initialProductState: Product = {
   _id: '',

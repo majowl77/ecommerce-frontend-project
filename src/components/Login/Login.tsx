@@ -11,7 +11,7 @@ import CircularProgress from '@mui/material/CircularProgress'
 import { useNavigate } from 'react-router'
 import Avatar from '@mui/material/Avatar'
 import CssBaseline from '@mui/material/CssBaseline'
-import Link from '@mui/material/Link'
+import { Link } from 'react-router-dom'
 import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
@@ -28,10 +28,7 @@ function Copyright(props: any) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="/">
-        GreenPlants
-      </Link>
-      {new Date().getFullYear()}
+      <Link color="inherit" to="/"> GreenPlants </Link>{new Date().getFullYear()}
     </Typography>
   )
 }
@@ -125,8 +122,8 @@ export default function Login() {
             </form>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
+                <Link to="/forgotPassword">
+                  <Typography variant="body2">Forgot password?</Typography>
                 </Link>
               </Grid>
               <Grid item>

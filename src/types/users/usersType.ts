@@ -44,3 +44,5 @@ export type tokenUser = {
   userID: number
   role: string
 }
+
+export type UserInfo = Partial<User>
