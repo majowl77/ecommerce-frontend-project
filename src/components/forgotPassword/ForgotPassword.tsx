@@ -96,7 +96,7 @@ export default function ForgotPassword() {
             </Button>
             <Grid container justifyContent="flex-start">
               <Grid item>
-                <Link href="/forgotPassword">
+                <Link href="/login">
                   <Typography variant="body2">Back to Login Page?</Typography>
                 </Link>
               </Grid>

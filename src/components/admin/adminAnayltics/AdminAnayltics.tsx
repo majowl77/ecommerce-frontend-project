@@ -8,6 +8,7 @@ import Paper from '@mui/material/Paper'
 import Chart from './Chart'
 import Deposits from './Deposits'
 import Orders from '../adminOrders/Orders'
+import OrderSummary from '../adminOrders/OrderSummary'
 // Generate Sales Data
 function createData(time: string, amount?: number) {
   return { time, amount }
@@ -65,7 +66,7 @@ const AdminAnayltics = () => {
             {/* Recent Orders */}
             <Grid item xs={12}>
               <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                <Orders />
+                <OrderSummary />
               </Paper>
             </Grid>
           </Grid>

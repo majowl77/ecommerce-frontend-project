@@ -149,9 +149,9 @@ export default function Products() {
                       <h1> {product.name}</h1>
                       <p>
                         {product.price}${' '}
-                        <span>
+                        {/* <span>
                           <CustomizedRating />
-                        </span>
+                        </span> */}
                       </p>
                       <div className="productsButton">
                         <button onClick={() => addProductToCart(product._id)}> Buy</button>
