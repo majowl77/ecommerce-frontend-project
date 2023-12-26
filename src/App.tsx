@@ -23,8 +23,6 @@ function App() {
   const { decodedUser } = useSelector((state: RootState) => state.usersR)
   const location = useLocation()
 
-
-  
   return (
     <div className="App">
       {location.pathname !== '/admin' ? <NavBar /> : null}

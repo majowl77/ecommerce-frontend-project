@@ -11,20 +11,20 @@ export default function Categories() {
       </div>
       <div className="categoriesList">
         <div className="categoriesImage">
-          <img src="public/images/Natural Plants.png" />
+          <img src="https://majedah-bucket.s3.eu-west-2.amazonaws.com/Natural+Plants-1703590672472-563829960.png" />
           <p> Natural Plants</p>
         </div>
         <div className="categoriesMainImage">
-          <img src="public/images/Plant Accessories.png" />
+          <img src="https://majedah-bucket.s3.eu-west-2.amazonaws.com/Plant+Accessories-1703590278898-404969444.png" />
           <p> Plant Accessories</p>
           <Link to="/Products">
-          <button>
-            Explore <FontAwesomeIcon icon={faArrowRightLong} />
-          </button>
+            <button>
+              Explore <FontAwesomeIcon icon={faArrowRightLong} />
+            </button>
           </Link>
         </div>
         <div className="categoriesImage">
-          <img src="public/images/Artificial Plants.png" />
+          <img src="https://majedah-bucket.s3.eu-west-2.amazonaws.com/Artificial+Plants-1703590613165-457946824.png" />
           <p> Artificial Plants</p>
         </div>
       </div>
