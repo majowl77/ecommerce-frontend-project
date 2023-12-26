@@ -99,7 +99,7 @@
 }
 /* Hero Section styling */
 .Home {
-  background-image: url('public/images/newBackground.jpg');
+  background-image: url('https://majedah-bucket.s3.eu-west-2.amazonaws.com/newBackground-1703591342305-780963655.jpeg');
   background-position: center;
   background-size: cover;
   height: 990px;

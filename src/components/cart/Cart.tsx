@@ -111,7 +111,7 @@ const Cart = () => {
           {/* <Typography variant="h2" gutterBottom marginBottom={0}>
             cart is empty!
           </Typography> */}
-          <img src="public/images/cartIsEmpty.png" />
+          <img src="https://majedah-bucket.s3.eu-west-2.amazonaws.com/cartIsEmpty-1703591430371-603300689.png" />
         </div>
       ) : (
         <div className="cartListContainer">
