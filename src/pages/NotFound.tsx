@@ -14,7 +14,7 @@ export default function NotFound() {
     <div className="notFoundPage">
       <div className="titleAndSubtitle">
         <Typography variant="h2" gutterBottom marginBottom={0}>
-         <span id='f404'>404 </span>  Page Not Found
+          <span id="f404">404 </span> Page Not Found
         </Typography>
         <Typography variant="subtitle1" gutterBottom marginTop={2}>
           Oops! It seems like the page you were trying to reach doesn't exist.
@@ -23,7 +23,11 @@ export default function NotFound() {
           <Typography variant="subtitle2" gutterBottom align="left">
             Let's get you back on track:
             <Typography variant="body2" gutterBottom align="left">
-              - Go back to the <Link href="/" underline="always"> Home Page </Link>
+              - Go back to the{' '}
+              <Link href="/" underline="always">
+                {' '}
+                Home Page{' '}
+              </Link>
             </Typography>
             <Typography variant="body2" gutterBottom align="left">
               - Use the navigation menu above
@@ -31,7 +35,10 @@ export default function NotFound() {
           </Typography>
         </div>
       </div>
-      <img src="public/images/dead_flower.png" width={200} />
+      <img
+        src="https://majedah-bucket.s3.eu-west-2.amazonaws.com/dead_flower-1703592247885-662658917.png"
+        width={200}
+      />
     </div>
   )
 }

@@ -22,6 +22,7 @@ import { getProductsThunk } from '../redux/slices/products/productsSlice'
 import { addItemToCart, getCartItemsThunk } from '../redux/slices/cart/cartSlice'
 import { navBarActions } from '../redux/slices/navbar/navbarSlice'
 import { getAllCategoriesThunk } from '../redux/slices/admin/adminCategorySlice'
+import CustomizedRating from '../components/products/CustomizedRating'
 
 export default function Products() {
   const dispatch = useDispatch<AppDispatch>()
@@ -146,7 +147,12 @@ export default function Products() {
                     </div>
                     <div className="productNamePrice">
                       <h1> {product.name}</h1>
-                      <p> {product.price}$</p>
+                      <p>
+                        {product.price}${' '}
+                        <span>
+                          <CustomizedRating />
+                        </span>
+                      </p>
                       <div className="productsButton">
                         <button onClick={() => addProductToCart(product._id)}> Buy</button>
                         <Link to={`/products/product-detail/${product._id}`}>
