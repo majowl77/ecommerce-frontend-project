@@ -12,30 +12,6 @@
     "name": "Artificial Plants"
   },
   {
-    "id": 5,
-    "name": "Lush Paradise",
-    "subName": "Tropical Elegance",
-    "image": "public/images/productimagesix.png",
-    "description": "Transform your space into a lush paradise with our artificial plants. Swaying palms and exotic ferns bring the tropical elegance of the outdoors inside, without the maintenance.",
-    "categories": [2],
-    "variants": ["Swaying Palms", "Exotic Ferns"],
-    "sizes": ["Mini", "Medium", "Grand"],
-    "price": 43,
-    "quantity": 1
-  },
-  {
-    "id": 6,
-    "name": "Eternal Greens",
-    "subName": "Everlasting Beauty",
-    "image": "public/images/productimageseven.png",
-    "description": "Eternal Greens offer you everlasting beauty with our classic ficus and regal boxwood artificial plants. Enjoy the greenery year-round without the need for watering.",
-    "categories": [2],
-    "variants": ["Classic Ficus", "Regal Boxwood"],
-    "sizes": ["Mini", "Medium", "Grand"],
-    "price": 13,
-    "quantity": 1
-  },
-  {
     "id": 7,
     "name": "Urban Oasis",
     "subName": "Contemporary Decor",
