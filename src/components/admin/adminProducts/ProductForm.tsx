@@ -179,7 +179,7 @@ export default function ProductForm() {
                 id="description"
                 label="Description"
                 multiline
-                rows={4} // Adjust the number of rows as needed
+                rows={9} // Adjust the number of rows as needed
                 variant="outlined"
                 name="description"
                 type="text"
