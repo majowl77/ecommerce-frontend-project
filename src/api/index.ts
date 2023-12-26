@@ -1,16 +1,11 @@
 import axios from 'axios'
 import { getTokenFromStorage } from '../utils/token'
 
-const isDevelopment = import.meta.env.MODE === 'development'
-let baseURL = process.env.BACKEND_ORIGIN
-
-if (!isDevelopment) {
-  // Update this later when you have a working backend server
-  baseURL = 'http://localhost:3000/'
-}
+// here we'll add in vercel our backend project url in the env variables so either from this env or vercel
+const BASE_URL = import.meta.env.VITE_BACKEND_ORIGIN || 'http://localhost:3003'
 
 const api = axios.create({
-  baseURL
+  baseURL: BASE_URL
 })
 
 const token = getTokenFromStorage()
