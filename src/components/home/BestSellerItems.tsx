@@ -44,7 +44,7 @@ export default function BestSellerItems() {
                 <div className="bsetItemsCard" key={product._id}>
                   <div className="HandleTextOfItemsCard">
                     <div className="cardImage">
-                      <img src={'/' + product.image} alt={product.name} />
+                      <img src={product.image} alt={product.name} />
                     </div>
                     <div className="cardFrame">
                       <h6>{product.name}</h6>
