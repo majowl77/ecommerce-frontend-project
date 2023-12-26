@@ -35,8 +35,6 @@ export default function ProductForm() {
   const isEditForm = useSelector((state: RootState) => state.adminR.isEditForm)
   const editedProductId = useSelector((state: RootState) => state.adminR.productID)
   const updatedProduct = useSelector((state: RootState) => state.productDetails.product)
-  const popup = useSelector((state: RootState) => state.adminR.popUp)
-  const newProduct = useSelector((state: RootState) => state.adminR.newProduct)
 
   useEffect(() => {
     if (isEditForm && editedProductId) {
@@ -78,12 +76,12 @@ export default function ProductForm() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    // setProduct({ ...product, image: image })
     const formData = new FormData()
     formData.append('name', product.name)
     formData.append('description', product.description)
     formData.append('quantity', String(product.quantity))
     formData.append('price', String(product.price))
+
     // Append categories as an array of strings
     product.categories.forEach((category, index) => {
       formData.append(`categories[${index}]`, category)

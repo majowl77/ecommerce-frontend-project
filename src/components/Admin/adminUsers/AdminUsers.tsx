@@ -53,7 +53,6 @@ export default function AdminUsers() {
   const handleRoleChange = async (newValue: {} | null, userId: User['_id']) => {
     if (typeof newValue === 'string') {
       const role = newValue
-      const res = await dispatch(grantRoleUserThunk({ role, userId }))
       try {
         const res = await dispatch(grantRoleUserThunk({ role, userId })).unwrap()
         toast.success('Role changed sccussfuly!')

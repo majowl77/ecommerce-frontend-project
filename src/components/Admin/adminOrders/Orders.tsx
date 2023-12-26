@@ -1,6 +1,9 @@
 import * as React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
+import { toast } from 'react-toastify'
+import { AxiosError } from 'axios'
+
 import Button from '@mui/material/Button'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -14,7 +17,8 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import { IconButton } from '@mui/material'
 
 import { AppDispatch, RootState } from '../../../redux/store'
-import { getAllOrdersThunk } from '../../../redux/slices/admin/adminSlice'
+import { deleteOrderThunk, getAllOrdersThunk } from '../../../redux/slices/admin/adminSlice'
+import { Order } from '../../../types/orders/orderType'
 
 export default function Orders() {
   const dispatch = useDispatch<AppDispatch>()
@@ -27,6 +31,22 @@ export default function Orders() {
     }
     fetchProductsData()
   }, [])
+
+  //deleting a category
+  async function handleDelete(orderId: Order['_id']) {
+    if (orderId != null) {
+      try {
+        const res = await dispatch(deleteOrderThunk(orderId)).unwrap()
+        toast.success('Order deleted successfully !')
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          toast.error('somthing went wrong' + error)
+          return
+        }
+        toast.error("Can't delete the order!." + error)
+      }
+    }
+  }
 
   return (
     <React.Fragment>
@@ -67,7 +87,7 @@ export default function Orders() {
                 <TableCell>{order.orderStatus}</TableCell>
                 <TableCell>{order.userId}</TableCell>
                 <TableCell>
-                  <IconButton className="adminButton">
+                  <IconButton className="adminButton" onClick={() => handleDelete(order._id)}>
                     <DeleteForeverIcon />
                   </IconButton>
                 </TableCell>

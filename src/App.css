@@ -13,7 +13,8 @@
 }
 .typewriter-animation {
   display: inline-block;
-  overflow: hidden;
+
+  overflow: auto;
   white-space: nowrap;
   animation: typing 2s steps(20) infinite;
 }
@@ -520,9 +521,10 @@ svg path {
 .products {
   padding-top: 10px;
   background-color: #fff;
-  height: 110vh;
+  max-height: 100vh;
   padding-bottom: 900px;
 }
+
 .products h2 {
   padding-top: 30px;
   padding-left: 310px;
@@ -541,6 +543,7 @@ svg path {
   justify-content: center;
   flex-direction: column;
   align-self: self-start;
+  width: 25%;
 }
 .productsfilteringSection .MuiSvgIcon-root,
 .productsfilteringSection .MuiFormLabel-root {
@@ -549,14 +552,34 @@ svg path {
 .MuiInputLabel-root.Mui-focused {
   color: #8a9b6e;
 }
-.productsListContainer {
+.productsListAndLoading {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  flex-direction: column;
   padding-top: 40px;
+  margin-bottom: 20px;
+  padding-left: 10px;
+  border-radius: 16px;
+  white-space: nowrap;
+  width: 70%;
+}
+
+.linearProgress {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 40px;
+  width: 90%;
+}
+
+.productsListContainer {
   margin-bottom: 20px;
   padding-right: 60px;
   padding-left: 10px;
   border-radius: 16px;
   display: flex;
-  align-items: center;
+  align-items: end;
   direction: ltr;
   overflow-x: auto;
   white-space: nowrap;
@@ -644,7 +667,7 @@ svg path {
 /* Product Details Page */
 .oneProduct {
   font-family: 'Raleway', sans-serif;
-  background-color: #f2f7f2;
+  background-color: #fff;
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -659,6 +682,7 @@ svg path {
   align-items: center;
   flex-direction: column;
   background-color: #ffffff;
+  box-shadow: -1px 1px 20px 0px rgba(139, 155, 137, 0.22);
   padding: 25px 0px 30px 0px;
   border-radius: 4px;
   width: 800px;

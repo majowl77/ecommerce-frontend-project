@@ -9,6 +9,7 @@ import MenuItem from '@mui/material/MenuItem'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+
 import { AppDispatch, RootState } from '../../redux/store'
 import { usersSliceActions } from '../../redux/slices/user/userSlice'
 import { cartSliceAction } from '../../redux/slices/cart/cartSlice'
@@ -28,7 +29,6 @@ export default function NavBar() {
   const navigate = useNavigate()
   const isLogedIn = useSelector((state: RootState) => state.usersR.isLogedIn)
   const decodedUser = useSelector((state: RootState) => state.usersR.decodedUser)
-  const cartItems = useSelector((state: RootState) => state.cartReducer.cartProducts)
   const cart = useSelector((state: RootState) => state.cartReducer)
   const isNavBarInHomePage = useSelector((state: RootState) => state.navBarR.isNavBarInHome)
   const [scrollBackground, setScrollBackground] = useState(false)
@@ -40,8 +40,7 @@ export default function NavBar() {
       setScrollBackground(window.scrollY > 700)
     }
     window.addEventListener('scroll', handleScroll)
-    console.log('decodedUser', decodedUser)
-    console.log('isLogedIn', isLogedIn)
+
     return () => window.removeEventListener('scroll', handleScroll)
   }, [decodedUser])
 

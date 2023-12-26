@@ -26,7 +26,11 @@ function Copyright(props: any) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="#">  GreenPlants </Link>  {new Date().getFullYear()}
+      <Link color="inherit" href="#">
+        {' '}
+        GreenPlants{' '}
+      </Link>{' '}
+      {new Date().getFullYear()}
     </Typography>
   )
 }
@@ -34,8 +38,7 @@ function Copyright(props: any) {
 export default function Register() {
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
-  const isLogin = useSelector((state: RootState) => state.loginRegisterR.signUpPage)
-  const usersList = useSelector((state: RootState) => state.usersR.users)
+
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
@@ -53,7 +56,6 @@ export default function Register() {
   }
 
   async function onSubmitHandler(data: RegisterSchema) {
-    console.log('date before ', data)
     const userData = data
     try {
       const response = await dispatch(registerThunk(userData))

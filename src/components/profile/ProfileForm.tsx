@@ -3,10 +3,11 @@ import TextField from '@mui/material/TextField'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import CloseIcon from '@mui/icons-material/Close'
+import { toast } from 'react-toastify'
 import { useDispatch, useSelector } from 'react-redux'
+
 import { AppDispatch, RootState } from '../../redux/store'
 import { updateSingleUserInfoThunk, usersSliceActions } from '../../redux/slices/user/userSlice'
-import { toast } from 'react-toastify'
 import { UserInfo } from '../../types/users/usersType'
 import { AxiosError } from 'axios'
 

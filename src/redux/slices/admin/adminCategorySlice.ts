@@ -28,12 +28,12 @@ export const getAllCategoriesThunk = createAsyncThunk(
 
 export const getSingleCategoryThunk = createAsyncThunk(
   'users/getSingleCategory',
-  async (categoryId: string) => {
+  async (categoryId: string, { rejectWithValue }) => {
     try {
       const res = await api.get(`/api/categories/${categoryId}`)
       return res.data
     } catch (error) {
-      console.log('🚀 ~ file: adminCategorySlice.ts:35 ~ error:', error)
+      if (error instanceof AxiosError) return rejectWithValue(error.response?.data.msg)
     }
   }
 )
@@ -57,7 +57,6 @@ export const createAdminCategoryThunk = createAsyncThunk(
       const res = await api.post('/api/categories', categoryData)
       return res.data.category
     } catch (error) {
-      console.log('🚀 ~ file: adminCategorySlice.ts:60 ~ error:', error)
       if (error instanceof AxiosError) return rejectWithValue(error.response?.data.msg)
     }
   }
@@ -74,7 +73,6 @@ export const updateAdminCategoryThunk = createAsyncThunk(
   ) => {
     try {
       const res = await api.put(`/api/categories/${editedCategoryId}`, categoryData)
-      console.log('🚀 ~ file: adminCategorySlice.ts:78 ~ res:', res.data)
       return res.data.updatedCategory
     } catch (error) {
       if (error instanceof AxiosError) return rejectWithValue(error.response?.data.msg)

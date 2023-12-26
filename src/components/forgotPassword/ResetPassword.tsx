@@ -27,10 +27,7 @@ export default function ResetPassword() {
   const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>()
   const { forgotPasswordCode } = useParams()
-  console.log(
-    '🚀 ~ file: ResetPassword.tsx:38 ~ ResetPassword ~ forgotPasswordCode:',
-    forgotPasswordCode
-  )
+
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
@@ -47,14 +44,11 @@ export default function ResetPassword() {
   })
 
   async function onSubmitHandler(data: ResetPasswordlSchema) {
-    console.log('🚀 ~ file: ResetPassword.tsx:49 ~ onSubmitHandler ~ data:', data)
     try {
       const newPassword = data.confirmPassword
-      console.log('🚀 ~ file: ResetPassword.tsx:58 ~ onSubmitHandler ~ newPassword:', newPassword)
       const action = await dispatch(
         resetPasswordThunk({ password: newPassword, forgotPasswordCode })
       ).unwrap()
-      console.log('🚀 ~ file: ForgotPasswoed.tsx:43 ~ onSubmitHandler ~ action:', action)
       const { msg } = action
       toast.success(msg)
       setOpen(true)

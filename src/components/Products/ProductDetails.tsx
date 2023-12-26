@@ -1,33 +1,24 @@
-import CircularProgress from '@mui/material/CircularProgress'
-import Box from '@mui/material/Box'
-import Alert from '@mui/material/Alert'
-import Stack from '@mui/material/Stack'
 import Button from '@mui/material/Button'
 import ButtonGroup from '@mui/material/ButtonGroup'
 import WestIcon from '@mui/icons-material/West'
 import WaterDropIcon from '@mui/icons-material/WaterDrop'
 import LightModeIcon from '@mui/icons-material/LightMode'
 import DeviceThermostatIcon from '@mui/icons-material/DeviceThermostat'
-import axios from 'axios'
+import { toast } from 'react-toastify'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router'
-import {
-  getSingleProductThunk,
-  productDetailsAtions
-} from '../../redux/slices/products/productDetailsSlice'
-import { productsActions } from '../../redux/slices/products/productsSlice'
-import { AppDispatch, RootState } from '../../redux/store'
-import { Product } from '../../types/products/productsTypes'
 import { Link } from 'react-router-dom'
-import { cartSliceAction } from '../../redux/slices/cart/cartSlice'
+
+import { getSingleProductThunk } from '../../redux/slices/products/productDetailsSlice'
+import { AppDispatch, RootState } from '../../redux/store'
+import { addItemToCart } from '../../redux/slices/cart/cartSlice'
 
 export default function ProductDetails() {
   const { productId } = useParams()
   console.log('id', productId)
   const dispatch = useDispatch<AppDispatch>()
   const product = useSelector((state: RootState) => state.productDetails.product)
-  const productList = useSelector((state: RootState) => state.productsR.productList)
 
   useEffect(() => {
     function fetchSingleProductData() {
@@ -39,14 +30,16 @@ export default function ProductDetails() {
   }, [])
 
   //adding a product to a cart
-  function addProductToCart(id: string) {
-    if (product) {
-      const productToAdd = productList.find((pro) => pro._id === id)
-      if (productToAdd != null) {
-        dispatch(cartSliceAction.addCartProduct(productToAdd))
-      }
+  async function addProductToCart(productId: string) {
+    const res = await dispatch(addItemToCart({ productId }))
+    if (res.meta.requestStatus === 'fulfilled') {
+      toast.success(res.payload.message)
+    }
+    if (res.meta.requestStatus === 'rejected') {
+      return toast.error('Login first to add to your Cart')
     }
   }
+
   return (
     <div className="oneProduct">
       {product && (

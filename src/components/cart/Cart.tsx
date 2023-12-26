@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import NavBar from '../home/NavBar'
+import { useEffect, useState } from 'react'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
@@ -12,6 +11,9 @@ import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import WestIcon from '@mui/icons-material/West'
 import { useSelector, useDispatch } from 'react-redux'
+import { toast } from 'react-toastify'
+import { AxiosError } from 'axios'
+import { Link, useNavigate } from 'react-router-dom'
 
 import CartItem from './CartItem'
 import { AppDispatch, RootState } from '../../redux/store'
@@ -22,11 +24,8 @@ import {
   getCartItemsThunk,
   updateProductQuantity
 } from '../../redux/slices/cart/cartSlice'
-import { Link, useNavigate } from 'react-router-dom'
 import { navBarActions } from '../../redux/slices/navbar/navbarSlice'
 import { getDecodedTokenFromStorage } from '../../utils/token'
-import { toast } from 'react-toastify'
-import { AxiosError } from 'axios'
 import CartCheckoutModal from './CartCheckoutModal'
 
 const Cart = () => {
@@ -62,6 +61,7 @@ const Cart = () => {
       return
     }
   }
+
   const handleDecrease = async (productId: string) => {
     const cartProduct = cartItems.find((item) => item.product._id === productId)
     if (cartProduct?.quantity === 1) {
@@ -81,6 +81,7 @@ const Cart = () => {
       return
     }
   }
+
   const handleCheckout = async (cartId: string) => {
     console.log('🚀 ~ file: Cart.tsx:66 ~ handleCheckout ~ cartId:', cartId)
     if (decodedUser === null) {

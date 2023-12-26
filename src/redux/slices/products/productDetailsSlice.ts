@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { AxiosError } from 'axios'
 import api from '../../../api'
 import { Product, ProductInitialState } from '../../../types/products/productsTypes'
 
@@ -11,13 +12,12 @@ const initialState: ProductInitialState = {
 
 export const getSingleProductThunk = createAsyncThunk(
   'users/getSingleProduct',
-  async (productId: string) => {
+  async (productId: string, { rejectWithValue }) => {
     try {
       const res = await api.get(`/api/products/${productId}`)
-      console.log('🚀 ~ file: productDetailsSlice.ts:17 ~ res.data.product:', res.data)
       return res.data
     } catch (error) {
-      console.log('🚀 ~ file: userSlice.ts:41 ~ getUsersThunk ~ error:', error)
+      if (error instanceof AxiosError) return rejectWithValue(error.response?.data.msg)
     }
   }
 )

@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import Modal from '@mui/material/Modal'
 import { useSelector } from 'react-redux'
+
 import { RootState } from '../../redux/store'
 import { style } from '../../utils/constants'
 
@@ -46,7 +46,7 @@ export default function ResetPasswordModal(prop: Prop) {
             Hello there,
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            {message && typeof message === 'object' ? message.msg : message}
+            {message && typeof message === 'string' ? message : ''}
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             {countdown > 0

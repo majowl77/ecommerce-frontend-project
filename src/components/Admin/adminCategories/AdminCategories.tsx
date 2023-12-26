@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios'
+import { AxiosError } from 'axios'
 import React, { useEffect } from 'react'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -12,10 +12,9 @@ import LinearProgress from '@mui/joy/LinearProgress'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import EditIcon from '@mui/icons-material/Edit'
 import AddBoxIcon from '@mui/icons-material/AddBox'
-import Box from '@mui/material/Box'
 import Alert from '@mui/material/Alert'
 import Stack from '@mui/material/Stack'
-import CircularProgress from '@mui/material/CircularProgress'
+import { toast } from 'react-toastify'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../../redux/store'
@@ -27,7 +26,6 @@ import {
 } from '../../../redux/slices/admin/adminCategorySlice'
 import { Category } from '../../../types/categories/categoriesType'
 import CategoriesForm from './CategoriesFrom'
-import { toast } from 'react-toastify'
 
 export default function AdminCategories() {
   const dispatch = useDispatch<AppDispatch>()
@@ -35,7 +33,6 @@ export default function AdminCategories() {
   const category = useSelector((state: RootState) => state.categoriesR)
   const isLoading = useSelector((state: RootState) => state.categoriesR.isLoading)
   const popUp = useSelector((state: RootState) => state.categoriesR.popUp)
-  const isEditForm = useSelector((state: RootState) => state.categoriesR.isEditForm)
 
   useEffect(() => {
     const handleGetCategories = async () => {
@@ -49,7 +46,7 @@ export default function AdminCategories() {
     console.log(categoryID)
     if (categoryID != null) {
       try {
-        const res = await dispatch(deleteCategoryThunk(categoryID))
+        const res = await dispatch(deleteCategoryThunk(categoryID)).unwrap()
         toast.success('Category deleted successfully !')
       } catch (error) {
         if (error instanceof AxiosError) {
@@ -62,7 +59,6 @@ export default function AdminCategories() {
   }
   //open Edit category form
   function onEdit(categoryID: string) {
-    console.log('🚀 ~ file: AdminCategories.tsx:62 ~ onEdit ~ categoryID:', categoryID)
     dispatch(adminCategoriesActions.openEditCategoryForm(categoryID))
     dispatch(adminCategoriesActions.setPopUp(true))
     function fetchSingleCategoryData() {

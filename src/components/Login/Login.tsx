@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react'
 import { AxiosError } from 'axios'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useDispatch, useSelector } from 'react-redux'
@@ -7,7 +6,6 @@ import Typography from '@mui/material/Typography'
 import { useForm } from 'react-hook-form'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
-import CircularProgress from '@mui/material/CircularProgress'
 import { useNavigate } from 'react-router'
 import Avatar from '@mui/material/Avatar'
 import CssBaseline from '@mui/material/CssBaseline'
@@ -28,7 +26,11 @@ function Copyright(props: any) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" to="/"> GreenPlants </Link>{new Date().getFullYear()}
+      <Link color="inherit" to="/">
+        {' '}
+        GreenPlants{' '}
+      </Link>
+      {new Date().getFullYear()}
     </Typography>
   )
 }
@@ -56,7 +58,7 @@ export default function Login() {
     try {
       const action = await dispatch(loginThunk(data)).unwrap()
       const { user, message } = action?.data
-      const { firstName, role } = user
+      const { firstName } = user
       toast.success(`Welcome back! ${firstName} ${message}`)
       dispatch(getCartItemsThunk())
       if (user.role === 'ADMIN') {

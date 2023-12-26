@@ -88,6 +88,18 @@ export const getAllOrdersThunk = createAsyncThunk(
   }
 )
 
+export const deleteOrderThunk = createAsyncThunk(
+  'admin/deleteOrder',
+  async (orderId: string, { rejectWithValue }) => {
+    try {
+      await api.delete(`/api/orders/${orderId}`)
+      return orderId
+    } catch (error) {
+      if (error instanceof AxiosError) return rejectWithValue(error.response?.data.msg)
+    }
+  }
+)
+
 export const adminSlice = createSlice({
   name: 'user',
   initialState,
@@ -127,16 +139,12 @@ export const adminSlice = createSlice({
       state.isLoading = false
     },
     adminPageHandel: (state, action: PayloadAction<string>) => {
-      console.log('🚀 ~ file: adminSlice.ts:131 ~ action.payload:', action.payload)
       if (action.payload === 'mangement') {
         state.adminMangement = true
         state.adminAnaylitcs = false
-        console.log('🚀 ~ file: adminSlice.ts:131 ~ MMMMMMMMMMMMMMMM:', state.adminMangement)
-        console.log('got here manag')
       } else {
         state.adminMangement = false
         state.adminAnaylitcs = true
-        console.log('got here ana')
       }
     }
   },
@@ -224,6 +232,27 @@ export const adminSlice = createSlice({
     builder.addCase(getAllOrdersThunk.fulfilled, (state, action) => {
       state.orderList = action.payload
       state.isLoading = false
+      return state
+    })
+    builder.addCase(deleteOrderThunk.pending, (state, action) => {
+      state.isLoading = true
+    })
+    builder.addCase(deleteOrderThunk.rejected, (state, action) => {
+      const errorMsg = action.payload
+      if (typeof errorMsg === 'string') {
+        state.error = errorMsg
+      } else {
+        state.error = 'somthing went wrong :('
+      }
+      state.isLoading = false
+      return state
+    })
+    builder.addCase(deleteOrderThunk.fulfilled, (state, action) => {
+      const orderId = action.payload
+      const updatedProducts = state.orderList.filter((order) => order._id !== orderId)
+      state.orderList = updatedProducts
+      state.isLoading = false
+
       return state
     })
   }

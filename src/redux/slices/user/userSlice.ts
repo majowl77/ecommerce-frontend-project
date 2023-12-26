@@ -126,7 +126,6 @@ export const forgotPasswordThunk = createAsyncThunk(
   async ({ email }: { email: User['email'] }, { rejectWithValue }) => {
     try {
       const res = await api.post('/api/password/forgotPassword', { email })
-      console.log('🚀 ~ file: userSlice.ts:120 ~ res:', res)
       return res.data
     } catch (error) {
       if (error instanceof AxiosError) return rejectWithValue(error.response?.data.msg)
@@ -146,13 +145,11 @@ export const resetPasswordThunk = createAsyncThunk(
     },
     { rejectWithValue }
   ) => {
-    console.log('🚀 ~ file: userSlice.ts:140 ~ forgotPasswordCode:', typeof forgotPasswordCode)
     try {
       const res = await api.post('/api/password/resetPassword', {
         password,
         forgotPasswordCode
       })
-      console.log('🚀 ~ file: userSlice.ts:120 ~ res:', res)
       return res.data
     } catch (error) {
       if (error instanceof AxiosError) return rejectWithValue(error.response?.data.msg)
@@ -237,7 +234,7 @@ const usersSlice = createSlice({
       return state
     })
     builder.addCase(registerThunk.fulfilled, (state, action) => {
-      state.message = action.payload
+      state.message = action.payload.msg
       state.isLoading = false
       return state
     })

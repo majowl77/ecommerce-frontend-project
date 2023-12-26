@@ -1,5 +1,4 @@
 import React from 'react'
-import { secondaryListItems } from './ListItems'
 import Toolbar from '@mui/material/Toolbar'
 import List from '@mui/material/List'
 import Divider from '@mui/material/Divider'
@@ -9,6 +8,7 @@ import MuiDrawer from '@mui/material/Drawer'
 import { styled } from '@mui/material/styles'
 import { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar'
 import MainListItems from './MainListItems'
+import SecondaryListItems from './SecondaryListItems'
 
 const drawerWidth: number = 240
 interface AppBarProps extends MuiAppBarProps {
@@ -70,7 +70,7 @@ export default function AdminLeftDashborad() {
           }}>
           <MainListItems />
           <Divider sx={{ my: 1 }} />
-          {secondaryListItems}
+          <SecondaryListItems />
         </List>
       </Drawer>
     </div>

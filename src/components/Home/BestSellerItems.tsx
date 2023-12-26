@@ -1,14 +1,15 @@
-import axios from 'axios'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { toast } from 'react-toastify'
+
 import { getAdminProductsThunk } from '../../redux/slices/admin/adminSlice'
-import { cartSliceAction } from '../../redux/slices/cart/cartSlice'
+import { addItemToCart } from '../../redux/slices/cart/cartSlice'
 import { AppDispatch, RootState } from '../../redux/store'
+import { Product } from '../../types/products/productsTypes'
 
 export default function BestSellerItems() {
   const prodcutsList = useSelector((state: RootState) => state.adminR.productItems)
   const dispatch = useDispatch<AppDispatch>()
-  const url = 'public/mock/e-commerce/products.json'
 
   //fetching the data form JSON file
   useEffect(() => {
@@ -19,12 +20,16 @@ export default function BestSellerItems() {
   }, [])
 
   //adding a product to a cart
-  function addProductToCart(id: string) {
-    const productToAdd = prodcutsList.find((product) => product._id === id)
-    if (productToAdd != null) {
-      dispatch(cartSliceAction.addCartProduct(productToAdd))
+  async function addProductToCart(productId: Product['_id']) {
+    const res = await dispatch(addItemToCart({ productId }))
+    if (res.meta.requestStatus === 'fulfilled') {
+      toast.success(res.payload.message)
+    }
+    if (res.meta.requestStatus === 'rejected') {
+      return toast.error('Login first to add to your Cart')
     }
   }
+
   return (
     <section className="bsetSellerSection">
       <div className="bsetSellerContainer">

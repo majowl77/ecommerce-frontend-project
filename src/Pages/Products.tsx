@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
-import Alert from '@mui/material/Alert'
-import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import { InputAdornment } from '@mui/material'
-import CircularProgress from '@mui/material/CircularProgress'
-import Box from '@mui/material/Box'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Pagination from '@mui/material/Pagination'
 import { Link } from 'react-router-dom'
@@ -16,21 +11,22 @@ import FormControl from '@mui/material/FormControl'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
 import RadioGroup from '@mui/material/RadioGroup'
 import Radio from '@mui/material/Radio'
+import { toast } from 'react-toastify'
 import FormLabel from '@mui/material/FormLabel'
+import CircularProgress from '@mui/material/CircularProgress'
+import Box from '@mui/material/Box'
+import LinearProgress from '@mui/joy/LinearProgress'
 
 import { AppDispatch, RootState } from '../redux/store'
-import { getProductsThunk, productsActions } from '../redux/slices/products/productsSlice'
-import { Product } from '../types/products/productsTypes'
-import { addItemToCart, cartSliceAction, getCartItemsThunk } from '../redux/slices/cart/cartSlice'
+import { getProductsThunk } from '../redux/slices/products/productsSlice'
+import { addItemToCart, getCartItemsThunk } from '../redux/slices/cart/cartSlice'
 import { navBarActions } from '../redux/slices/navbar/navbarSlice'
-import { toast } from 'react-toastify'
 import { getAllCategoriesThunk } from '../redux/slices/admin/adminCategorySlice'
 
 export default function Products() {
   const dispatch = useDispatch<AppDispatch>()
   const prodcutsList = useSelector((state: RootState) => state.productsR.productList)
   const categoriesList = useSelector((state: RootState) => state.categoriesR.categoryList)
-  const cartList = useSelector((state: RootState) => state.cartReducer.cartProducts)
   const isLoading = useSelector((state: RootState) => state.productsR.isLoading)
   const [sortOption, setSortOprtion] = useState<string>('')
   const [searchKeyWord, setSearchKeyWord] = useState<string>('')
@@ -74,7 +70,6 @@ export default function Products() {
 
   //adding a product to a cart
   async function addProductToCart(productId: string) {
-    const productToAdd = prodcutsList.find((product) => product._id === productId)
     const res = await dispatch(addItemToCart({ productId }))
     if (res.meta.requestStatus === 'fulfilled') {
       toast.success(res.payload.message)
@@ -136,16 +131,11 @@ export default function Products() {
             </Select>
           </FormControl>
         </div>
-        <div className="productsListContainer">
-          {isLoading ? (
-            // <div>
-            //   <Box sx={{ display: 'flex' }}>
-            //     {' '}
-            //     <CircularProgress size="sm" />{' '}
-            //   </Box>
-            // </div>
-            ''
-          ) : (
+        <div className="productsListAndLoading">
+          <div className="linearProgress">
+            {isLoading === true && <LinearProgress color="success" value={40} variant="solid" />}
+          </div>
+          <div className="productsListContainer">
             <ul className="productsList">
               {prodcutsList &&
                 prodcutsList.length > 0 &&
@@ -167,7 +157,7 @@ export default function Products() {
                   </li>
                 ))}
             </ul>
-          )}
+          </div>
         </div>
       </div>
       <div className="pagination">

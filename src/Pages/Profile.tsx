@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import Button from '@mui/material/Button'
 import WestIcon from '@mui/icons-material/West'
 import { Link } from 'react-router-dom'
@@ -5,14 +6,9 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { AppDispatch, RootState } from '../redux/store'
 import { navBarActions } from '../redux/slices/navbar/navbarSlice'
-import {
-  getSingleUserThunk,
-  getUsersThunk,
-  usersSliceActions
-} from '../redux/slices/user/userSlice'
+import { getSingleUserThunk, usersSliceActions } from '../redux/slices/user/userSlice'
 import ProfileForm from '../components/profile/ProfileForm'
 import { ROLES, User } from '../types/users/usersType'
-import { useEffect } from 'react'
 
 export default function Profile() {
   const dispatch = useDispatch<AppDispatch>()
