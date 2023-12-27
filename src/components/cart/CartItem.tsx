@@ -30,7 +30,7 @@ const CartItem: React.FC<CartItemProps> = ({ item, onRemove, onIncrease, onDecre
           <Typography variant="h6">{item.product.name}</Typography>
         </div>
         <div>
-          <Typography variant="subtitle1">{item.product.price * item.product.quantity}$</Typography>
+          <Typography variant="subtitle1">{item.product.price * item.quantity}$</Typography>
         </div>
         <div className="cartButtons">
           <IconButton onClick={() => onRemove(item.product._id)}>
