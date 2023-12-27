@@ -82,6 +82,19 @@ export default function Products() {
 
   return (
     <div className="products">
+      <div className="productInfoImage">
+        <div className="introImage">
+          <img src="http://majedah-bucket.s3.eu-west-2.amazonaws.com/productsPageIntroGreen-1703632011083-847618724.png" />
+        </div>
+        <div className="imagesUnderIntro">
+          <div className="beautyNatureImage">
+            <img src="https://majedah-bucket.s3.eu-west-2.amazonaws.com/beautyNature-1703635194892-743484637.png" />
+          </div>
+          <div className="beautyNatureImage">
+            <img src="https://majedah-bucket.s3.eu-west-2.amazonaws.com/stayhome-1703634655545-634497024.png" />
+          </div>
+        </div>
+      </div>
       <h2>products</h2>
       <div className="productsSection">
         <div className="productsfilteringSection">
@@ -127,7 +140,7 @@ export default function Products() {
                 Price: Low to Hight
               </MenuItem>
               <MenuItem value="newest" color="secondary">
-                Newet products
+                What's New
               </MenuItem>
             </Select>
           </FormControl>

@@ -45,16 +45,22 @@
   justify-content: space-between;
   align-items: center;
   flex-direction: row;
-  padding: 1.5rem;
-  background-color: #a4b6a6;
+  padding: 20px 10px;
+  background-color: #ffffff;
+  border-bottom: 1px solid rgb(199, 212, 201);
+  color: #a4b6a6;
   width: 100%;
 }
-.navBarNewBackground li {
-  color: #ffffff;
+.navBarNewBackground li,
+.navBarNewBackground #navbarLogo,
+.navBarNewBackground .MuiSvgIcon-root {
+  color: #a4b6a6;
   cursor: pointer;
 }
 #scrollBackground {
-  background-color: #5b715e;
+  background: rgba(41, 61, 48, 0.397);
+  box-shadow: 0 30px 40px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(4.5px);
 }
 #scrollBackground li {
   color: #ffffff;
@@ -71,14 +77,12 @@
   color: #91948f;
 }
 .elementNavBar:hover {
-  color: #ffffff;
+  color: #e4eee5;
 }
 #cartItem {
   margin-right: -67px;
 }
-#loginItem {
-  /* margin-right: 357px; */
-}
+
 #logoutItem {
   margin-right: 100px;
 }
@@ -119,15 +123,16 @@
   align-items: center;
   flex-direction: column;
   align-self: self-start;
-  width: 489px;
-  height: 358px;
-  background: rgba(248, 248, 248, 0.77);
+  width: 677px;
+  height: 342px;
+  background: rgba(41, 61, 48, 0.397);
   border-radius: 16px;
+  box-shadow: 0 30px 40px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(4.5px);
 }
 .heroSection h1 {
   text-align: start;
-  color: #506d3b;
+  color: #ffffff;
   font-size: 45px;
   font-weight: 700;
   line-height: normal;
@@ -136,11 +141,11 @@
   padding: 20px 15px 25px 20px;
 }
 .heroSection h1 span {
-  color: #82a486;
+  color: #a6caaa;
 }
 .heroSection p {
   font-family: 'Raleway', sans-serif;
-  color: #5a6136;
+  color: #ccebd0;
   font-size: 20px;
   font-style: normal;
   font-weight: 400;
@@ -158,6 +163,7 @@
   background-color: #354733;
   border-radius: 7px;
   color: white;
+  margin-top: 20px;
 }
 .heroSection button:hover {
   background-color: #82a486;
@@ -438,15 +444,15 @@ svg path {
 
 /* Footer Desgins  */
 .footerContanier {
-  display: fixed;
+  display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  /* margin-top: 700px; */
   width: 100%;
   height: 250px;
   background: #5b715e;
   color: #edeaea;
+  padding-bottom: 20px;
 }
 .footerNameNInfo {
   align-self: self-start;
@@ -521,14 +527,42 @@ svg path {
 .products {
   padding-top: 10px;
   background-color: #fff;
-  max-height: 100vh;
+  max-height: 153vh;
   padding-bottom: 900px;
 }
 
+.productInfoImage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0px 38px;
+}
+.introImage {
+  height: 356px;
+  width: 875px;
+  padding-top: 10px;
+}
+.introImage img {
+  width: 100%;
+  height: 100%;
+}
+.imagesUnderIntro {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.beautyNatureImage {
+  width: 388px;
+  height: 174px;
+}
+.imagesUnderIntro img {
+  width: 100%;
+  height: 100%;
+}
 .products h2 {
-  padding-top: 30px;
+  padding-top: 40px;
   padding-left: 310px;
-  padding-bottom: 10px;
   font-size: 20px;
 }
 .productsSection {
@@ -538,12 +572,12 @@ svg path {
   margin: 0;
 }
 .productsfilteringSection {
-  padding-top: 50px;
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-self: self-start;
   width: 25%;
+  padding-left: 30px;
 }
 .productsfilteringSection .MuiSvgIcon-root,
 .productsfilteringSection .MuiFormLabel-root {
@@ -557,7 +591,6 @@ svg path {
   justify-content: center;
   align-items: start;
   flex-direction: column;
-  padding-top: 40px;
   margin-bottom: 20px;
   padding-left: 10px;
   border-radius: 16px;
@@ -587,7 +620,7 @@ svg path {
 .productsList {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  height: 670px;
+  height: 880px;
 }
 
 .productCard {
