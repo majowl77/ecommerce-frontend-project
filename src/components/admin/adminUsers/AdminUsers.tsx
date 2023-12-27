@@ -14,6 +14,7 @@ import Stack from '@mui/material/Stack'
 import Select from '@mui/joy/Select'
 import Option from '@mui/joy/Option'
 import LinearProgress from '@mui/joy/LinearProgress'
+import Button from '@mui/material/Button'
 
 import {
   deleteUsersThunk,
@@ -120,7 +121,17 @@ export default function AdminUsers() {
                     <TableCell>{user.firstName}</TableCell>
                     <TableCell>{user.lastName}</TableCell>
                     <TableCell>{user.email}</TableCell>
-                    <TableCell>{user.isActive ? 'activated' : 'inactive'}</TableCell>
+                    <TableCell>
+                      {user.isActive ? (
+                        <Button variant="outlined" color="success" size="small">
+                          Active
+                        </Button>
+                      ) : (
+                        <Button variant="outlined" color="error" size="small">
+                          Inactive
+                        </Button>
+                      )}
+                    </TableCell>
                     <TableCell>{user.role}</TableCell>
                     <TableCell>
                       {users.isLoading ? (
