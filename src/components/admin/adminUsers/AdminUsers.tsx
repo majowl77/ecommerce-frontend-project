@@ -68,10 +68,18 @@ export default function AdminUsers() {
   }
 
   //removing a User
-  function handleDeletingUser(userId: User['_id']) {
+  async function handleDeletingUser(userId: User['_id']) {
     if (userId != null) {
-      console.log('🚀 ~ file: AdminUsers.tsx:58 ~ handleDeletingUser ~ userId:', userId)
-      dispatch(deleteUsersThunk(userId))
+      try {
+        const res = await dispatch(deleteUsersThunk(userId)).unwrap()
+        toast.success('User deleted successfully !')
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          toast.error('somthing went wrong' + error)
+          return
+        }
+        toast.error("Can't delete the user!." + error)
+      }
     }
   }
 
