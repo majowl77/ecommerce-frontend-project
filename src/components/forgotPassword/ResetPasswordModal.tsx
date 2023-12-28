@@ -59,7 +59,7 @@ export default function ResetPasswordModal(prop: Prop) {
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             {countdown > 0
-              ? `Redirecting to the home page in ${countdown} seconds`
+              ? `Redirecting to the login page in ${countdown} seconds`
               : 'Auto-closing...'}
           </Typography>
         </Box>
