@@ -53,7 +53,7 @@ export default function ForgotPassword() {
         toast.error('somthing went wrong' + error)
         return
       }
-      toast.error(error.message + ' somthing went wrong')
+      toast.error(' somthing went wrong' + error)
     }
     reset()
   }
