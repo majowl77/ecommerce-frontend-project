@@ -1224,3 +1224,16 @@ svg path {
   width: 100%;
   min-height: 100vh;
 }
+.checkMark {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.shoppingBoxCheckout {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-right: 70px;
+  padding-bottom: 30px;
+}

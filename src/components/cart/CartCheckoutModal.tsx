@@ -43,6 +43,15 @@ export default function CartCheckoutModal(prop: Prop) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description">
         <Box sx={style}>
+          <div className="shoppingBoxCheckout">
+            <Typography>
+              <img
+                src="https://media.tenor.com/YnKbB-1kixMAAAAi/smartparcel-empty-box.gif"
+                width="200px"
+                height="200px"
+              />
+            </Typography>
+          </div>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Hello there,
           </Typography>

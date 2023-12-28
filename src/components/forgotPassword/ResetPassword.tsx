@@ -74,6 +74,7 @@ export default function ResetPassword() {
             justifyContent: 'center',
             alignItems: 'center'
           }}>
+            
           <Avatar sx={{ m: 1, bgcolor: 'success.main' }}>
             <KeyIcon />
           </Avatar>

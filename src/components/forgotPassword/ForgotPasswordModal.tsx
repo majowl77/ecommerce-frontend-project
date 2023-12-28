@@ -42,6 +42,15 @@ export default function ForgotPasswordModal(prop: Prop) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description">
         <Box sx={style}>
+          <div className='checkMark'>
+            <Typography>
+              <img
+                src="https://media.tenor.com/1Z_CN1hhaAYAAAAi/check-mark-good.gif"
+                width="200px"
+                height="200px"
+              />
+            </Typography>
+          </div>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Hello there,
           </Typography>

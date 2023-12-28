@@ -45,15 +45,15 @@ export default function ForgotPassword() {
     try {
       const action = await dispatch(forgotPasswordThunk(data)).unwrap()
       setOpen(true)
-      // setTimeout(() => {
-      //   navigate('/')
-      // }, 10000)
+      setTimeout(() => {
+        navigate('/')
+      }, 10000)
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error('somthing went wrong' + error)
         return
       }
-      toast.error('' + error)
+      toast.error(error.message + ' somthing went wrong')
     }
     reset()
   }
