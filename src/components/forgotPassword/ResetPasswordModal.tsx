@@ -43,7 +43,7 @@ export default function ResetPasswordModal(prop: Prop) {
         aria-describedby="modal-modal-description">
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Hello there,
+            Hello ,
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             {message && typeof message === 'string' ? message : ''}

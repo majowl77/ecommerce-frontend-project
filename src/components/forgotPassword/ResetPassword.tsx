@@ -49,8 +49,6 @@ export default function ResetPassword() {
       const action = await dispatch(
         resetPasswordThunk({ password: newPassword, forgotPasswordCode })
       ).unwrap()
-      const { msg } = action
-      toast.success(msg)
       setOpen(true)
       setTimeout(() => {
         navigate('/login')
