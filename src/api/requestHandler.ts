@@ -1,5 +1,5 @@
 import { AxiosError, AxiosResponse } from 'axios'
-
+// practising general types for the responses
 type BaseRequest<T, V> = (params?: T) => Promise<AxiosResponse<V>>
 
 type SuccessResponse<V> = {
