@@ -1,9 +1,17 @@
 import { z } from 'zod'
-import { forgotPassEmailSchema, loginSchema, registerSchema, resetPasswordlSchema } from '../../utils/constants'
+import {
+  forgotPassEmailSchema,
+  loginSchema,
+  registerSchema,
+  resetPasswordlSchema
+} from '../../utils/constants'
 
 export type LoginRegisterInitialState = {
   loginPage: boolean
   signUpPage: boolean
+  isLoading: boolean
+  error: null | string
+  message: null | string
 }
 
 export type RegisterSchema = z.infer<typeof registerSchema>

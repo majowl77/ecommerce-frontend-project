@@ -18,6 +18,7 @@ import { isAdmin } from './utils/IsAdmin'
 import NotFound from './pages/NotFound'
 import ResetPassword from './components/forgotPassword/ResetPassword'
 import ForgotPassword from './components/forgotPassword/ForgotPassword'
+import Activation from './pages/Activation'
 
 function App() {
   const { decodedUser } = useSelector((state: RootState) => state.usersR)
@@ -36,6 +37,7 @@ function App() {
         <Route path="/products/product-detail/:productId" element={<ProductDetails />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />
         <Route path="/resetPassword/:forgotPasswordCode" element={<ResetPassword />} />
+        <Route path="api/auth/activateUser/:activationToken" element={<Activation />} />
         <Route
           path="/admin"
           element={decodedUser && isAdmin() ? <Admin /> : <Navigate to="/*" />}
@@ -43,7 +45,7 @@ function App() {
       </Routes>
 
       <ToastContainer
-        position="top-right"
+        position="bottom-right"
         autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}
@@ -53,7 +55,6 @@ function App() {
         draggable
         pauseOnHover
         theme="light"
-        style={{ height: '50px' }}
       />
       {location.pathname !== '/' ? <Footer /> : null}
     </div>

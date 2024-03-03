@@ -1237,3 +1237,28 @@ svg path {
   padding-right: 70px;
   padding-bottom: 30px;
 }
+
+.ActivationPage {
+  min-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  color: #395635;
+  gap: 30px;
+}
+.ActivationPageBody {
+  padding: 10px 20px;
+}
+.messageAndImg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding-top: 0px;
+  margin-bottom: 8rem;
+}
+#activationMessage {
+  margin-top: 2rem;
+  margin-left: 40px;
+}
